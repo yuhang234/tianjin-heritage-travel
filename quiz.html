@@ -1,0 +1,630 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>知识问答 - 天津古建 一眼千年</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;700&family=Ma+Shan+Zheng&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --ink-blue: #2C3E50;
+            --bronze-gold: #B8860B;
+            --ink-gray: #4A4A4A;
+            --paper-white: #F8F6F0;
+            --cinnabar-red: #CD5C5C;
+            --bamboo-green: #6B8E23;
+            --dusk-purple: #8B7D6B;
+            --autumn-blue: #4682B4;
+        }
+        
+        body {
+            font-family: 'Noto Serif SC', serif;
+            background-color: var(--paper-white);
+            color: var(--ink-gray);
+        }
+        
+        .hero-section {
+            background: linear-gradient(135deg, var(--ink-blue) 0%, var(--dusk-purple) 100%);
+            color: var(--paper-white);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .hero-title {
+            font-family: 'Ma Shan Zheng', cursive;
+            font-size: 3.5rem;
+            color: var(--bronze-gold);
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+        
+        .section-title {
+            font-family: 'Ma Shan Zheng', cursive;
+            color: var(--bronze-gold);
+        }
+        
+        .nav-link {
+            color: var(--paper-white);
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        
+        .nav-link:hover {
+            color: var(--bronze-gold);
+        }
+        
+        .quiz-container {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+            padding: 2rem;
+            margin: 2rem 0;
+        }
+        
+        .question-card {
+            background: var(--paper-white);
+            border-radius: 12px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            border-left: 4px solid var(--bronze-gold);
+        }
+        
+        .option-button {
+            display: block;
+            width: 100%;
+            padding: 1rem;
+            margin: 0.5rem 0;
+            background: white;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: left;
+        }
+        
+        .option-button:hover {
+            border-color: var(--bronze-gold);
+            background: rgba(184, 134, 11, 0.1);
+        }
+        
+        .option-button.selected {
+            border-color: var(--bronze-gold);
+            background: var(--bronze-gold);
+            color: white;
+        }
+        
+        .option-button.correct {
+            border-color: var(--bamboo-green);
+            background: var(--bamboo-green);
+            color: white;
+        }
+        
+        .option-button.incorrect {
+            border-color: var(--cinnabar-red);
+            background: var(--cinnabar-red);
+            color: white;
+        }
+        
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: #e5e7eb;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--bronze-gold), var(--cinnabar-red));
+            transition: width 0.5s ease;
+        }
+        
+        .score-display {
+            text-align: center;
+            padding: 2rem;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+        }
+        
+        .achievement-badge {
+            display: inline-block;
+            padding: 0.5rem 1rem;
+            margin: 0.5rem;
+            background: var(--bronze-gold);
+            color: white;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: bold;
+        }
+        
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        
+        .quiz-start {
+            text-align: center;
+            padding: 3rem;
+        }
+        
+        .quiz-question {
+            display: none;
+        }
+        
+        .quiz-question.active {
+            display: block;
+            animation: fadeIn 0.5s ease-in-out;
+        }
+        
+        .quiz-result {
+            display: none;
+        }
+        
+        .quiz-result.active {
+            display: block;
+            animation: fadeIn 0.5s ease-in-out;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .floating-score {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 3rem;
+            font-weight: bold;
+            color: var(--bronze-gold);
+            pointer-events: none;
+            z-index: 1000;
+        }
+        
+        @media (max-width: 768px) {
+            .hero-title {
+                font-size: 2.5rem;
+            }
+            
+            .quiz-container {
+                padding: 1rem;
+            }
+            
+            .question-card {
+                padding: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 导航栏 -->
+    <nav class="fixed top-0 w-full z-50" style="background-color: var(--ink-blue);">
+        <div class="container mx-auto px-6 py-4">
+            <div class="flex justify-between items-center">
+                <a href="index.html" class="hero-title text-2xl">天津古建</a>
+                <div class="hidden md:flex space-x-8">
+                    <a href="index.html" class="nav-link">首页</a>
+                    <a href="tianhougong.html" class="nav-link">天后宫</a>
+                    <a href="index.html#buildings" class="nav-link">鼓楼</a>
+                    <a href="dulesi.html" class="nav-link">独乐寺</a>
+                    <a href="shijiadayuan.html" class="nav-link">石家大院</a>
+                    <a href="index.html#buildings" class="nav-link">玉皇阁</a>
+                    <a href="quiz.html" class="nav-link text-yellow-400">知识问答</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 主要内容 -->
+    <main>
+        <!-- 英雄区域 -->
+        <section class="hero-section pt-24 pb-16">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-12">
+                    <h1 class="hero-title mb-6 fade-in">古建知识问答</h1>
+                    <p class="text-xl max-w-3xl mx-auto fade-in">
+                        通过有趣的问答游戏，深入了解天津古建筑的历史文化，
+                        测试你的古建知识，成为真正的文化达人！
+                    </p>
+                </div>
+                
+                <!-- 统计信息 -->
+                <div class="grid md:grid-cols-3 gap-8 mb-16">
+                    <div class="text-center fade-in">
+                        <div class="text-4xl font-bold mb-2" style="color: var(--bronze-gold);">15</div>
+                        <div class="text-lg">题目数量</div>
+                    </div>
+                    <div class="text-center fade-in">
+                        <div class="text-4xl font-bold mb-2" style="color: var(--bronze-gold);">5</div>
+                        <div class="text-lg">建筑类别</div>
+                    </div>
+                    <div class="text-center fade-in">
+                        <div class="text-4xl font-bold mb-2" style="color: var(--bronze-gold);">100</div>
+                        <div class="text-lg">满分</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 问答区域 -->
+        <section class="py-20">
+            <div class="container mx-auto px-6">
+                <div class="quiz-container fade-in">
+                    <!-- 开始界面 -->
+                    <div id="quizStart" class="quiz-start">
+                        <h2 class="text-3xl font-bold mb-6" style="color: var(--ink-blue);">准备开始测试</h2>
+                        <p class="text-lg mb-8" style="color: var(--ink-gray);">
+                            本次测试包含15道关于天津古建筑的选择题，涵盖历史、建筑特色、文化内涵等方面。
+                            每题答对得10分，答错不得分。准备好展现你的古建知识了吗？
+                        </p>
+                        <button onclick="startQuiz()" class="px-8 py-3 rounded-lg text-white text-lg font-semibold" style="background-color: var(--bronze-gold);">
+                            开始测试
+                        </button>
+                    </div>
+
+                    <!-- 问题界面 -->
+                    <div id="quizQuestion" class="quiz-question">
+                        <div class="mb-6">
+                            <div class="flex justify-between items-center mb-4">
+                                <span class="text-lg font-semibold" style="color: var(--ink-blue);">第 <span id="currentQuestion">1</span> 题 / 共 15 题</span>
+                                <span class="text-lg font-semibold" style="color: var(--bronze-gold);">得分: <span id="currentScore">0</span></span>
+                            </div>
+                            <div class="progress-bar">
+                                <div id="progressFill" class="progress-fill" style="width: 6.67%"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="question-card">
+                            <h3 id="questionText" class="text-xl font-semibold mb-6" style="color: var(--ink-blue);"></h3>
+                            <div id="questionOptions"></div>
+                        </div>
+                        
+                        <div class="text-center mt-6">
+                            <button id="nextButton" onclick="nextQuestion()" class="px-6 py-3 rounded-lg text-white font-semibold" style="background-color: var(--bronze-gold);" disabled>
+                                下一题
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- 结果界面 -->
+                    <div id="quizResult" class="quiz-result">
+                        <div class="score-display">
+                            <h2 class="text-3xl font-bold mb-6" style="color: var(--ink-blue);">测试完成！</h2>
+                            <div class="text-6xl font-bold mb-4" style="color: var(--bronze-gold);" id="finalScore">0</div>
+                            <p class="text-xl mb-6" style="color: var(--ink-gray);">你的古建知识水平</p>
+                            
+                            <div id="scoreLevel" class="mb-6"></div>
+                            
+                            <div id="achievements" class="mb-8"></div>
+                            
+                            <div class="flex flex-wrap justify-center gap-4">
+                                <button onclick="restartQuiz()" class="px-6 py-3 rounded-lg text-white font-semibold" style="background-color: var(--bronze-gold);">
+                                    重新测试
+                                </button>
+                                <a href="index.html" class="px-6 py-3 rounded-lg text-white font-semibold" style="background-color: var(--autumn-blue);">
+                                    返回首页
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 知识拓展 -->
+                <div class="mt-20 fade-in">
+                    <h2 class="section-title text-4xl text-center mb-12">知识拓展</h2>
+                    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                        <div class="bg-white rounded-lg p-6 shadow-lg">
+                            <h3 class="text-xl font-bold mb-4" style="color: var(--ink-blue);">建筑历史</h3>
+                            <p class="text-sm leading-relaxed">了解天津古建筑的历史沿革，从元代到清代的发展变迁，感受千年文化的沉淀。</p>
+                        </div>
+                        <div class="bg-white rounded-lg p-6 shadow-lg">
+                            <h3 class="text-xl font-bold mb-4" style="color: var(--ink-blue);">建筑特色</h3>
+                            <p class="text-sm leading-relaxed">探索古建筑的独特建筑特色，从结构到装饰，每一处都体现着古代工匠的智慧。</p>
+                        </div>
+                        <div class="bg-white rounded-lg p-6 shadow-lg">
+                            <h3 class="text-xl font-bold mb-4" style="color: var(--ink-blue);">文化内涵</h3>
+                            <p class="text-sm leading-relaxed">深入理解古建筑承载的文化内涵，包括宗教信仰、民俗传统、艺术审美等。</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- 页脚 -->
+    <footer class="py-12 text-center" style="background-color: var(--ink-blue); color: var(--paper-white);">
+        <div class="container mx-auto px-6">
+            <p class="text-sm">
+                © 2024 天津古建 一眼千年 | 传承千年文化，守护历史记忆
+            </p>
+        </div>
+    </footer>
+
+    <script>
+        // 题目数据
+        const quizData = [
+            {
+                question: "天津天后宫始建于哪个朝代？",
+                options: ["唐代", "宋代", "元代", "明代"],
+                correct: 2,
+                explanation: "天后宫始建于元泰定三年（1326年），是中国现存年代最久的天妃宫之一。"
+            },
+            {
+                question: "独乐寺观音阁的高度是多少？",
+                options: ["20米", "23米", "25米", "28米"],
+                correct: 1,
+                explanation: "独乐寺观音阁通高23米，是中国现存最古老的木结构楼阁式建筑。"
+            },
+            {
+                question: "石家大院被誉为？",
+                options: ["津门第一宅", "华北第一宅", "北方第一宅", "中华第一宅"],
+                correct: 1,
+                explanation: "石家大院被誉为'华北第一宅'，是清代民居建筑的珍贵遗产。"
+            },
+            {
+                question: "独乐寺重建于辽代的哪一年？",
+                options: ["980年", "984年", "988年", "992年"],
+                correct: 1,
+                explanation: "独乐寺重建于辽统和二年（984年），至今已1040年历史。"
+            },
+            {
+                question: "天后宫的建筑布局体现了哪个时期的寺庙建筑特色？",
+                options: ["唐代", "宋元时期", "明代", "清代"],
+                correct: 1,
+                explanation: "天后宫'大殿中峙'的布局体现了宋元时期寺庙建筑的特色。"
+            },
+            {
+                question: "独乐寺历经多少次地震而不倒？",
+                options: ["25次", "28次", "30次", "32次"],
+                correct: 1,
+                explanation: "独乐寺历经28次地震考验而巍然屹立，是中国建筑史上的奇迹。"
+            },
+            {
+                question: "杨柳青年画属于哪个级别的非物质文化遗产？",
+                options: ["市级", "省级", "国家级", "世界级"],
+                correct: 2,
+                explanation: "杨柳青年画是国家级非物质文化遗产，以细腻的笔触和吉祥的寓意闻名。"
+            },
+            {
+                question: "天后宫藏经阁曾贮藏哪部重要典籍？",
+                options: ["《大藏经》", "《正统道藏》", "《四库全书》", "《永乐大典》"],
+                correct: 1,
+                explanation: "天后宫藏经阁曾贮藏《正统道藏》五千余卷，1957年改由故宫博物院收藏。"
+            },
+            {
+                question: "石家大院体现了哪个朝代的民居建筑风格？",
+                options: ["明代", "清代", "民国时期", "现代"],
+                correct: 1,
+                explanation: "石家大院建于清代，是津门八大家之一石家的宅院。"
+            },
+            {
+                question: "独乐寺观音阁内的观音塑像有多高？",
+                options: ["14米", "16米", "18米", "20米"],
+                correct: 1,
+                explanation: "独乐寺观音阁内的十一面观音塑像高16米，是中国现存最大的泥塑站像之一。"
+            },
+            {
+                question: "妈祖的诞辰是农历哪一天？",
+                options: ["三月二十", "三月二十三", "三月二十五", "三月二十八"],
+                correct: 1,
+                explanation: "妈祖诞辰是农历三月二十三日，这一天天后宫都会举行盛大的民间酬神庙会活动。"
+            },
+            {
+                question: "天后宫的建筑朝向是？",
+                options: ["坐北朝南", "坐西朝东", "坐南朝北", "坐东朝西"],
+                correct: 1,
+                explanation: "天后宫坐西朝东，面向海河，体现了古代建筑的风水理念。"
+            },
+            {
+                question: "独乐寺山门是中国现存最早的什么顶山门？",
+                options: ["歇山顶", "悬山顶", "庑殿顶", "硬山顶"],
+                correct: 2,
+                explanation: "独乐寺山门是中国现存最早的庑殿顶山门实例。"
+            },
+            {
+                question: "石家大院的建筑布局主要采用什么形式？",
+                options: ["园林式", "四合院式", "城堡式", "宫殿式"],
+                correct: 1,
+                explanation: "石家大院采用传统的四合院布局，体现了中国古代民居的建筑智慧。"
+            },
+            {
+                question: "梁思成先生在哪一年发现并研究了独乐寺？",
+                options: ["1930年", "1932年", "1934年", "1936年"],
+                correct: 1,
+                explanation: "梁思成先生于1932年发现并研究独乐寺，发表了重要的学术著作。"
+            }
+        ];
+
+        let currentQuestionIndex = 0;
+        let score = 0;
+        let answeredQuestions = 0;
+
+        // 开始测试
+        function startQuiz() {
+            document.getElementById('quizStart').style.display = 'none';
+            document.getElementById('quizQuestion').classList.add('active');
+            showQuestion();
+        }
+
+        // 显示问题
+        function showQuestion() {
+            const question = quizData[currentQuestionIndex];
+            document.getElementById('currentQuestion').textContent = currentQuestionIndex + 1;
+            document.getElementById('questionText').textContent = question.question;
+            
+            const optionsContainer = document.getElementById('questionOptions');
+            optionsContainer.innerHTML = '';
+            
+            question.options.forEach((option, index) => {
+                const button = document.createElement('button');
+                button.className = 'option-button';
+                button.textContent = `${String.fromCharCode(65 + index)}. ${option}`;
+                button.onclick = () => selectAnswer(index);
+                optionsContainer.appendChild(button);
+            });
+            
+            // 更新进度条
+            const progress = ((currentQuestionIndex + 1) / quizData.length) * 100;
+            document.getElementById('progressFill').style.width = progress + '%';
+            
+            // 重置下一题按钮
+            document.getElementById('nextButton').disabled = true;
+        }
+
+        // 选择答案
+        function selectAnswer(selectedIndex) {
+            const question = quizData[currentQuestionIndex];
+            const options = document.querySelectorAll('.option-button');
+            
+            // 禁用所有选项
+            options.forEach(option => {
+                option.onclick = null;
+                option.style.pointerEvents = 'none';
+            });
+            
+            // 显示正确答案
+            options[question.correct].classList.add('correct');
+            
+            // 检查答案
+            if (selectedIndex === question.correct) {
+                score += 10;
+                document.getElementById('currentScore').textContent = score;
+                options[selectedIndex].classList.add('selected');
+                showFloatingScore('+10');
+            } else {
+                options[selectedIndex].classList.add('incorrect');
+                showFloatingScore('×');
+            }
+            
+            // 显示解释
+            setTimeout(() => {
+                alert(question.explanation);
+                document.getElementById('nextButton').disabled = false;
+            }, 500);
+            
+            answeredQuestions++;
+        }
+
+        // 下一题
+        function nextQuestion() {
+            currentQuestionIndex++;
+            
+            if (currentQuestionIndex < quizData.length) {
+                showQuestion();
+            } else {
+                showResult();
+            }
+        }
+
+        // 显示结果
+        function showResult() {
+            document.getElementById('quizQuestion').classList.remove('active');
+            document.getElementById('quizResult').classList.add('active');
+            
+            document.getElementById('finalScore').textContent = score;
+            
+            // 显示等级
+            const scoreLevel = document.getElementById('scoreLevel');
+            let level = '';
+            let description = '';
+            
+            if (score >= 140) {
+                level = '古建大师';
+                description = '您对天津古建筑有着深入的了解，是真正的文化专家！';
+            } else if (score >= 120) {
+                level = '古建达人';
+                description = '您对古建筑有很好的认识，具备丰富的文化知识。';
+            } else if (score >= 80) {
+                level = '古建爱好者';
+                description = '您对古建筑有一定的了解，继续学习会有更大进步。';
+            } else if (score >= 40) {
+                level = '古建初学者';
+                description = '您刚开始了解古建筑，建议多参观学习。';
+            } else {
+                level = '古建新手';
+                description = '欢迎加入古建文化学习的行列！';
+            }
+            
+            scoreLevel.innerHTML = `
+                <div class="text-2xl font-bold mb-2" style="color: var(--bronze-gold);">${level}</div>
+                <p class="text-lg">${description}</p>
+            `;
+            
+            // 显示成就
+            const achievements = document.getElementById('achievements');
+            let achievementHTML = '';
+            
+            if (score === 150) {
+                achievementHTML += '<div class="achievement-badge">🏆 完美得分</div>';
+            }
+            if (score >= 120) {
+                achievementHTML += '<div class="achievement-badge">🎯 优秀成绩</div>';
+            }
+            if (answeredQuestions === quizData.length) {
+                achievementHTML += '<div class="achievement-badge">✅ 完成挑战</div>';
+            }
+            
+            achievements.innerHTML = achievementHTML;
+        }
+
+        // 重新开始测试
+        function restartQuiz() {
+            currentQuestionIndex = 0;
+            score = 0;
+            answeredQuestions = 0;
+            
+            document.getElementById('currentScore').textContent = '0';
+            document.getElementById('progressFill').style.width = '6.67%';
+            document.getElementById('quizResult').classList.remove('active');
+            document.getElementById('quizStart').style.display = 'block';
+        }
+
+        // 显示浮动分数
+        function showFloatingScore(text) {
+            const floatingScore = document.createElement('div');
+            floatingScore.className = 'floating-score';
+            floatingScore.textContent = text;
+            document.body.appendChild(floatingScore);
+            
+            anime({
+                targets: floatingScore,
+                translateY: -100,
+                opacity: [1, 0],
+                duration: 1000,
+                easing: 'easeOutQuad',
+                complete: () => {
+                    document.body.removeChild(floatingScore);
+                }
+            });
+        }
+
+        // 页面加载完成后初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            // 初始化滚动动画
+            const observerOptions = {
+                threshold: 0.1,
+                rootMargin: '0px 0px -50px 0px'
+            };
+            
+            const observer = new IntersectionObserver(function(entries) {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateY(0)';
+                    }
+                });
+            }, observerOptions);
+            
+            document.querySelectorAll('.fade-in').forEach(el => {
+                observer.observe(el);
+            });
+        });
+    </script>
+</body>
+</html>

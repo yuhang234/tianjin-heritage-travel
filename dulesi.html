@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>独乐寺 - 天津古建 一眼千年</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/p5.min.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;700&family=Ma+Shan+Zheng&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --ink-blue: #2C3E50;
+            --bronze-gold: #B8860B;
+            --ink-gray: #4A4A4A;
+            --paper-white: #F8F6F0;
+            --cinnabar-red: #CD5C5C;
+            --bamboo-green: #6B8E23;
+            --dusk-purple: #8B7D6B;
+            --autumn-blue: #4682B4;
+        }
+        
+        body {
+            font-family: 'Noto Serif SC', serif;
+            background-color: var(--paper-white);
+            color: var(--ink-gray);
+        }
+        
+        .hero-section {
+            background: linear-gradient(135deg, var(--ink-blue) 0%, var(--dusk-purple) 100%);
+            color: var(--paper-white);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .hero-title {
+            font-family: 'Ma Shan Zheng', cursive;
+            font-size: 3.5rem;
+            color: var(--bronze-gold);
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+        
+        .section-title {
+            font-family: 'Ma Shan Zheng', cursive;
+            color: var(--bronze-gold);
+        }
+        
+        .nav-link {
+            color: var(--paper-white);
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        
+        .nav-link:hover {
+            color: var(--bronze-gold);
+        }
+        
+        .feature-card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            overflow: hidden;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+        }
+        
+        .tab-button {
+            padding: 12px 24px;
+            border: none;
+            background: var(--paper-white);
+            color: var(--ink-gray);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border-radius: 25px;
+            margin: 0 8px;
+        }
+        
+        .tab-button.active {
+            background: var(--bronze-gold);
+            color: white;
+        }
+        
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.5s ease-in-out;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .timeline-container {
+            position: relative;
+            padding: 20px 0;
+        }
+        
+        .timeline-line {
+            position: absolute;
+            left: 50%;
+            top: 0;
+            bottom: 0;
+            width: 3px;
+            background: var(--bronze-gold);
+            transform: translateX(-50%);
+        }
+        
+        .timeline-item {
+            position: relative;
+            margin-bottom: 40px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .timeline-item:nth-child(odd) {
+            flex-direction: row;
+        }
+        
+        .timeline-item:nth-child(even) {
+            flex-direction: row-reverse;
+        }
+        
+        .timeline-content {
+            width: 45%;
+            padding: 20px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .timeline-dot {
+            position: absolute;
+            left: 50%;
+            width: 16px;
+            height: 16px;
+            background: var(--bronze-gold);
+            border-radius: 50%;
+            transform: translateX(-50%);
+            z-index: 2;
+        }
+        
+        .interactive-image {
+            position: relative;
+            cursor: pointer;
+            overflow: hidden;
+            border-radius: 12px;
+        }
+        
+        .interactive-image img {
+            transition: transform 0.3s ease;
+        }
+        
+        .interactive-image:hover img {
+            transform: scale(1.05);
+        }
+        
+        .image-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.7);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .interactive-image:hover .image-overlay {
+            opacity: 1;
+        }
+        
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        
+        @media (max-width: 768px) {
+            .hero-title {
+                font-size: 2.5rem;
+            }
+            
+            .timeline-line {
+                left: 20px;
+            }
+            
+            .timeline-item {
+                flex-direction: column !important;
+                align-items: flex-start;
+                padding-left: 50px;
+            }
+            
+            .timeline-content {
+                width: 100%;
+            }
+            
+            .timeline-dot {
+                left: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 导航栏 -->
+    <nav class="fixed top-0 w-full z-50" style="background-color: var(--ink-blue);">
+        <div class="container mx-auto px-6 py-4">
+            <div class="flex justify-between items-center">
+                <a href="index.html" class="hero-title text-2xl">天津古建</a>
+                <div class="hidden md:flex space-x-8">
+                    <a href="index.html" class="nav-link">首页</a>
+                    <a href="tianhougong.html" class="nav-link">天后宫</a>
+                    <a href="index.html#buildings" class="nav-link">鼓楼</a>
+                    <a href="dulesi.html" class="nav-link text-yellow-400">独乐寺</a>
+                    <a href="shijiadayuan.html" class="nav-link">石家大院</a>
+                    <a href="index.html#buildings" class="nav-link">玉皇阁</a>
+                    <a href="quiz.html" class="nav-link">知识问答</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 主要内容 -->
+    <main>
+        <!-- 英雄区域 -->
+        <section class="hero-section pt-24 pb-16">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-12">
+                    <h1 class="hero-title mb-6 fade-in">独乐寺</h1>
+                    <p class="text-xl max-w-3xl mx-auto fade-in">
+                        千年古刹，始建于唐，重建于辽。以观音阁、山门、壁画"三绝"闻名，
+                        是中国现存最古老的木结构楼阁式建筑，被誉为"无上国宝"。
+                    </p>
+                </div>
+                
+                <!-- 建筑概览 -->
+                <div class="grid md:grid-cols-3 gap-8 mb-16">
+                    <div class="text-center fade-in">
+                        <div class="text-4xl font-bold mb-2" style="color: var(--bronze-gold);">1040年</div>
+                        <div class="text-lg">重建历史</div>
+                    </div>
+                    <div class="text-center fade-in">
+                        <div class="text-4xl font-bold mb-2" style="color: var(--bronze-gold);">23米</div>
+                        <div class="text-lg">观音阁高度</div>
+                    </div>
+                    <div class="text-center fade-in">
+                        <div class="text-4xl font-bold mb-2" style="color: var(--bronze-gold);">28次</div>
+                        <div class="text-lg">经历地震</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 功能标签页 -->
+        <section class="py-20">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-12">
+                    <h2 class="section-title text-4xl mb-8 fade-in">建筑三绝</h2>
+                    
+                    <!-- 标签按钮 -->
+                    <div class="flex flex-wrap justify-center mb-12">
+                        <button class="tab-button active" onclick="showTab('shanmen')">山门</button>
+                        <button class="tab-button" onclick="showTab('guanyinge')">观音阁</button>
+                        <button class="tab-button" onclick="showTab('bihua')">壁画</button>
+                    </div>
+                </div>
+
+                <!-- 山门内容 -->
+                <div id="shanmen" class="tab-content active">
+                    <div class="grid lg:grid-cols-2 gap-12 items-center">
+                        <div class="fade-in">
+                            <div class="interactive-image">
+                                <img src="resources/dulesi_shanmen.png" alt="独乐寺山门" class="w-full h-96 object-cover">
+                                <div class="image-overlay">
+                                    <div class="text-center">
+                                        <h3 class="text-2xl font-bold mb-2">中国现存最早的庑殿顶山门</h3>
+                                        <p>点击了解更多细节</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="fade-in">
+                            <h3 class="text-3xl font-bold mb-6" style="color: var(--ink-blue);">山门建筑特色</h3>
+                            <div class="space-y-4 text-lg leading-relaxed">
+                                <p><strong>建筑结构：</strong>山门高10米，面阔三间，进深两间，采用庑殿顶结构，是中国现存最早的庑殿顶山门实例。</p>
+                                <p><strong>历史价值：</strong>正脊两端的鸱吻是中国保存在建筑屋顶原位置上年代最早的实例，展现了辽代建筑的典型特征。</p>
+                                <p><strong>艺术特色：</strong>门前两尊辽代彩色泥塑金刚力士像，肌肉虬结，衣带烈烈，体现了辽代雕塑艺术的精湛技艺。</p>
+                                <p><strong>文化内涵：</strong>山门匾额"独乐寺"三字相传为明代严嵩所题，蕴含着深厚的历史文化底蕴。</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 观音阁内容 -->
+                <div id="guanyinge" class="tab-content">
+                    <div class="grid lg:grid-cols-2 gap-12 items-center">
+                        <div class="fade-in">
+                            <h3 class="text-3xl font-bold mb-6" style="color: var(--ink-blue);">观音阁建筑奇迹</h3>
+                            <div class="space-y-4 text-lg leading-relaxed">
+                                <p><strong>建筑结构：</strong>观音阁外观两层，内有三层，通高23米，是中国现存最古老的木结构楼阁式建筑。</p>
+                                <p><strong>抗震设计：</strong>采用刚柔相济的结构设计，刚性的斗栱层与柔性的立柱层相结合，历经28次地震而不倒。</p>
+                                <p><strong>内部造像：</strong>阁内供奉16米高的十一面观音塑像，是中国现存最大的泥塑站像之一，展现了辽代雕塑艺术的高峰。</p>
+                                <p><strong>建筑智慧：</strong>整个结构围绕中间的观音像建造，28根立柱形成内外两圈有序排列，体现了古代建筑师的卓越智慧。</p>
+                            </div>
+                        </div>
+                        <div class="fade-in">
+                            <div class="interactive-image">
+                                <img src="resources/dulesi_guanyinge.png" alt="独乐寺观音阁" class="w-full h-96 object-cover">
+                                <div class="image-overlay">
+                                    <div class="text-center">
+                                        <h3 class="text-2xl font-bold mb-2">千年不倒的木结构楼阁</h3>
+                                        <p>点击了解建筑结构</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 壁画内容 -->
+                <div id="bihua" class="tab-content">
+                    <div class="grid lg:grid-cols-2 gap-12 items-center">
+                        <div class="fade-in">
+                            <div class="interactive-image">
+                                <img src="resources/dulesi_bihua.png" alt="独乐寺壁画" class="w-full h-96 object-cover">
+                                <div class="image-overlay">
+                                    <div class="text-center">
+                                        <h3 class="text-2xl font-bold mb-2">元代壁画艺术珍品</h3>
+                                        <p>点击查看壁画细节</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="fade-in">
+                            <h3 class="text-3xl font-bold mb-6" style="color: var(--ink-blue);">壁画艺术价值</h3>
+                            <div class="space-y-4 text-lg leading-relaxed">
+                                <p><strong>历史价值：</strong>壁画总面积142.85平方米，以十六罗汉和明王为主题，是元代壁画艺术的珍贵遗存。</p>
+                                <p><strong>艺术特色：</strong>壁画风格具有元代特色，明代重描，线条流畅，色彩鲜明，在国内堪称一流。</p>
+                                <p><strong>文化内涵：</strong>壁画中穿插佛教和世俗题材故事，展现了当时社会文化的丰富内涵。</p>
+                                <p><strong>保护意义：</strong>1972年维修时首次揭露，为研究中国古代壁画艺术提供了重要的实物资料。</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 历史时间轴 -->
+        <section class="py-20" style="background-color: var(--paper-white);">
+            <div class="container mx-auto px-6">
+                <h2 class="section-title text-4xl text-center mb-16 fade-in">千年历史沿革</h2>
+                
+                <div class="timeline-container">
+                    <div class="timeline-line"></div>
+                    
+                    <div class="timeline-item fade-in">
+                        <div class="timeline-dot"></div>
+                        <div class="timeline-content">
+                            <h3 class="text-2xl font-bold mb-2" style="color: var(--bronze-gold);">唐贞观十年 (636年)</h3>
+                            <p class="text-lg">独乐寺始建，最初名为"独乐寺"，取"思独乐而不与民同乐"之意。</p>
+                        </div>
+                    </div>
+                    
+                    <div class="timeline-item fade-in">
+                        <div class="timeline-dot"></div>
+                        <div class="timeline-content">
+                            <h3 class="text-2xl font-bold mb-2" style="color: var(--bronze-gold);">辽统和二年 (984年)</h3>
+                            <p class="text-lg">重建山门和观音阁，形成了我们今天所见的建筑群主体，至今已1040年。</p>
+                        </div>
+                    </div>
+                    
+                    <div class="timeline-item fade-in">
+                        <div class="timeline-dot"></div>
+                        <div class="timeline-content">
+                            <h3 class="text-2xl font-bold mb-2" style="color: var(--bronze-gold);">明代</h3>
+                            <p class="text-lg">山门内壁绘制四大天王壁画，形成了现在我们所见的壁画艺术。</p>
+                        </div>
+                    </div>
+                    
+                    <div class="timeline-item fade-in">
+                        <div class="timeline-dot"></div>
+                        <div class="timeline-content">
+                            <h3 class="text-2xl font-bold mb-2" style="color: var(--bronze-gold);">清代</h3>
+                            <p class="text-lg">乾隆年间增建行宫，成为皇帝东陵谒陵途中的休憩之所。</p>
+                        </div>
+                    </div>
+                    
+                    <div class="timeline-item fade-in">
+                        <div class="timeline-dot"></div>
+                        <div class="timeline-content">
+                            <h3 class="text-2xl font-bold mb-2" style="color: var(--bronze-gold);">1932年</h3>
+                            <p class="text-lg">梁思成先生发现并研究独乐寺，发表《蓟县独乐寺观音阁山门考》。</p>
+                        </div>
+                    </div>
+                    
+                    <div class="timeline-item fade-in">
+                        <div class="timeline-dot"></div>
+                        <div class="timeline-content">
+                            <h3 class="text-2xl font-bold mb-2" style="color: var(--bronze-gold);">1961年</h3>
+                            <p class="text-lg">独乐寺被列为首批全国重点文物保护单位，得到国家级的保护。</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 建筑结构解析 -->
+        <section class="py-20">
+            <div class="container mx-auto px-6">
+                <h2 class="section-title text-4xl text-center mb-16 fade-in">建筑结构解析</h2>
+                
+                <div class="grid lg:grid-cols-2 gap-12">
+                    <div class="fade-in">
+                        <h3 class="text-2xl font-bold mb-6" style="color: var(--ink-blue);">斗栱结构</h3>
+                        <div class="bg-white rounded-lg p-6 shadow-lg">
+                            <div id="dougongChart" style="height: 300px;"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="fade-in">
+                        <h3 class="text-2xl font-bold mb-6" style="color: var(--ink-blue);">抗震原理</h3>
+                        <div class="space-y-4">
+                            <div class="bg-white rounded-lg p-6 shadow-lg">
+                                <h4 class="text-xl font-semibold mb-3" style="color: var(--bronze-gold);">刚柔相济</h4>
+                                <p>刚性的斗栱层与柔性的立柱层相结合，使整体结构既有足够的刚性以防风，又有足够的柔性能抗震。</p>
+                            </div>
+                            <div class="bg-white rounded-lg p-6 shadow-lg">
+                                <h4 class="text-xl font-semibold mb-3" style="color: var(--bronze-gold);">分层设计</h4>
+                                <p>多层斗栱结构形成独立的承重体系，即使部分结构受损，整体建筑仍能保持稳定。</p>
+                            </div>
+                            <div class="bg-white rounded-lg p-6 shadow-lg">
+                                <h4 class="text-xl font-semibold mb-3" style="color: var(--bronze-gold);">木榫结构</h4>
+                                <p>采用传统的木榫连接方式，具有一定的弹性和变形能力，能够有效吸收地震能量。</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- 页脚 -->
+    <footer class="py-12 text-center" style="background-color: var(--ink-blue); color: var(--paper-white);">
+        <div class="container mx-auto px-6">
+            <p class="text-sm">
+                © 2024 天津古建 一眼千年 | 传承千年文化，守护历史记忆
+            </p>
+        </div>
+    </footer>
+
+    <script>
+        // 标签页切换功能
+        function showTab(tabName) {
+            // 隐藏所有标签内容
+            document.querySelectorAll('.tab-content').forEach(content => {
+                content.classList.remove('active');
+            });
+            
+            // 移除所有按钮的active状态
+            document.querySelectorAll('.tab-button').forEach(button => {
+                button.classList.remove('active');
+            });
+            
+            // 显示选中的标签内容
+            document.getElementById(tabName).classList.add('active');
+            
+            // 激活对应的按钮
+            event.target.classList.add('active');
+        }
+
+        // 页面加载完成后初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            // 初始化滚动动画
+            const observerOptions = {
+                threshold: 0.1,
+                rootMargin: '0px 0px -50px 0px'
+            };
+            
+            const observer = new IntersectionObserver(function(entries) {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateY(0)';
+                    }
+                });
+            }, observerOptions);
+            
+            document.querySelectorAll('.fade-in').forEach(el => {
+                observer.observe(el);
+            });
+
+            // 初始化斗栱结构图表
+            const dougongChart = echarts.init(document.getElementById('dougongChart'));
+            const dougongOption = {
+                title: {
+                    text: '观音阁斗栱分布',
+                    left: 'center',
+                    textStyle: {
+                        color: '#2C3E50'
+                    }
+                },
+                tooltip: {
+                    trigger: 'item',
+                    formatter: '{a} <br/>{b}: {c} ({d}%)'
+                },
+                series: [{
+                    name: '斗栱类型',
+                    type: 'pie',
+                    radius: '50%',
+                    data: [
+                        {value: 24, name: '柱头斗栱'},
+                        {value: 48, name: '补间斗栱'},
+                        {value: 32, name: '转角斗栱'},
+                        {value: 48, name: '其他类型'}
+                    ],
+                    emphasis: {
+                        itemStyle: {
+                            shadowBlur: 10,
+                            shadowOffsetX: 0,
+                            shadowColor: 'rgba(0, 0, 0, 0.5)'
+                        }
+                    },
+                    itemStyle: {
+                        color: function(params) {
+                            const colors = ['#B8860B', '#CD5C5C', '#6B8E23', '#4682B4'];
+                            return colors[params.dataIndex];
+                        }
+                    }
+                }]
+            };
+            dougongChart.setOption(dougongOption);
+
+            // 响应式图表
+            window.addEventListener('resize', function() {
+                dougongChart.resize();
+            });
+        });
+
+        // 图片点击放大功能
+        document.querySelectorAll('.interactive-image').forEach(image => {
+            image.addEventListener('click', function() {
+                const img = this.querySelector('img');
+                const modal = document.createElement('div');
+                modal.className = 'fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50';
+                modal.innerHTML = `
+                    <div class="max-w-4xl max-h-full p-4">
+                        <img src="${img.src}" alt="${img.alt}" class="max-w-full max-h-full object-contain">
+                        <button onclick="this.parentElement.parentElement.remove()" 
+                                class="absolute top-4 right-4 text-white text-2xl">×</button>
+                    </div>
+                `;
+                document.body.appendChild(modal);
+            });
+        });
+    </script>
+</body>
+</html>

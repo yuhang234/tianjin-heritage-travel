@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>天后宫 - 天津古建 一眼千年</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@splidejs/splide@4.1.4/dist/js/splide.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@splidejs/splide@4.1.4/dist/css/splide.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;700&family=Ma+Shan+Zheng&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --ink-blue: #2C3E50;
+            --bronze-gold: #B8860B;
+            --ink-gray: #4A4A4A;
+            --paper-white: #F8F6F0;
+            --cinnabar-red: #CD5C5C;
+            --bamboo-green: #6B8E23;
+            --dusk-purple: #8B7D6B;
+            --autumn-blue: #4682B4;
+        }
+        
+        body {
+            font-family: 'Noto Serif SC', serif;
+            background-color: var(--paper-white);
+            color: var(--ink-gray);
+        }
+        
+        .hero-section {
+            background: linear-gradient(135deg, var(--ink-blue) 0%, var(--dusk-purple) 100%);
+            color: var(--paper-white);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .hero-title {
+            font-family: 'Ma Shan Zheng', cursive;
+            font-size: 3.5rem;
+            color: var(--bronze-gold);
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+        
+        .section-title {
+            font-family: 'Ma Shan Zheng', cursive;
+            color: var(--bronze-gold);
+        }
+        
+        .nav-link {
+            color: var(--paper-white);
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        
+        .nav-link:hover {
+            color: var(--bronze-gold);
+        }
+        
+        .feature-card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            overflow: hidden;
+            cursor: pointer;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+        }
+        
+        .feature-card.active {
+            border: 3px solid var(--bronze-gold);
+        }
+        
+        .detail-panel {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+            padding: 2rem;
+            margin-top: 2rem;
+            display: none;
+        }
+        
+        .detail-panel.active {
+            display: block;
+            animation: fadeIn 0.5s ease-in-out;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .interactive-map {
+            position: relative;
+            background: var(--paper-white);
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+        }
+        
+        .map-point {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background: var(--bronze-gold);
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            animation: pulse 2s infinite;
+        }
+        
+        .map-point:hover {
+            transform: scale(1.2);
+            background: var(--cinnabar-red);
+        }
+        
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(184, 134, 11, 0.7); }
+            70% { box-shadow: 0 0 0 10px rgba(184, 134, 11, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(184, 134, 11, 0); }
+        }
+        
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        
+        .culture-slider {
+            position: relative;
+            overflow: hidden;
+            border-radius: 12px;
+        }
+        
+        .culture-slide {
+            display: none;
+            text-align: center;
+        }
+        
+        .culture-slide.active {
+            display: block;
+            animation: slideIn 0.5s ease-in-out;
+        }
+        
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateX(50px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+        
+        .slider-nav {
+            display: flex;
+            justify-content: center;
+            margin-top: 1rem;
+        }
+        
+        .slider-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #ccc;
+            margin: 0 5px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+        
+        .slider-dot.active {
+            background: var(--bronze-gold);
+        }
+        
+        @media (max-width: 768px) {
+            .hero-title {
+                font-size: 2.5rem;
+            }
+            
+            .interactive-map {
+                padding: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 导航栏 -->
+    <nav class="fixed top-0 w-full z-50" style="background-color: var(--ink-blue);">
+        <div class="container mx-auto px-6 py-4">
+            <div class="flex justify-between items-center">
+                <a href="index.html" class="hero-title text-2xl">天津古建</a>
+                <div class="hidden md:flex space-x-8">
+                    <a href="index.html" class="nav-link">首页</a>
+                    <a href="tianhougong.html" class="nav-link text-yellow-400">天后宫</a>
+                    <a href="index.html#buildings" class="nav-link">鼓楼</a>
+                    <a href="dulesi.html" class="nav-link">独乐寺</a>
+                    <a href="shijiadayuan.html" class="nav-link">石家大院</a>
+                    <a href="index.html#buildings" class="nav-link">玉皇阁</a>
+                    <a href="quiz.html" class="nav-link">知识问答</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 主要内容 -->
+    <main>
+        <!-- 英雄区域 -->
+        <section class="hero-section pt-24 pb-16">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-12">
+                    <h1 class="hero-title mb-6 fade-in">天后宫</h1>
+                    <p class="text-xl max-w-3xl mx-auto fade-in">
+                        始建于元泰定三年，是中国现存年代最久的天妃宫之一。建筑群规模庞大，
+                        包含戏楼、山门、正殿、藏经阁等，展现了宋元寺庙建筑的特色。
+                    </p>
+                </div>
+                
+                <!-- 建筑概览 -->
+                <div class="grid md:grid-cols-3 gap-8 mb-16">
+                    <div class="text-center fade-in">
+                        <div class="text-4xl font-bold mb-2" style="color: var(--bronze-gold);">698年</div>
+                        <div class="text-lg">历史沿革</div>
+                    </div>
+                    <div class="text-center fade-in">
+                        <div class="text-4xl font-bold mb-2" style="color: var(--bronze-gold);">5352㎡</div>
+                        <div class="text-lg">占地面积</div>
+                    </div>
+                    <div class="text-center fade-in">
+                        <div class="text-4xl font-bold mb-2" style="color: var(--bronze-gold);">1986年</div>
+                        <div class="text-lg">民俗博物馆</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 建筑布局图 -->
+        <section class="py-20">
+            <div class="container mx-auto px-6">
+                <h2 class="section-title text-4xl text-center mb-16 fade-in">建筑布局</h2>
+                
+                <div class="interactive-map fade-in" style="height: 500px; background-image: url('resources/tianhougong.png'); background-size: cover; background-position: center;">
+                    <div class="absolute inset-0 bg-black bg-opacity-30 rounded-lg"></div>
+                    
+                    <!-- 山门 -->
+                    <div class="map-point" style="top: 70%; left: 48%;" onclick="showBuildingInfo('shanmen')"></div>
+                    
+                    <!-- 正殿 -->
+                    <div class="map-point" style="top: 45%; left: 48%;" onclick="showBuildingInfo('zhengdian')"></div>
+                    
+                    <!-- 藏经阁 -->
+                    <div class="map-point" style="top: 25%; left: 48%;" onclick="showBuildingInfo('cangjingge')"></div>
+                    
+                    <!-- 戏楼 -->
+                    <div class="map-point" style="top: 85%; left: 48%;" onclick="showBuildingInfo('xilou')"></div>
+                    
+                    <!-- 说明文字 -->
+                    <div class="absolute bottom-4 left-4 text-white bg-black bg-opacity-50 p-4 rounded-lg">
+                        <h3 class="text-lg font-bold mb-2">点击圆点查看建筑详情</h3>
+                        <p class="text-sm">探索天后宫的建筑布局和文化内涵</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 建筑特色 -->
+        <section class="py-20" style="background-color: var(--paper-white);">
+            <div class="container mx-auto px-6">
+                <h2 class="section-title text-4xl text-center mb-16 fade-in">建筑特色</h2>
+                
+                <div class="grid md:grid-cols-3 gap-8">
+                    <!-- 山门 -->
+                    <div class="feature-card fade-in" onclick="toggleDetail('shanmen-detail')">
+                        <div class="h-48 overflow-hidden">
+                            <img src="resources/tianhougong_shanmen.png" alt="天后宫山门" class="w-full h-full object-cover">
+                        </div>
+                        <div class="p-6">
+                            <h3 class="text-2xl font-bold mb-3" style="color: var(--ink-blue);">山门</h3>
+                            <p class="text-sm mb-4">砖木混合结构，门额雕刻"敕建天后宫"，体现了清代建筑工艺。</p>
+                            <div class="text-xs" style="color: var(--bronze-gold);">点击了解详情 →</div>
+                        </div>
+                    </div>
+
+                    <!-- 正殿 -->
+                    <div class="feature-card fade-in" onclick="toggleDetail('zhengdian-detail')">
+                        <div class="h-48 overflow-hidden">
+                            <img src="resources/tianhougong_zhengdian.png" alt="天后宫正殿" class="w-full h-full object-cover">
+                        </div>
+                        <div class="p-6">
+                            <h3 class="text-2xl font-bold mb-3" style="color: var(--ink-blue);">正殿</h3>
+                            <p class="text-sm mb-4">单檐庑殿顶，前接卷棚顶抱厦，后连悬山顶凤尾殿。</p>
+                            <div class="text-xs" style="color: var(--bronze-gold);">点击了解详情 →</div>
+                        </div>
+                    </div>
+
+                    <!-- 藏经阁 -->
+                    <div class="feature-card fade-in" onclick="toggleDetail('cangjingge-detail')">
+                        <div class="h-48 overflow-hidden">
+                            <img src="resources/tianhougong_cangjingge.png" alt="天后宫藏经阁" class="w-full h-full object-cover">
+                        </div>
+                        <div class="p-6">
+                            <h3 class="text-2xl font-bold mb-3" style="color: var(--ink-blue);">藏经阁</h3>
+                            <p class="text-sm mb-4">二层砖木结构楼阁，曾贮藏《正统道藏》五千余卷。</p>
+                            <div class="text-xs" style="color: var(--bronze-gold);">点击了解详情 →</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 详细信息面板 -->
+                <div id="shanmen-detail" class="detail-panel">
+                    <h3 class="text-2xl font-bold mb-4" style="color: var(--ink-blue);">山门详情</h3>
+                    <div class="grid md:grid-cols-2 gap-8">
+                        <div>
+                            <h4 class="text-xl font-semibold mb-3" style="color: var(--bronze-gold);">建筑特色</h4>
+                            <ul class="space-y-2">
+                                <li>• 砖木混合结构，工艺精湛</li>
+                                <li>• 中为圆形拱门，两旁为长方形便门</li>
+                                <li>• 门额用整砖雕刻"敕建天后宫"五字</li>
+                                <li>• 清朝乾隆年间增建</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h4 class="text-xl font-semibold mb-3" style="color: var(--bronze-gold);">历史意义</h4>
+                            <p>山门作为天后宫的入口，不仅是建筑群的门户，更体现了清代建筑工艺的高超水平。门额的雕刻工艺精湛，是研究古代砖雕艺术的重要实物资料。</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="zhengdian-detail" class="detail-panel">
+                    <h3 class="text-2xl font-bold mb-4" style="color: var(--ink-blue);">正殿详情</h3>
+                    <div class="grid md:grid-cols-2 gap-8">
+                        <div>
+                            <h4 class="text-xl font-semibold mb-3" style="color: var(--bronze-gold);">建筑结构</h4>
+                            <ul class="space-y-2">
+                                <li>• 单檐庑殿顶，七檩结构</li>
+                                <li>• 前接卷棚顶抱厦</li>
+                                <li>• 后连悬山顶凤尾殿</li>
+                                <li>• 正脊有螭吻装饰</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h4 class="text-xl font-semibold mb-3" style="color: var(--bronze-gold);">内部陈设</h4>
+                            <p>正殿内供奉天后娘娘塑像，高2.7米，身披霞帔，头戴凤冠。四位侍女捧印、抱瓶、打扇恭立两旁，展现了宋元时期妈祖信仰的庄严神圣。</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="cangjingge-detail" class="detail-panel">
+                    <h3 class="text-2xl font-bold mb-4" style="color: var(--ink-blue);">藏经阁详情</h3>
+                    <div class="grid md:grid-cols-2 gap-8">
+                        <div>
+                            <h4 class="text-xl font-semibold mb-3" style="color: var(--bronze-gold);">建筑特征</h4>
+                            <ul class="space-y-2">
+                                <li>• 二层砖木结构楼阁</li>
+                                <li>• 硬山顶，五脊前后二面坡</li>
+                                <li>• 长19.2米，宽10.2米</li>
+                                <li>• 明成化十九年增建</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h4 class="text-xl font-semibold mb-3" style="color: var(--bronze-gold);">文化价值</h4>
+                            <p>藏经阁曾贮藏《正统道藏》五千余卷，是道教文化的重要传承地。现为天津民俗博物馆展厅，展示着丰富的民俗文物和妈祖文化资料。</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 妈祖文化 -->
+        <section class="py-20">
+            <div class="container mx-auto px-6">
+                <h2 class="section-title text-4xl text-center mb-16 fade-in">妈祖文化</h2>
+                
+                <div class="culture-slider fade-in">
+                    <!-- 妈祖传说 -->
+                    <div class="culture-slide active">
+                        <div class="max-w-4xl mx-auto">
+                            <h3 class="text-3xl font-bold mb-6" style="color: var(--bronze-gold);">妈祖传说</h3>
+                            <div class="grid md:grid-cols-2 gap-8 items-center">
+                                <div>
+                                    <p class="text-lg leading-relaxed mb-4">
+                                        妈祖，原名林默，福建莆田人，生于宋建隆元年（960年）。她水性极好，经常驾船出海搭救遇难的人，
+                                        被后人敬为海神。传说她能预知天气变化，保护航海安全。
+                                    </p>
+                                    <p class="text-lg leading-relaxed">
+                                        妈祖信仰在天津及东南沿海地区有着广泛的影响，天后宫成为信众祈福求安的重要场所，
+                                        体现了中华民族对海洋文化的崇敬和对平安的向往。
+                                    </p>
+                                </div>
+                                <div class="bg-white rounded-lg p-6 shadow-lg">
+                                    <h4 class="text-xl font-semibold mb-4" style="color: var(--ink-blue);">妈祖封号演变</h4>
+                                    <ul class="space-y-2">
+                                        <li>• 宋代：夫人</li>
+                                        <li>• 元代：天妃</li>
+                                        <li>• 明清：天后</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 民俗活动 -->
+                    <div class="culture-slide">
+                        <div class="max-w-4xl mx-auto">
+                            <h3 class="text-3xl font-bold mb-6" style="color: var(--bronze-gold);">民俗活动</h3>
+                            <div class="grid md:grid-cols-3 gap-6">
+                                <div class="bg-white rounded-lg p-6 shadow-lg text-center">
+                                    <h4 class="text-xl font-semibold mb-3" style="color: var(--ink-blue);">皇会</h4>
+                                    <p class="text-sm">每年农历三月廿三妈祖诞辰举行，表演龙灯、高跷、旱船等民间艺术。</p>
+                                </div>
+                                <div class="bg-white rounded-lg p-6 shadow-lg text-center">
+                                    <h4 class="text-xl font-semibold mb-3" style="color: var(--ink-blue);">进香</h4>
+                                    <p class="text-sm">每月初一、十五，信众前来进香祈福，香火旺盛。</p>
+                                </div>
+                                <div class="bg-white rounded-lg p-6 shadow-lg text-center">
+                                    <h4 class="text-xl font-semibold mb-3" style="color: var(--ink-blue);">庙会</h4>
+                                    <p class="text-sm">传统庙会期间，百戏云集，万人空巷，热闹非凡。</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 现代传承 -->
+                    <div class="culture-slide">
+                        <div class="max-w-4xl mx-auto">
+                            <h3 class="text-3xl font-bold mb-6" style="color: var(--bronze-gold);">现代传承</h3>
+                            <div class="grid md:grid-cols-2 gap-8">
+                                <div>
+                                    <h4 class="text-xl font-semibold mb-4" style="color: var(--ink-blue);">民俗博物馆</h4>
+                                    <p class="text-lg leading-relaxed mb-4">
+                                        1986年，天后宫辟为天津民俗博物馆，在庙内两侧厢房陈列介绍天津城、
+                                        天后宫及皇会的兴起和变迁，展示明代天津城砖、清代漕运模型及各种民俗造型。
+                                    </p>
+                                </div>
+                                <div>
+                                    <h4 class="text-xl font-semibold mb-4" style="color: var(--ink-blue);">文化传承</h4>
+                                    <p class="text-lg leading-relaxed">
+                                        天后宫作为天津古文化街的核心，继续发挥着文化传承的重要作用，
+                                        成为展示天津历史文化的重要窗口和民众休闲娱乐的文化场所。
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 导航点 -->
+                    <div class="slider-nav">
+                        <div class="slider-dot active" onclick="showCultureSlide(0)"></div>
+                        <div class="slider-dot" onclick="showCultureSlide(1)"></div>
+                        <div class="slider-dot" onclick="showCultureSlide(2)"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- 页脚 -->
+    <footer class="py-12 text-center" style="background-color: var(--ink-blue); color: var(--paper-white);">
+        <div class="container mx-auto px-6">
+            <p class="text-sm">
+                © 2024 天津古建 一眼千年 | 传承千年文化，守护历史记忆
+            </p>
+        </div>
+    </footer>
+
+    <script>
+        let currentCultureSlide = 0;
+
+        // 页面加载完成后初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            // 初始化滚动动画
+            const observerOptions = {
+                threshold: 0.1,
+                rootMargin: '0px 0px -50px 0px'
+            };
+            
+            const observer = new IntersectionObserver(function(entries) {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateY(0)';
+                    }
+                });
+            }, observerOptions);
+            
+            document.querySelectorAll('.fade-in').forEach(el => {
+                observer.observe(el);
+            });
+        });
+
+        // 切换详细信息面板
+        function toggleDetail(detailId) {
+            const detailPanel = document.getElementById(detailId);
+            const allPanels = document.querySelectorAll('.detail-panel');
+            const allCards = document.querySelectorAll('.feature-card');
+            
+            // 隐藏所有面板
+            allPanels.forEach(panel => {
+                panel.classList.remove('active');
+            });
+            
+            // 移除所有卡片的激活状态
+            allCards.forEach(card => {
+                card.classList.remove('active');
+            });
+            
+            // 显示选中的面板
+            detailPanel.classList.add('active');
+            
+            // 激活对应的卡片
+            event.currentTarget.classList.add('active');
+        }
+
+        // 显示建筑信息
+        function showBuildingInfo(buildingType) {
+            const buildingInfo = {
+                'shanmen': {
+                    title: '山门',
+                    description: '天后宫的入口，砖木混合结构，门额雕刻"敕建天后宫"五字。'
+                },
+                'zhengdian': {
+                    title: '正殿',
+                    description: '建筑群的主体，供奉天后娘娘，采用单檐庑殿顶结构。'
+                },
+                'cangjingge': {
+                    title: '藏经阁',
+                    description: '二层砖木结构楼阁，曾贮藏《正统道藏》五千余卷。'
+                },
+                'xilou': {
+                    title: '戏楼',
+                    description: '建于清乾隆五十三年，是天津市现存最早的戏剧演出场所。'
+                }
+            };
+            
+            const info = buildingInfo[buildingType];
+            if (info) {
+                alert(`${info.title}\n\n${info.description}`);
+            }
+        }
+
+        // 显示文化轮播
+        function showCultureSlide(index) {
+            const slides = document.querySelectorAll('.culture-slide');
+            const dots = document.querySelectorAll('.slider-dot');
+            
+            // 隐藏所有幻灯片
+            slides.forEach(slide => {
+                slide.classList.remove('active');
+            });
+            
+            // 移除所有导航点的激活状态
+            dots.forEach(dot => {
+                dot.classList.remove('active');
+            });
+            
+            // 显示选中的幻灯片
+            slides[index].classList.add('active');
+            dots[index].classList.add('active');
+            
+            currentCultureSlide = index;
+        }
+
+        // 自动轮播文化内容
+        setInterval(() => {
+            currentCultureSlide = (currentCultureSlide + 1) % 3;
+            showCultureSlide(currentCultureSlide);
+        }, 5000);
+    </script>
+</body>
+</html>
