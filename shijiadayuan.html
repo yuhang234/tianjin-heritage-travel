@@ -3,611 +3,326 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>石家大院 - 天津古建 一眼千年</title>
+    <title>石家大院 - 华北第一宅·北方民居瑰宝 | 津门华章</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@splidejs/splide@4.1.4/dist/js/splide.min.js"></script>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@splidejs/splide@4.1.4/dist/css/splide.min.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;700&family=Ma+Shan+Zheng&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700&family=Ma+Shan+Zheng&display=swap" rel="stylesheet">
     <style>
         :root {
-            --ink-blue: #2C3E50;
-            --bronze-gold: #B8860B;
-            --ink-gray: #4A4A4A;
-            --paper-white: #F8F6F0;
-            --cinnabar-red: #CD5C5C;
-            --bamboo-green: #6B8E23;
-            --dusk-purple: #8B7D6B;
-            --autumn-blue: #4682B4;
+            --ink-navy: #111E2E;
+            --ink-deep: #1A2A3A;
+            --cinnabar: #B83B26;
+            --bronze-gold: #C5A059;
+            --paper-cream: #FBF9F5;
         }
-        
         body {
-            font-family: 'Noto Serif SC', serif;
-            background-color: var(--paper-white);
-            color: var(--ink-gray);
+            font-family: 'Noto Serif SC', 'Songti SC', SimSun, serif;
+            background-color: var(--ink-navy);
+            color: var(--paper-cream);
         }
-        
-        .hero-section {
-            background: linear-gradient(135deg, var(--ink-blue) 0%, var(--dusk-purple) 100%);
-            color: var(--paper-white);
-            position: relative;
-            overflow: hidden;
+        .font-calligraphy {
+            font-family: 'Ma Shan Zheng', 'Kaiti', cursive;
         }
-        
-        .hero-title {
-            font-family: 'Ma Shan Zheng', cursive;
-            font-size: 3.5rem;
-            color: var(--bronze-gold);
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        .hero-banner {
+            background-image: linear-gradient(to bottom, rgba(17, 30, 46, 0.5) 0%, rgba(17, 30, 46, 0.95) 100%), url('resources/shijiadayuan_real.jpg');
+            background-size: cover;
+            background-position: center 30%;
         }
-        
-        .section-title {
-            font-family: 'Ma Shan Zheng', cursive;
-            color: var(--bronze-gold);
+        .tab-btn.active {
+            background: linear-gradient(135deg, var(--cinnabar), #992815);
+            color: white;
+            border-color: transparent;
         }
-        
-        .nav-link {
-            color: var(--paper-white);
-            transition: all 0.3s ease;
-            position: relative;
-        }
-        
-        .nav-link:hover {
-            color: var(--bronze-gold);
-        }
-        
-        .feature-card {
-            background: white;
-            border-radius: 12px;
-            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
-            transition: all 0.3s ease;
-            overflow: hidden;
-            cursor: pointer;
-        }
-        
-        .feature-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 15px 35px rgba(0,0,0,0.2);
-        }
-        
-        .courtyard-layout {
-            position: relative;
-            background: var(--paper-white);
-            border-radius: 12px;
-            padding: 2rem;
-            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
-            min-height: 400px;
-        }
-        
-        .courtyard-room {
+        .timeline-line::before {
+            content: '';
             position: absolute;
-            background: rgba(184, 134, 11, 0.1);
-            border: 2px solid var(--bronze-gold);
-            border-radius: 8px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-            color: var(--ink-blue);
-        }
-        
-        .courtyard-room:hover {
-            background: rgba(184, 134, 11, 0.3);
-            transform: scale(1.05);
-        }
-        
-        .art-gallery {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 1.5rem;
-            margin-top: 2rem;
-        }
-        
-        .art-item {
-            background: white;
-            border-radius: 12px;
-            overflow: hidden;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-            transition: all 0.3s ease;
-            cursor: pointer;
-        }
-        
-        .art-item:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
-        }
-        
-        .art-overlay {
-            position: absolute;
+            left: 20px;
             top: 0;
-            left: 0;
-            right: 0;
             bottom: 0;
-            background: rgba(0,0,0,0.8);
-            color: white;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            opacity: 0;
-            transition: opacity 0.3s ease;
-            border-radius: 12px;
+            width: 2px;
+            background: linear-gradient(to bottom, var(--bronze-gold), transparent);
         }
-        
-        .art-item:hover .art-overlay {
-            opacity: 1;
-        }
-        
-        .fade-in {
-            opacity: 0;
-            transform: translateY(30px);
-        }
-        
-        .modal {
-            display: none;
-            position: fixed;
-            z-index: 1000;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0,0,0,0.9);
-        }
-        
-        .modal-content {
-            position: relative;
-            margin: auto;
-            padding: 20px;
-            width: 90%;
-            max-width: 800px;
-            top: 50%;
-            transform: translateY(-50%);
-        }
-        
-        .modal-image {
-            width: 100%;
-            height: auto;
-            border-radius: 12px;
-        }
-        
-        .close {
-            position: absolute;
-            top: 15px;
-            right: 35px;
-            color: white;
-            font-size: 40px;
-            font-weight: bold;
-            cursor: pointer;
-        }
-        
-        .close:hover {
-            opacity: 0.7;
-        }
-        
-        @media (max-width: 768px) {
-            .hero-title {
-                font-size: 2.5rem;
-            }
-            
-            .courtyard-layout {
-                padding: 1rem;
-                min-height: 300px;
-            }
-            
-            .art-gallery {
-                grid-template-columns: 1fr;
+        @media (min-width: 768px) {
+            .timeline-line::before {
+                left: 50%;
+                transform: translateX(-50%);
             }
         }
     </style>
 </head>
-<body>
-    <!-- 导航栏 -->
-    <nav class="fixed top-0 w-full z-50" style="background-color: var(--ink-blue);">
-        <div class="container mx-auto px-6 py-4">
-            <div class="flex justify-between items-center">
-                <a href="index.html" class="hero-title text-2xl">天津古建</a>
-                <div class="hidden md:flex space-x-8">
-                    <a href="index.html" class="nav-link">首页</a>
-                    <a href="tianhougong.html" class="nav-link">天后宫</a>
-                    <a href="index.html#buildings" class="nav-link">鼓楼</a>
-                    <a href="dulesi.html" class="nav-link">独乐寺</a>
-                    <a href="shijiadayuan.html" class="nav-link text-yellow-400">石家大院</a>
-                    <a href="index.html#buildings" class="nav-link">玉皇阁</a>
-                    <a href="quiz.html" class="nav-link">知识问答</a>
+<body class="min-h-screen flex flex-col antialiased selection:bg-amber-500 selection:text-white">
+
+    <!-- 顶部统一导航栏 -->
+    <nav class="fixed top-0 w-full z-50 bg-slate-950/80 backdrop-blur-md border-b border-amber-500/20">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+            <a href="index.html" class="flex items-center space-x-3 group">
+                <span class="text-3xl">🏯</span>
+                <div>
+                    <span class="font-calligraphy text-2xl text-amber-300 tracking-wider block group-hover:text-amber-200 transition-colors">津门华章</span>
+                    <span class="text-[10px] text-amber-500/80 tracking-widest block uppercase">Tianjin Heritage Travel</span>
                 </div>
+            </a>
+            <div class="hidden md:flex items-center space-x-8 text-sm font-medium">
+                <a href="index.html" class="text-slate-300 hover:text-amber-300 transition-colors">首页</a>
+                <a href="dulesi.html" class="text-slate-300 hover:text-amber-300 transition-colors">独乐寺</a>
+                <a href="tianhougong.html" class="text-slate-300 hover:text-amber-300 transition-colors">天后宫</a>
+                <a href="gulou.html" class="text-slate-300 hover:text-amber-300 transition-colors">天津鼓楼</a>
+                <a href="shijiadayuan.html" class="text-amber-400 font-semibold border-b-2 border-amber-400 pb-1">石家大院</a>
+                <a href="yuhuangge.html" class="text-slate-300 hover:text-amber-300 transition-colors">玉皇阁</a>
+                <a href="quiz.html" class="text-slate-300 hover:text-amber-300 transition-colors">知识问答</a>
+            </div>
+            <div class="flex items-center space-x-4">
+                <a href="index.html#buildings" class="text-xs px-4 py-2 rounded-full border border-amber-500/40 text-amber-300 hover:bg-amber-500/20 transition-all">
+                    ← 返回名胜矩阵
+                </a>
             </div>
         </div>
     </nav>
 
-    <!-- 主要内容 -->
-    <main>
-        <!-- 英雄区域 -->
-        <section class="hero-section pt-24 pb-16">
-            <div class="container mx-auto px-6">
-                <div class="text-center mb-12">
-                    <h1 class="hero-title mb-6 fade-in">石家大院</h1>
-                    <p class="text-xl max-w-3xl mx-auto fade-in">
-                        清代津门八大家之一的宅院，被誉为"华北第一宅"。精美的砖雕、木刻和戏楼
-                        展现了传统建筑艺术的精妙，是北方民居建筑的珍贵遗产。
-                    </p>
+    <!-- 英雄区域 -->
+    <header class="hero-banner pt-36 pb-20 relative">
+        <div class="max-w-6xl mx-auto px-6 text-center">
+            <span class="inline-block py-1 px-4 rounded-full bg-amber-900/60 border border-amber-500/40 text-amber-200 text-xs font-semibold mb-4 tracking-widest">
+                津门八大家豪宅典范 · 华北第一宅
+            </span>
+            <h1 class="font-calligraphy text-4xl sm:text-6xl text-amber-300 mb-6 drop-shadow-lg">
+                石家大院 · 晋风津韵
+            </h1>
+            <p class="text-slate-300 text-base sm:text-xl max-w-3xl mx-auto leading-relaxed mb-8">
+                清代津门“八大家”之一石元仕的故宅“尊美堂”，坐落于运河名镇杨柳青。院落连通、轴线分明，以北方民间最大的室内戏楼与绝伦三雕技艺闻名遐迩。
+            </p>
+
+            <!-- 核心数据卡 -->
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-4xl mx-auto mt-10">
+                <div class="bg-slate-900/70 backdrop-blur-md p-5 rounded-xl border border-amber-500/20">
+                    <div class="text-3xl font-bold text-amber-400 font-serif">1875年</div>
+                    <div class="text-xs text-slate-400 mt-1">清光绪元年大兴土木</div>
                 </div>
-                
-                <!-- 建筑概览 -->
-                <div class="grid md:grid-cols-3 gap-8 mb-16">
-                    <div class="text-center fade-in">
-                        <div class="text-4xl font-bold mb-2" style="color: var(--bronze-gold);">清代</div>
-                        <div class="text-lg">建筑年代</div>
+                <div class="bg-slate-900/70 backdrop-blur-md p-5 rounded-xl border border-amber-500/20">
+                    <div class="text-3xl font-bold text-amber-400 font-serif">10000+㎡</div>
+                    <div class="text-xs text-slate-400 mt-1">占地面积与18个院落</div>
+                </div>
+                <div class="bg-slate-900/70 backdrop-blur-md p-5 rounded-xl border border-amber-500/20">
+                    <div class="text-3xl font-bold text-amber-400 font-serif">278间</div>
+                    <div class="text-xs text-slate-400 mt-1">连堂接栋房屋总数</div>
+                </div>
+                <div class="bg-slate-900/70 backdrop-blur-md p-5 rounded-xl border border-amber-500/20">
+                    <div class="text-3xl font-bold text-amber-400 font-serif">民间最大</div>
+                    <div class="text-xs text-slate-400 mt-1">华北规模最大室内戏楼</div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="flex-grow max-w-6xl mx-auto px-6 py-16 space-y-20">
+
+        <!-- 建筑精粹选项卡 -->
+        <section>
+            <div class="text-center mb-12">
+                <h2 class="font-calligraphy text-3xl sm:text-4xl text-amber-400 mb-3">大院三绝 · 北方民居巅峰之作</h2>
+                <div class="w-24 h-1 bg-amber-500/60 mx-auto rounded-full"></div>
+                <p class="text-slate-400 text-sm mt-3">砖雕之细腻、戏楼之宏敞、石雕木刻之典雅，见证清代北方民居建筑艺术的高峰</p>
+            </div>
+
+            <!-- 选项卡按钮 -->
+            <div class="flex flex-wrap justify-center gap-3 mb-10">
+                <button onclick="switchTab('xilou')" id="tab-btn-xilou" class="tab-btn active px-5 py-2.5 rounded-full border border-slate-700 text-sm font-medium transition-all">
+                    民间最大戏楼
+                </button>
+                <button onclick="switchTab('zhuandiao')" id="tab-btn-zhuandiao" class="tab-btn px-5 py-2.5 rounded-full border border-slate-700 bg-slate-800/80 text-slate-300 text-sm font-medium transition-all hover:border-amber-500/40">
+                    绝妙津派砖雕
+                </button>
+                <button onclick="switchTab('courtyard')" id="tab-btn-courtyard" class="tab-btn px-5 py-2.5 rounded-full border border-slate-700 bg-slate-800/80 text-slate-300 text-sm font-medium transition-all hover:border-amber-500/40">
+                    尊美堂中轴院落
+                </button>
+                <button onclick="switchTab('chuihua')" id="tab-btn-chuihua" class="tab-btn px-5 py-2.5 rounded-full border border-slate-700 bg-slate-800/80 text-slate-300 text-sm font-medium transition-all hover:border-amber-500/40">
+                    垂花门与花鸟木刻
+                </button>
+            </div>
+
+            <div id="tab-content" class="bg-slate-900/60 border border-amber-500/20 rounded-2xl p-6 sm:p-10 backdrop-blur-md">
+                <!-- 戏楼 -->
+                <div id="panel-xilou" class="grid lg:grid-cols-2 gap-8 items-center">
+                    <div>
+                        <span class="text-xs font-semibold text-amber-400 uppercase tracking-widest">Grand Private Theater</span>
+                        <h3 class="text-2xl font-bold text-white mt-1 mb-4 font-serif">能容两百人的华北民间第一戏楼</h3>
+                        <p class="text-slate-300 leading-relaxed text-sm mb-4">
+                            石家大院戏楼面积达数百平方米，是华北民宅中最大、保存最完好的封闭式室内戏楼。
+                        </p>
+                        <p class="text-slate-300 leading-relaxed text-sm">
+                            全戏楼由24根朱漆立柱支撑，设看台、包厢与戏台。顶棚设藻井回音构造，台下深埋大缸增强声音混响共鸣，无需现代扩音即可使字正腔圆清晰传遍各角落。京剧大师孙菊仙、谭鑫培等名角当年均曾在此献艺登台。
+                        </p>
                     </div>
-                    <div class="text-center fade-in">
-                        <div class="text-4xl font-bold mb-2" style="color: var(--bronze-gold);">华北第一宅</div>
-                        <div class="text-lg">美誉称号</div>
+                    <div class="rounded-xl overflow-hidden shadow-2xl border border-white/10 group">
+                        <img src="resources/shijiadayuan_xilou.png" alt="石家大院戏楼" class="w-full h-80 object-cover group-hover:scale-105 transition-transform duration-500">
                     </div>
-                    <div class="text-center fade-in">
-                        <div class="text-4xl font-bold mb-2" style="color: var(--bronze-gold);">三绝</div>
-                        <div class="text-lg">建筑特色</div>
+                </div>
+
+                <!-- 砖雕 -->
+                <div id="panel-zhuandiao" class="hidden grid lg:grid-cols-2 gap-8 items-center">
+                    <div>
+                        <span class="text-xs font-semibold text-amber-400 uppercase tracking-widest">Brick Carving Masterpieces</span>
+                        <h3 class="text-2xl font-bold text-white mt-1 mb-4 font-serif">百余幅整砖透雕与吉祥吉语</h3>
+                        <p class="text-slate-300 leading-relaxed text-sm mb-4">
+                            石家大院的砖雕被誉为“北方一绝”。主要饰于门楣、影壁、墀头、山墙与博风板之上。
+                        </p>
+                        <p class="text-slate-300 leading-relaxed text-sm">
+                            采用特制青砖，经画样、打坯、出细、镂雕等多道严苛工序。题材广泛包涵“福禄寿喜”、“五福捧寿”、“松鹤延年”、“岁寒三友”以及渔樵耕读民间传说，刀法圆润，层层通透。
+                        </p>
+                    </div>
+                    <div class="rounded-xl overflow-hidden shadow-2xl border border-white/10 group">
+                        <img src="resources/shijiadayuan_zhuandiao.png" alt="石家大院砖雕" class="w-full h-80 object-cover group-hover:scale-105 transition-transform duration-500">
+                    </div>
+                </div>
+
+                <!-- 院落格局 -->
+                <div id="panel-courtyard" class="hidden grid lg:grid-cols-2 gap-8 items-center">
+                    <div>
+                        <span class="text-xs font-semibold text-amber-400 uppercase tracking-widest">Courtyard Architecture</span>
+                        <h3 class="text-2xl font-bold text-white mt-1 mb-4 font-serif">轴线对称、院中有院的通脊套院</h3>
+                        <p class="text-slate-300 leading-relaxed text-sm mb-4">
+                            尊美堂坐北朝南，以中轴线甬道为脊梁，两旁对称排列多进四合院与跨院。甬道铺以青石，宽敞深邃。
+                        </p>
+                        <p class="text-slate-300 leading-relaxed text-sm">
+                            “庭院深深深几许”，大院各门相通又各有私密，长辈居正房、晚辈居厢房，书房、客房、祠堂、账房各得其所，体现了中国传统礼制与大家族秩序美学。
+                        </p>
+                    </div>
+                    <div class="rounded-xl overflow-hidden shadow-2xl border border-white/10 group">
+                        <img src="resources/shijiadayuan_detail.jpg" alt="石家大院建筑细节" class="w-full h-80 object-cover group-hover:scale-105 transition-transform duration-500">
+                    </div>
+                </div>
+
+                <!-- 垂花门与木刻 -->
+                <div id="panel-chuihua" class="hidden grid lg:grid-cols-2 gap-8 items-center">
+                    <div>
+                        <span class="text-xs font-semibold text-amber-400 uppercase tracking-widest">Woodcarving & Ornamental Gates</span>
+                        <h3 class="text-2xl font-bold text-white mt-1 mb-4 font-serif">彩绘金描的垂花门与隔扇</h3>
+                        <p class="text-slate-300 leading-relaxed text-sm mb-4">
+                            院内各道二门多为精巧的垂花门，雕刻精致的倒垂花柱与雀替，施以贴金彩绘，华贵内敛。
+                        </p>
+                        <p class="text-slate-300 leading-relaxed text-sm">
+                            正厅隔扇木刻选用上等楠木与红木，浅浮雕花鸟虫鱼、博古案台，工艺精巧至极，阳光照射下光影流转，宛如一座明清民间工艺艺术博物馆。
+                        </p>
+                    </div>
+                    <div class="rounded-xl overflow-hidden shadow-2xl border border-white/10 bg-slate-800 p-8 flex flex-col justify-center items-center text-center">
+                        <div class="text-6xl mb-4">🪟</div>
+                        <h4 class="text-xl font-bold text-amber-300 mb-2">楠木浮雕隔扇</h4>
+                        <p class="text-xs text-slate-400 max-w-sm">融合京作官府之端庄与扬州细作之灵巧，百余年岁月洗礼依然毫无变形，木香犹存。</p>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- 院落布局 -->
-        <section class="py-20">
-            <div class="container mx-auto px-6">
-                <h2 class="section-title text-4xl text-center mb-16 fade-in">院落布局</h2>
-                
-                <div class="grid lg:grid-cols-2 gap-12">
-                    <div class="fade-in">
-                        <h3 class="text-2xl font-bold mb-6" style="color: var(--ink-blue);">建筑格局</h3>
-                        <div class="courtyard-layout">
-                            <!-- 正房 -->
-                            <div class="courtyard-room" style="top: 10%; left: 35%; width: 30%; height: 20%;">
-                                正房
-                            </div>
-                            
-                            <!-- 厢房 -->
-                            <div class="courtyard-room" style="top: 35%; left: 10%; width: 25%; height: 15%;">
-                                东厢房
-                            </div>
-                            <div class="courtyard-room" style="top: 35%; right: 10%; width: 25%; height: 15%;">
-                                西厢房
-                            </div>
-                            
-                            <!-- 倒座 -->
-                            <div class="courtyard-room" style="bottom: 10%; left: 25%; width: 50%; height: 15%;">
-                                倒座/戏楼
-                            </div>
-                            
-                            <!-- 院门 -->
-                            <div class="courtyard-room" style="bottom: 5%; left: 45%; width: 10%; height: 10%;">
-                                大门
-                            </div>
-                            
-                            <!-- 说明文字 -->
-                            <div class="absolute bottom-4 left-4 text-sm" style="color: var(--ink-gray);">
-                                <p>点击房间了解功能布局</p>
-                            </div>
-                        </div>
+        <!-- 历史脉络时间轴 -->
+        <section class="relative">
+            <div class="text-center mb-12">
+                <h2 class="font-calligraphy text-3xl sm:text-4xl text-amber-400 mb-3">津门八大家沧桑纪实</h2>
+                <div class="w-24 h-1 bg-amber-500/60 mx-auto rounded-full"></div>
+            </div>
+
+            <div class="timeline-line relative max-w-3xl mx-auto space-y-10 pl-10 md:pl-0">
+                <div class="relative md:flex items-center justify-between">
+                    <div class="hidden md:block w-5/12 text-right pr-8">
+                        <div class="text-amber-400 font-bold text-lg font-serif">清乾隆年间 (1760年代)</div>
+                        <p class="text-slate-300 text-sm mt-1">石家始祖由山东迁居杨柳青，凭借运河水路船队与粮食、盐业贸易迅速累资巨万。</p>
                     </div>
-                    
-                    <div class="fade-in">
-                        <h3 class="text-2xl font-bold mb-6" style="color: var(--ink-blue);">建筑特色</h3>
-                        <div class="space-y-6">
-                            <div class="bg-white rounded-lg p-6 shadow-lg">
-                                <h4 class="text-xl font-semibold mb-3" style="color: var(--bronze-gold);">四合院布局</h4>
-                                <p>采用传统的四合院布局，体现了中国古代民居的建筑智慧，既保证了私密性，又营造了和谐的居住环境。</p>
-                            </div>
-                            <div class="bg-white rounded-lg p-6 shadow-lg">
-                                <h4 class="text-xl font-semibold mb-3" style="color: var(--bronze-gold);">轴线对称</h4>
-                                <p>建筑沿中轴线对称分布，体现了中国传统文化中的秩序美学，彰显了主人的身份地位。</p>
-                            </div>
-                            <div class="bg-white rounded-lg p-6 shadow-lg">
-                                <h4 class="text-xl font-semibold mb-3" style="color: var(--bronze-gold);">功能分区</h4>
-                                <p>各功能区域分布合理，正房为长辈居所，厢房为晚辈住房，倒座为客厅和书房，体现了传统的家庭伦理观念。</p>
-                            </div>
-                        </div>
+                    <div class="absolute -left-[30px] md:static md:left-auto w-8 h-8 rounded-full bg-amber-500 border-4 border-slate-900 flex items-center justify-center text-xs font-bold text-slate-950 z-10">1</div>
+                    <div class="md:w-5/12 pl-4 md:pl-8">
+                        <div class="md:hidden text-amber-400 font-bold text-base">清乾隆年间</div>
+                        <p class="md:hidden text-slate-300 text-xs mt-1 mb-2">石家迁至杨柳青，靠运河漕运盐业发迹。</p>
+                        <span class="text-xs text-amber-500/80 bg-amber-500/10 px-2 py-0.5 rounded border border-amber-500/20">津商发祥</span>
+                    </div>
+                </div>
+
+                <div class="relative md:flex items-center justify-between">
+                    <div class="hidden md:block w-5/12 text-right pr-8">
+                        <span class="text-xs text-amber-500/80 bg-amber-500/10 px-2 py-0.5 rounded border border-amber-500/20">尊美堂鼎盛</span>
+                    </div>
+                    <div class="absolute -left-[30px] md:static md:left-auto w-8 h-8 rounded-full bg-amber-500 border-4 border-slate-900 flex items-center justify-center text-xs font-bold text-slate-950 z-10">2</div>
+                    <div class="md:w-5/12 pl-4 md:pl-8">
+                        <div class="text-amber-400 font-bold text-lg font-serif">清光绪元年 (1875年)</div>
+                        <p class="text-slate-300 text-sm mt-1">石元仕接管堂产，耗费巨资历时三年修建尊美堂大院及戏楼，极一时之盛。</p>
+                    </div>
+                </div>
+
+                <div class="relative md:flex items-center justify-between">
+                    <div class="hidden md:block w-5/12 text-right pr-8">
+                        <div class="text-amber-400 font-bold text-lg font-serif">1987年 (政府抢修)</div>
+                        <p class="text-slate-300 text-sm mt-1">天津市人民政府实施全面抢修复原，成立杨柳青博物馆对外开放，再现大院风貌。</p>
+                    </div>
+                    <div class="absolute -left-[30px] md:static md:left-auto w-8 h-8 rounded-full bg-amber-500 border-4 border-slate-900 flex items-center justify-center text-xs font-bold text-slate-950 z-10">3</div>
+                    <div class="md:w-5/12 pl-4 md:pl-8">
+                        <span class="text-xs text-amber-500/80 bg-amber-500/10 px-2 py-0.5 rounded border border-amber-500/20">大院复原</span>
+                    </div>
+                </div>
+
+                <div class="relative md:flex items-center justify-between">
+                    <div class="hidden md:block w-5/12 text-right pr-8">
+                        <span class="text-xs text-amber-500/80 bg-amber-500/10 px-2 py-0.5 rounded border border-amber-500/20">全国重点文保</span>
+                    </div>
+                    <div class="absolute -left-[30px] md:static md:left-auto w-8 h-8 rounded-full bg-amber-500 border-4 border-slate-900 flex items-center justify-center text-xs font-bold text-slate-950 z-10">4</div>
+                    <div class="md:w-5/12 pl-4 md:pl-8">
+                        <div class="text-amber-400 font-bold text-lg font-serif">2006年</div>
+                        <p class="text-slate-300 text-sm mt-1">国务院公布为第六批全国重点文物保护单位，成为中国北方运河重镇民居建筑的活化石。</p>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- 建筑三绝 -->
-        <section class="py-20" style="background-color: var(--paper-white);">
-            <div class="container mx-auto px-6">
-                <h2 class="section-title text-4xl text-center mb-16 fade-in">建筑三绝</h2>
-                
-                <div class="grid md:grid-cols-3 gap-8">
-                    <!-- 戏楼 -->
-                    <div class="feature-card fade-in" onclick="showModal('xilou')">
-                        <div class="h-48 overflow-hidden relative">
-                            <img src="resources/shijiadayuan_xilou.png" alt="石家大院戏楼" class="w-full h-full object-cover">
-                            <div class="art-overlay">
-                                <div class="text-center">
-                                    <h3 class="text-xl font-bold mb-2">点击查看详情</h3>
-                                    <p>了解戏楼的建筑特色</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="p-6">
-                            <h3 class="text-2xl font-bold mb-3" style="color: var(--ink-blue);">戏楼</h3>
-                            <p class="text-sm mb-4">精美的戏楼建筑，体现了清代戏曲文化的繁荣，是天津地区现存最早的戏剧演出场所之一。</p>
-                            <div class="text-xs" style="color: var(--bronze-gold);">点击查看大图 →</div>
-                        </div>
-                    </div>
+        <!-- 实用出行指南 -->
+        <section class="bg-slate-900/80 border border-amber-500/30 rounded-2xl p-8 backdrop-blur-md">
+            <h3 class="font-calligraphy text-2xl text-amber-300 mb-6 flex items-center space-x-2">
+                <span>📍</span>
+                <span>游览攻略与实用指南</span>
+            </h3>
 
-                    <!-- 砖雕 -->
-                    <div class="feature-card fade-in" onclick="showModal('zhuandiao')">
-                        <div class="h-48 overflow-hidden relative">
-                            <img src="resources/shijiadayuan_zhuandiao.png" alt="石家大院砖雕" class="w-full h-full object-cover">
-                            <div class="art-overlay">
-                                <div class="text-center">
-                                    <h3 class="text-xl font-bold mb-2">点击查看详情</h3>
-                                    <p>欣赏精美的砖雕艺术</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="p-6">
-                            <h3 class="text-2xl font-bold mb-3" style="color: var(--ink-blue);">砖雕</h3>
-                            <p class="text-sm mb-4">精湛的砖雕工艺，题材丰富多样，包含花鸟、人物、吉祥图案等，展现了民间艺术的魅力。</p>
-                            <div class="text-xs" style="color: var(--bronze-gold);">点击查看大图 →</div>
-                        </div>
-                    </div>
-
-                    <!-- 杨柳青年画 -->
-                    <div class="feature-card fade-in" onclick="showModal('nianhua')">
-                        <div class="h-48 overflow-hidden relative">
-                            <img src="resources/yangliuqing_nianhua.png" alt="杨柳青年画" class="w-full h-full object-cover">
-                            <div class="art-overlay">
-                                <div class="text-center">
-                                    <h3 class="text-xl font-bold mb-2">点击查看详情</h3>
-                                    <p>欣赏年画艺术精品</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="p-6">
-                            <h3 class="text-2xl font-bold mb-3" style="color: var(--ink-blue);">杨柳青年画</h3>
-                            <p class="text-sm mb-4">国家级非物质文化遗产，以细腻的笔触、吉祥的寓意闻名世界，是中国传统民间艺术的瑰宝。</p>
-                            <div class="text-xs" style="color: var(--bronze-gold);">点击查看大图 →</div>
-                        </div>
-                    </div>
+            <div class="grid md:grid-cols-3 gap-6 text-sm">
+                <div class="space-y-2">
+                    <div class="font-bold text-amber-400">门票与开放时间</div>
+                    <p class="text-slate-300">门票：27元/人（学生/老年人优惠票14元）</p>
+                    <p class="text-slate-300">开放时间：09:00 - 16:30（全年无休，16:00停止售票）</p>
+                </div>
+                <div class="space-y-2">
+                    <div class="font-bold text-amber-400">交通指南</div>
+                    <p class="text-slate-300">地址：天津市西青区杨柳青镇御河桥西御河人家斜对面</p>
+                    <p class="text-slate-300">公交：天津市区乘153路、175路、824路或便民9路至【石家大院】站即达</p>
+                    <p class="text-slate-300">自驾：西青道直行至杨柳青古镇，车程约35分钟</p>
+                </div>
+                <div class="space-y-2">
+                    <div class="font-bold text-amber-400">研学联游推荐</div>
+                    <p class="text-slate-300">杨柳青木版年画博物馆（体验传统套印年画手作）</p>
+                    <p class="text-slate-300">御河风情街、普明寺、杨柳青文昌阁</p>
                 </div>
             </div>
         </section>
 
-        <!-- 艺术展示 -->
-        <section class="py-20">
-            <div class="container mx-auto px-6">
-                <h2 class="section-title text-4xl text-center mb-16 fade-in">艺术展示</h2>
-                
-                <div class="art-gallery fade-in">
-                    <div class="art-item" onclick="showArtDetail('brick-carving')">
-                        <div class="relative">
-                            <img src="resources/shijiadayuan_zhuandiao.png" alt="砖雕艺术" class="w-full h-48 object-cover">
-                            <div class="art-overlay">
-                                <div class="text-center">
-                                    <h3 class="text-lg font-bold mb-2">砖雕艺术</h3>
-                                    <p class="text-sm">精美的砖雕装饰</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="p-4">
-                            <h4 class="font-semibold mb-2">砖雕装饰</h4>
-                            <p class="text-xs text-gray-600">题材丰富，工艺精湛</p>
-                        </div>
-                    </div>
-
-                    <div class="art-item" onclick="showArtDetail('wood-carving')">
-                        <div class="relative">
-                            <img src="resources/shijiadayuan_xilou.png" alt="木雕艺术" class="w-full h-48 object-cover">
-                            <div class="art-overlay">
-                                <div class="text-center">
-                                    <h3 class="text-lg font-bold mb-2">木雕艺术</h3>
-                                    <p class="text-sm">精美的木雕装饰</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="p-4">
-                            <h4 class="font-semibold mb-2">木雕装饰</h4>
-                            <p class="text-xs text-gray-600">技艺精湛，栩栩如生</p>
-                        </div>
-                    </div>
-
-                    <div class="art-item" onclick="showArtDetail('new-year-painting')">
-                        <div class="relative">
-                            <img src="resources/yangliuqing_nianhua.png" alt="杨柳青年画" class="w-full h-48 object-cover">
-                            <div class="art-overlay">
-                                <div class="text-center">
-                                    <h3 class="text-lg font-bold mb-2">杨柳青年画</h3>
-                                    <p class="text-sm">传统民间艺术</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="p-4">
-                            <h4 class="font-semibold mb-2">年画艺术</h4>
-                            <p class="text-xs text-gray-600">色彩鲜艳，寓意吉祥</p>
-                        </div>
-                    </div>
-
-                    <div class="art-item" onclick="showArtDetail('architecture')">
-                        <div class="relative">
-                            <img src="resources/shijiadayuan.png" alt="建筑整体" class="w-full h-48 object-cover">
-                            <div class="art-overlay">
-                                <div class="text-center">
-                                    <h3 class="text-lg font-bold mb-2">建筑整体</h3>
-                                    <p class="text-sm">宏伟的建筑群</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="p-4">
-                            <h4 class="font-semibold mb-2">建筑群</h4>
-                            <p class="text-xs text-gray-600">布局严谨，气势恢宏</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- 历史文化 -->
-        <section class="py-20" style="background-color: var(--paper-white);">
-            <div class="container mx-auto px-6">
-                <h2 class="section-title text-4xl text-center mb-16 fade-in">历史文化</h2>
-                
-                <div class="grid lg:grid-cols-2 gap-12">
-                    <div class="fade-in">
-                        <h3 class="text-2xl font-bold mb-6" style="color: var(--ink-blue);">历史沿革</h3>
-                        <div class="space-y-4">
-                            <div class="bg-white rounded-lg p-6 shadow-lg">
-                                <h4 class="text-xl font-semibold mb-3" style="color: var(--bronze-gold);">清代兴建</h4>
-                                <p>石家大院建于清代，是津门八大家之一石家的宅院。石家是天津著名的商业家族，在盐业、粮食贸易等方面有着重要影响。</p>
-                            </div>
-                            <div class="bg-white rounded-lg p-6 shadow-lg">
-                                <h4 class="text-xl font-semibold mb-3" style="color: var(--bronze-gold);">建筑特色</h4>
-                                <p>大院占地面积广阔，建筑布局严谨，装饰精美，体现了清代民居建筑的最高水平，被誉为"华北第一宅"。</p>
-                            </div>
-                            <div class="bg-white rounded-lg p-6 shadow-lg">
-                                <h4 class="text-xl font-semibold mb-3" style="color: var(--bronze-gold);">现代保护</h4>
-                                <p>现已成为重要的文化遗产保护单位，向世人展示着清代民居建筑的艺术魅力和深厚的历史文化内涵。</p>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="fade-in">
-                        <h3 class="text-2xl font-bold mb-6" style="color: var(--ink-blue);">文化价值</h3>
-                        <div class="space-y-4">
-                            <div class="bg-white rounded-lg p-6 shadow-lg">
-                                <h4 class="text-xl font-semibold mb-3" style="color: var(--bronze-gold);">建筑艺术</h4>
-                                <p>石家大院集中体现了清代民居建筑的艺术成就，从布局设计到装饰工艺，都展现了古代建筑师的卓越智慧。</p>
-                            </div>
-                            <div class="bg-white rounded-lg p-6 shadow-lg">
-                                <h4 class="text-xl font-semibold mb-3" style="color: var(--bronze-gold);">民俗文化</h4>
-                                <p>大院承载着丰富的民俗文化信息，反映了清代天津地区的社会生活和家庭伦理观念。</p>
-                            </div>
-                            <div class="bg-white rounded-lg p-6 shadow-lg">
-                                <h4 class="text-xl font-semibold mb-3" style="color: var(--bronze-gold);">艺术传承</h4>
-                                <p>精美的砖雕、木雕和年画艺术，体现了中国传统民间艺术的高超技艺，是珍贵的非物质文化遗产。</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
     </main>
 
-    <!-- 模态框 -->
-    <div id="imageModal" class="modal">
-        <div class="modal-content">
-            <span class="close">&times;</span>
-            <img id="modalImage" class="modal-image">
-            <div id="modalCaption" class="text-center text-white mt-4"></div>
-        </div>
-    </div>
-
     <!-- 页脚 -->
-    <footer class="py-12 text-center" style="background-color: var(--ink-blue); color: var(--paper-white);">
-        <div class="container mx-auto px-6">
-            <p class="text-sm">
-                © 2024 天津古建 一眼千年 | 传承千年文化，守护历史记忆
-            </p>
-        </div>
+    <footer class="bg-slate-950 border-t border-amber-500/20 py-8 text-center text-xs text-slate-500">
+        <p class="mb-2">津门华章 · 天津古建与历史文旅宣传门户平台</p>
+        <p>© 2026 天津古建研学项目 | 保护古建筑遗存，弘扬中华营造技艺</p>
     </footer>
 
     <script>
-        // 页面加载完成后初始化
-        document.addEventListener('DOMContentLoaded', function() {
-            // 初始化滚动动画
-            const observerOptions = {
-                threshold: 0.1,
-                rootMargin: '0px 0px -50px 0px'
-            };
-            
-            const observer = new IntersectionObserver(function(entries) {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.style.opacity = '1';
-                        entry.target.style.transform = 'translateY(0)';
-                    }
-                });
-            }, observerOptions);
-            
-            document.querySelectorAll('.fade-in').forEach(el => {
-                observer.observe(el);
-            });
-        });
-
-        // 显示模态框
-        function showModal(imageType) {
-            const modal = document.getElementById('imageModal');
-            const modalImg = document.getElementById('modalImage');
-            const captionText = document.getElementById('modalCaption');
-            
-            const imageData = {
-                'xilou': {
-                    src: 'resources/shijiadayuan_xilou.png',
-                    caption: '石家大院戏楼 - 清代戏曲文化的见证'
-                },
-                'zhuandiao': {
-                    src: 'resources/shijiadayuan_zhuandiao.png',
-                    caption: '精美砖雕 - 民间艺术的瑰宝'
-                },
-                'nianhua': {
-                    src: 'resources/yangliuqing_nianhua.png',
-                    caption: '杨柳青年画 - 国家级非物质文化遗产'
+        function switchTab(type) {
+            const tabs = ['xilou', 'zhuandiao', 'courtyard', 'chuihua'];
+            tabs.forEach(t => {
+                const btn = document.getElementById('tab-btn-' + t);
+                const panel = document.getElementById('panel-' + t);
+                if (t === type) {
+                    btn.classList.add('active');
+                    btn.classList.remove('bg-slate-800/80', 'text-slate-300');
+                    panel.classList.remove('hidden');
+                } else {
+                    btn.classList.remove('active');
+                    btn.classList.add('bg-slate-800/80', 'text-slate-300');
+                    panel.classList.add('hidden');
                 }
-            };
-            
-            const data = imageData[imageType];
-            if (data) {
-                modal.style.display = 'block';
-                modalImg.src = data.src;
-                captionText.innerHTML = data.caption;
-            }
-        }
-
-        // 显示艺术品详情
-        function showArtDetail(artType) {
-            const artDetails = {
-                'brick-carving': '砖雕艺术：石家大院的砖雕工艺精湛，题材丰富，包含花鸟、人物、吉祥图案等，体现了民间艺术家的高超技艺。',
-                'wood-carving': '木雕艺术：精美的木雕装饰遍布建筑各处，从门窗到梁柱，无不展现着工匠的巧思和技艺。',
-                'new-year-painting': '杨柳青年画：作为中国四大年画之一，以其细腻的笔触、鲜艳的色彩和吉祥的寓意闻名于世。',
-                'architecture': '建筑整体：石家大院的建筑群布局严谨，气势恢宏，是清代民居建筑的典型代表。'
-            };
-            
-            alert(artDetails[artType] || '艺术品详情即将推出');
-        }
-
-        // 模态框关闭功能
-        document.addEventListener('click', function(e) {
-            const modal = document.getElementById('imageModal');
-            if (e.target === modal || e.target.classList.contains('close')) {
-                modal.style.display = 'none';
-            }
-        });
-
-        // 键盘关闭模态框
-        document.addEventListener('keydown', function(e) {
-            const modal = document.getElementById('imageModal');
-            if (e.key === 'Escape' && modal.style.display === 'block') {
-                modal.style.display = 'none';
-            }
-        });
-
-        // 院落房间点击事件
-        document.querySelectorAll('.courtyard-room').forEach(room => {
-            room.addEventListener('click', function() {
-                const roomName = this.textContent.trim();
-                const roomInfo = {
-                    '正房': '正房是院中最重要的建筑，通常为长辈居住，体现了传统的家庭伦理观念。',
-                    '东厢房': '东厢房一般为晚辈住房或客房，建筑布局体现了长幼有序的传统观念。',
-                    '西厢房': '西厢房与东厢房对称，功能相似，共同构成了完整的院落布局。',
-                    '倒座/戏楼': '倒座位于院落南侧，石家大院的倒座设有戏楼，是娱乐和会客的重要场所。',
-                    '大门': '大门是院落的入口，体现了主人的身份地位和建筑的整体气派。'
-                };
-                
-                alert(`${roomName}\n\n${roomInfo[roomName] || '房间详情即将推出'}`);
             });
-        });
+        }
     </script>
 </body>
 </html>

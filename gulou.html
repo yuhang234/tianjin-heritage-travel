@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>天津鼓楼 - 晨钟暮鼓·津门原点 | 津门华章</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700&family=Ma+Shan+Zheng&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --ink-navy: #111E2E;
+            --ink-deep: #1A2A3A;
+            --cinnabar: #B83B26;
+            --bronze-gold: #C5A059;
+            --gold-light: #E7C986;
+            --paper-cream: #FBF9F5;
+            --slate-border: rgba(197, 160, 89, 0.25);
+        }
+        body {
+            font-family: 'Noto Serif SC', 'Songti SC', SimSun, serif;
+            background-color: var(--ink-navy);
+            color: var(--paper-cream);
+        }
+        .font-calligraphy {
+            font-family: 'Ma Shan Zheng', 'Kaiti', cursive;
+        }
+        .hero-banner {
+            background-image: linear-gradient(to bottom, rgba(17, 30, 46, 0.5) 0%, rgba(17, 30, 46, 0.95) 100%), url('resources/gulou_real.jpg');
+            background-size: cover;
+            background-position: center 40%;
+        }
+        .tab-btn.active {
+            background: linear-gradient(135deg, var(--cinnabar), #992815);
+            color: white;
+            border-color: transparent;
+        }
+        .timeline-line::before {
+            content: '';
+            position: absolute;
+            left: 20px;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: linear-gradient(to bottom, var(--bronze-gold), transparent);
+        }
+        @media (min-width: 768px) {
+            .timeline-line::before {
+                left: 50%;
+                transform: translateX(-50%);
+            }
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col antialiased selection:bg-amber-500 selection:text-white">
+
+    <!-- 顶部统一导航栏 -->
+    <nav class="fixed top-0 w-full z-50 bg-slate-950/80 backdrop-blur-md border-b border-amber-500/20">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+            <a href="index.html" class="flex items-center space-x-3 group">
+                <span class="text-3xl">🏯</span>
+                <div>
+                    <span class="font-calligraphy text-2xl text-amber-300 tracking-wider block group-hover:text-amber-200 transition-colors">津门华章</span>
+                    <span class="text-[10px] text-amber-500/80 tracking-widest block uppercase">Tianjin Heritage Travel</span>
+                </div>
+            </a>
+            <div class="hidden md:flex items-center space-x-8 text-sm font-medium">
+                <a href="index.html" class="text-slate-300 hover:text-amber-300 transition-colors">首页</a>
+                <a href="dulesi.html" class="text-slate-300 hover:text-amber-300 transition-colors">独乐寺</a>
+                <a href="tianhougong.html" class="text-slate-300 hover:text-amber-300 transition-colors">天后宫</a>
+                <a href="gulou.html" class="text-amber-400 font-semibold border-b-2 border-amber-400 pb-1">天津鼓楼</a>
+                <a href="shijiadayuan.html" class="text-slate-300 hover:text-amber-300 transition-colors">石家大院</a>
+                <a href="yuhuangge.html" class="text-slate-300 hover:text-amber-300 transition-colors">玉皇阁</a>
+                <a href="quiz.html" class="text-slate-300 hover:text-amber-300 transition-colors">知识问答</a>
+            </div>
+            <div class="flex items-center space-x-4">
+                <a href="index.html#buildings" class="text-xs px-4 py-2 rounded-full border border-amber-500/40 text-amber-300 hover:bg-amber-500/20 transition-all">
+                    ← 返回名胜矩阵
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 英雄巨幕 Banner -->
+    <header class="hero-banner pt-36 pb-20 relative">
+        <div class="max-w-6xl mx-auto px-6 text-center">
+            <span class="inline-block py-1 px-4 rounded-full bg-red-900/60 border border-red-500/40 text-red-200 text-xs font-semibold mb-4 tracking-widest">
+                老城中心 · 津门城防标志
+            </span>
+            <h1 class="font-calligraphy text-4xl sm:text-6xl text-amber-300 mb-6 drop-shadow-lg">
+                天津鼓楼 · 晨钟暮鼓
+            </h1>
+            <p class="text-slate-300 text-base sm:text-xl max-w-3xl mx-auto leading-relaxed mb-8">
+                “天津卫，三宗宝，鼓楼、炮台、铃铛阁。”坐落于天津老城厢的心脏，见证了天津设卫筑城六百年的沧桑风雨与市井荣光。
+            </p>
+
+            <!-- 核心数据卡 -->
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-4xl mx-auto mt-10">
+                <div class="bg-slate-900/70 backdrop-blur-md p-5 rounded-xl border border-amber-500/20">
+                    <div class="text-3xl font-bold text-amber-400 font-serif">1404年</div>
+                    <div class="text-xs text-slate-400 mt-1">明成祖朱棣设卫初筑</div>
+                </div>
+                <div class="bg-slate-900/70 backdrop-blur-md p-5 rounded-xl border border-amber-500/20">
+                    <div class="text-3xl font-bold text-amber-400 font-serif">27米</div>
+                    <div class="text-xs text-slate-400 mt-1">城台楼阁通高</div>
+                </div>
+                <div class="bg-slate-900/70 backdrop-blur-md p-5 rounded-xl border border-amber-500/20">
+                    <div class="text-3xl font-bold text-amber-400 font-serif">3000kg</div>
+                    <div class="text-xs text-slate-400 mt-1">明代悬铸重铜钟</div>
+                </div>
+                <div class="bg-slate-900/70 backdrop-blur-md p-5 rounded-xl border border-amber-500/20">
+                    <div class="text-3xl font-bold text-amber-400 font-serif">4面拱门</div>
+                    <div class="text-xs text-slate-400 mt-1">镇东·安西·定南·拱北</div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="flex-grow max-w-6xl mx-auto px-6 py-16 space-y-20">
+
+        <!-- 建筑精粹图解选项卡 -->
+        <section>
+            <div class="text-center mb-12">
+                <h2 class="font-calligraphy text-3xl sm:text-4xl text-amber-400 mb-3">建筑奇观与历史遗存</h2>
+                <div class="w-24 h-1 bg-amber-500/60 mx-auto rounded-full"></div>
+                <p class="text-slate-400 text-sm mt-3">点击切换查看天津鼓楼四大核心建筑特色与馆藏珍品</p>
+            </div>
+
+            <!-- 选项卡按钮 -->
+            <div class="flex flex-wrap justify-center gap-3 mb-10">
+                <button onclick="switchTab('arch')" id="tab-btn-arch" class="tab-btn active px-5 py-2.5 rounded-full border border-slate-700 text-sm font-medium transition-all">
+                    城台楼阁规制
+                </button>
+                <button onclick="switchTab('bell')" id="tab-btn-bell" class="tab-btn px-5 py-2.5 rounded-full border border-slate-700 bg-slate-800/80 text-slate-300 text-sm font-medium transition-all hover:border-amber-500/40">
+                    明代巨型古钟
+                </button>
+                <button onclick="switchTab('cannon')" id="tab-btn-cannon" class="tab-btn px-5 py-2.5 rounded-full border border-slate-700 bg-slate-800/80 text-slate-300 text-sm font-medium transition-all hover:border-amber-500/40">
+                    克虏伯大炮与近代沧桑
+                </button>
+                <button onclick="switchTab('folk')" id="tab-btn-folk" class="tab-btn px-5 py-2.5 rounded-full border border-slate-700 bg-slate-800/80 text-slate-300 text-sm font-medium transition-all hover:border-amber-500/40">
+                    老城厢市井风貌
+                </button>
+            </div>
+
+            <!-- 选项卡内容 -->
+            <div id="tab-content" class="bg-slate-900/60 border border-amber-500/20 rounded-2xl p-6 sm:p-10 backdrop-blur-md">
+                <!-- 建筑规制 -->
+                <div id="panel-arch" class="grid lg:grid-cols-2 gap-8 items-center">
+                    <div>
+                        <span class="text-xs font-semibold text-amber-400 uppercase tracking-widest">Architectural Layout</span>
+                        <h3 class="text-2xl font-bold text-white mt-1 mb-4 font-serif">重檐歇山顶与四面贯通城台</h3>
+                        <p class="text-slate-300 leading-relaxed text-sm mb-4">
+                            鼓楼基座为正方形青砖砌垒的高大城台，高约7米，基宽约34米。城台四面各开辟有半圆形的拱券门洞，东西南北分别悬挂石额：<strong>“镇东”、“安西”、“定南”、“拱北”</strong>，四门相通，形成了当年老城十字街交通的枢纽。
+                        </p>
+                        <p class="text-slate-300 leading-relaxed text-sm">
+                            城台上建二层木构楼阁，飞檐凌空，雕梁画栋，面阔五间，进深三间，覆以绿琉璃瓦剪边歇山顶，屋脊之上饰以吻兽禽鸟，汉白玉栏杆周匝环绕，气度轩昂。
+                        </p>
+                    </div>
+                    <div class="rounded-xl overflow-hidden shadow-2xl border border-white/10 group">
+                        <img src="resources/gulou_real.jpg" alt="天津鼓楼实景" class="w-full h-80 object-cover group-hover:scale-105 transition-transform duration-500">
+                    </div>
+                </div>
+
+                <!-- 明代巨钟 -->
+                <div id="panel-bell" class="hidden grid lg:grid-cols-2 gap-8 items-center">
+                    <div>
+                        <span class="text-xs font-semibold text-amber-400 uppercase tracking-widest">Ming Dynasty Bell</span>
+                        <h3 class="text-2xl font-bold text-white mt-1 mb-4 font-serif">重逾三吨的明代铁铸大钟</h3>
+                        <p class="text-slate-300 leading-relaxed text-sm mb-4">
+                            鼓楼二层正中悬挂一口重达3000公斤的古钟，铸造于明弘治年间。钟身镌刻有千余字精美经文与造钟题名。
+                        </p>
+                        <p class="text-slate-300 leading-relaxed text-sm">
+                            当年天津卫驻军依照晨钟暮鼓之法启闭城门，每逢拂晓与黄昏，钟声浑厚悠扬，声闻数十里，故有“晨钟惊残梦，暮鼓催归舟”之景。
+                        </p>
+                    </div>
+                    <div class="rounded-xl overflow-hidden shadow-2xl border border-white/10 bg-slate-800 p-8 flex flex-col justify-center items-center text-center">
+                        <div class="text-6xl mb-4">🔔</div>
+                        <h4 class="text-xl font-bold text-amber-300 mb-2">明代弘治古钟铭文</h4>
+                        <p class="text-xs text-slate-400 max-w-sm">高约2米，口径约1.4米，钟声浑厚绵长，每逢新年元旦与除夕，天津市民常聚于此聆听敲钟祈福。</p>
+                    </div>
+                </div>
+
+                <!-- 克虏伯大炮 -->
+                <div id="panel-cannon" class="hidden grid lg:grid-cols-2 gap-8 items-center">
+                    <div>
+                        <span class="text-xs font-semibold text-amber-400 uppercase tracking-widest">Historical Cannons</span>
+                        <h3 class="text-2xl font-bold text-white mt-1 mb-4 font-serif">城台陈设克虏伯大炮</h3>
+                        <p class="text-slate-300 leading-relaxed text-sm mb-4">
+                            鼓楼城台四个角台上陈列着当年保卫天津卫的铸铁古炮与德国克虏伯近代铁炮。1900年八国联军进攻天津，天津军民在大沽口及天津老城进行英勇阻击。
+                        </p>
+                        <p class="text-slate-300 leading-relaxed text-sm">
+                            城门失陷后，侵略者强令拆毁了天津老城墙，但鼓楼得以保存，留下了这段近代屈辱与奋起抗争的鲜活实物历史。
+                        </p>
+                    </div>
+                    <div class="rounded-xl overflow-hidden shadow-2xl border border-white/10 bg-slate-800 p-8 flex flex-col justify-center items-center text-center">
+                        <div class="text-6xl mb-4">🛡️</div>
+                        <h4 class="text-xl font-bold text-amber-300 mb-2">津门近代城防见证</h4>
+                        <p class="text-xs text-slate-400 max-w-sm">实物铁炮横陈城堞，抚摸锈迹斑驳的炮身，让人追忆近代津沽儿女卫国御侮的铮铮铁骨。</p>
+                    </div>
+                </div>
+
+                <!-- 老城厢风貌 -->
+                <div id="panel-folk" class="hidden grid lg:grid-cols-2 gap-8 items-center">
+                    <div>
+                        <span class="text-xs font-semibold text-amber-400 uppercase tracking-widest">Old City Life</span>
+                        <h3 class="text-2xl font-bold text-white mt-1 mb-4 font-serif">老城厢历史文化博物馆</h3>
+                        <p class="text-slate-300 leading-relaxed text-sm mb-4">
+                            鼓楼一楼现设为老城博物馆专题陈列，展现天津建卫600多年来的城郭变迁、商肆民俗、曲艺杂耍。
+                        </p>
+                        <p class="text-slate-300 leading-relaxed text-sm">
+                            鼓楼周边现已开辟为仿明清风格的商业街区，聚集了谦祥益相声茶馆、古玩字画、特色津菜馆与非遗文创店铺，是体验地道天津卫市井生活不可错过的地标。
+                        </p>
+                    </div>
+                    <div class="rounded-xl overflow-hidden shadow-2xl border border-white/10 bg-slate-800 p-8 flex flex-col justify-center items-center text-center">
+                        <div class="text-6xl mb-4">🎭</div>
+                        <h4 class="text-xl font-bold text-amber-300 mb-2">老城厢曲艺与茶馆</h4>
+                        <p class="text-xs text-slate-400 max-w-sm">逛鼓楼老街，进茶馆听一段原汁原味的天津传统相声，品一壶茉莉花茶，回味市井温情。</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 历史时间轴 -->
+        <section class="relative">
+            <div class="text-center mb-12">
+                <h2 class="font-calligraphy text-3xl sm:text-4xl text-amber-400 mb-3">六百年岁月更迭</h2>
+                <div class="w-24 h-1 bg-amber-500/60 mx-auto rounded-full"></div>
+            </div>
+
+            <div class="timeline-line relative max-w-3xl mx-auto space-y-10 pl-10 md:pl-0">
+                <div class="relative md:flex items-center justify-between">
+                    <div class="hidden md:block w-5/12 text-right pr-8">
+                        <div class="text-amber-400 font-bold text-lg font-serif">明永乐二年 (1404年)</div>
+                        <p class="text-slate-300 text-sm mt-1">明成祖朱棣赐名“天津”，设卫筑土城，于城中心建鼓楼以报时警戒。</p>
+                    </div>
+                    <div class="absolute -left-[30px] md:static md:left-auto w-8 h-8 rounded-full bg-amber-500 border-4 border-slate-900 flex items-center justify-center text-xs font-bold text-slate-950 z-10">1</div>
+                    <div class="md:w-5/12 pl-4 md:pl-8">
+                        <div class="md:hidden text-amber-400 font-bold text-base">明永乐二年 (1404年)</div>
+                        <p class="md:hidden text-slate-300 text-xs mt-1 mb-2">明成祖朱棣设天津卫筑土城，建鼓楼以报时警戒。</p>
+                        <span class="text-xs text-amber-500/80 bg-amber-500/10 px-2 py-0.5 rounded border border-amber-500/20">津门设卫基点</span>
+                    </div>
+                </div>
+
+                <div class="relative md:flex items-center justify-between">
+                    <div class="hidden md:block w-5/12 text-right pr-8">
+                        <span class="text-xs text-amber-500/80 bg-amber-500/10 px-2 py-0.5 rounded border border-amber-500/20">砌砖拓建</span>
+                    </div>
+                    <div class="absolute -left-[30px] md:static md:left-auto w-8 h-8 rounded-full bg-amber-500 border-4 border-slate-900 flex items-center justify-center text-xs font-bold text-slate-950 z-10">2</div>
+                    <div class="md:w-5/12 pl-4 md:pl-8">
+                        <div class="text-amber-400 font-bold text-lg font-serif">明弘治六年 (1493年)</div>
+                        <p class="text-slate-300 text-sm mt-1">兵备副使刘福重建城池，城墙由土改为青砖，重修鼓楼并铸挂铁铸大钟，奠定后世建筑格局。</p>
+                    </div>
+                </div>
+
+                <div class="relative md:flex items-center justify-between">
+                    <div class="hidden md:block w-5/12 text-right pr-8">
+                        <div class="text-amber-400 font-bold text-lg font-serif">清光绪二十六年 (1900年)</div>
+                        <p class="text-slate-300 text-sm mt-1">八国联军强占天津，次年强制拆毁天津城墙，鼓楼成为老城厢唯一的原点遗迹标志。</p>
+                    </div>
+                    <div class="absolute -left-[30px] md:static md:left-auto w-8 h-8 rounded-full bg-amber-500 border-4 border-slate-900 flex items-center justify-center text-xs font-bold text-slate-950 z-10">3</div>
+                    <div class="md:w-5/12 pl-4 md:pl-8">
+                        <span class="text-xs text-amber-500/80 bg-amber-500/10 px-2 py-0.5 rounded border border-amber-500/20">城墙拆毁·鼓楼独存</span>
+                    </div>
+                </div>
+
+                <div class="relative md:flex items-center justify-between">
+                    <div class="hidden md:block w-5/12 text-right pr-8">
+                        <span class="text-xs text-amber-500/80 bg-amber-500/10 px-2 py-0.5 rounded border border-amber-500/20">世纪重辉</span>
+                    </div>
+                    <div class="absolute -left-[30px] md:static md:left-auto w-8 h-8 rounded-full bg-amber-500 border-4 border-slate-900 flex items-center justify-center text-xs font-bold text-slate-950 z-10">4</div>
+                    <div class="md:w-5/12 pl-4 md:pl-8">
+                        <div class="text-amber-400 font-bold text-lg font-serif">2001年 (千禧重建)</div>
+                        <p class="text-slate-300 text-sm mt-1">天津老城厢整体改造，市政府在原址严格遵照历史规制复建鼓楼，设立博物馆，重焕津门雄姿。</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 实用出行与研学行囊 -->
+        <section class="bg-slate-900/80 border border-amber-500/30 rounded-2xl p-8 backdrop-blur-md">
+            <h3 class="font-calligraphy text-2xl text-amber-300 mb-6 flex items-center space-x-2">
+                <span>📍</span>
+                <span>游览攻略与实用指南</span>
+            </h3>
+
+            <div class="grid md:grid-cols-3 gap-6 text-sm">
+                <div class="space-y-2">
+                    <div class="font-bold text-amber-400">门票与开放时间</div>
+                    <p class="text-slate-300">门票：免费开放（登楼需实名登记）</p>
+                    <p class="text-slate-300">开放时间：周二至周日 09:00 - 17:00（16:30停止入内，周一例行闭馆）</p>
+                </div>
+                <div class="space-y-2">
+                    <div class="font-bold text-amber-400">交通出行</div>
+                    <p class="text-slate-300">地铁：地铁2号线【鼓楼站】B出口步行约650米</p>
+                    <p class="text-slate-300">公交：600路、632路、657路、840路、855路至【鼓楼】站下车即达</p>
+                </div>
+                <div class="space-y-2">
+                    <div class="font-bold text-amber-400">周边经典联游</div>
+                    <p class="text-slate-300">天津广东会馆（中国现存最大室内木结构戏楼，步行5分钟）</p>
+                    <p class="text-slate-300">古文化街 / 天后宫（津门故里，步行约15分钟）</p>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- 页脚 -->
+    <footer class="bg-slate-950 border-t border-amber-500/20 py-8 text-center text-xs text-slate-500">
+        <p class="mb-2">津门华章 · 天津古建与历史文旅宣传门户平台</p>
+        <p>© 2026 天津古建研学项目 | 保护古建筑遗存，弘扬中华营造技艺</p>
+    </footer>
+
+    <script>
+        function switchTab(type) {
+            const tabs = ['arch', 'bell', 'cannon', 'folk'];
+            tabs.forEach(t => {
+                const btn = document.getElementById('tab-btn-' + t);
+                const panel = document.getElementById('panel-' + t);
+                if (t === type) {
+                    btn.classList.add('active');
+                    btn.classList.remove('bg-slate-800/80', 'text-slate-300');
+                    panel.classList.remove('hidden');
+                } else {
+                    btn.classList.remove('active');
+                    btn.classList.add('bg-slate-800/80', 'text-slate-300');
+                    panel.classList.add('hidden');
+                }
+            });
+        }
+    </script>
+</body>
+</html>
