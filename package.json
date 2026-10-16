@@ -1,0 +1,25 @@
+{
+  "name": "tianjin-heritage-travel",
+  "version": "2.0.0",
+  "description": "「津门华章」—— 天津古建与历史文旅宣传门户交互平台 (Tianjin Ancient Architecture & Cultural Tourism Portal)",
+  "main": "index.html",
+  "scripts": {
+    "start": "npx serve -l 3000",
+    "preview": "python -m http.server 3000"
+  },
+  "keywords": [
+    "tianjin",
+    "heritage",
+    "ancient-architecture",
+    "tourism",
+    "chinese-culture",
+    "travel-portal",
+    "interactive-web"
+  ],
+  "author": "Johnwatson1234",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Johnwatson1234/tjgj.git"
+  }
+}

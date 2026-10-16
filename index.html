@@ -1,408 +1,962 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="zh-CN" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>天津古建 一眼千年</title>
+    <title>津门华章 · 天津古建与历史文旅宣传门户 | 一眼千年</title>
+    <!-- TailwindCSS & 动画库 -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@splidejs/splide@4.1.4/dist/js/splide.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/p5.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@splidejs/splide@4.1.4/dist/css/splide.min.css">
+    <!-- Google 字体 -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;700&family=Ma+Shan+Zheng&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700&family=Ma+Shan+Zheng&display=swap" rel="stylesheet">
     <style>
         :root {
-            --ink-blue: #2C3E50;
-            --bronze-gold: #B8860B;
-            --ink-gray: #4A4A4A;
-            --paper-white: #F8F6F0;
-            --cinnabar-red: #CD5C5C;
-            --bamboo-green: #6B8E23;
-            --dusk-purple: #8B7D6B;
-            --autumn-blue: #4682B4;
+            --ink-navy: #111E2E;
+            --ink-deep: #1A2A3A;
+            --cinnabar: #B83B26;
+            --bronze-gold: #C5A059;
+            --gold-light: #E7C986;
+            --paper-cream: #FBF9F5;
+            --slate-border: rgba(197, 160, 89, 0.25);
         }
-        
         body {
-            font-family: 'Noto Serif SC', serif;
-            background-color: var(--ink-blue);
-            color: var(--paper-white);
+            font-family: 'Noto Serif SC', 'Songti SC', 'Source Han Serif SC', SimSun, serif;
+            background-color: var(--ink-navy);
+            color: var(--paper-cream);
             overflow-x: hidden;
         }
-        
-        .hero-title {
-            font-family: 'Ma Shan Zheng', cursive;
-            font-size: 4rem;
-            color: var(--bronze-gold);
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        .font-calligraphy {
+            font-family: 'Ma Shan Zheng', 'Kaiti', 'STKaiti', cursive;
         }
-        
-        .section-title {
-            font-family: 'Ma Shan Zheng', cursive;
-            color: var(--bronze-gold);
+        .hero-title-shadow {
+            text-shadow: 0 4px 20px rgba(0, 0, 0, 0.8), 0 1px 3px rgba(0, 0, 0, 0.6);
         }
-        
-        .hero-bg {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100vh;
-            z-index: -1;
+        /* 东方典雅卡片渐变与边框 */
+        .oriental-card {
+            background: linear-gradient(145deg, rgba(26, 42, 58, 0.85) 0%, rgba(17, 30, 46, 0.95) 100%);
+            border: 1px solid var(--slate-border);
+            backdrop-filter: blur(12px);
+            transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
         }
-        
-        .hero-overlay {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(45deg, rgba(44,62,80,0.3) 0%, rgba(44,62,80,0.1) 100%);
+        .oriental-card:hover {
+            border-color: var(--bronze-gold);
+            transform: translateY(-6px);
+            box-shadow: 0 20px 35px -10px rgba(0, 0, 0, 0.6), 0 0 25px rgba(197, 160, 89, 0.2);
         }
-        
-        .building-card {
-            background: rgba(248,246,240,0.95);
-            color: var(--ink-gray);
-            border-radius: 12px;
-            transition: all 0.3s ease;
-            backdrop-filter: blur(10px);
-        }
-        
-        .building-card:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
-        }
-        
-        .nav-link {
-            color: var(--paper-white);
-            transition: all 0.3s ease;
-            position: relative;
-        }
-        
-        .nav-link:hover {
-            color: var(--bronze-gold);
-        }
-        
-        .nav-link::after {
+        /* 时间轴纵线 */
+        .timeline-vertical::before {
             content: '';
             position: absolute;
-            bottom: -4px;
-            left: 0;
-            width: 0;
-            height: 2px;
-            background: var(--bronze-gold);
-            transition: width 0.3s ease;
-        }
-        
-        .nav-link:hover::after {
-            width: 100%;
-        }
-        
-        .timeline {
-            position: relative;
-        }
-        
-        .timeline::before {
-            content: '';
-            position: absolute;
-            left: 50%;
+            left: 20px;
             top: 0;
             bottom: 0;
             width: 2px;
-            background: var(--bronze-gold);
-            transform: translateX(-50%);
+            background: linear-gradient(to bottom, var(--bronze-gold), rgba(197, 160, 89, 0.1));
         }
-        
-        .timeline-item {
-            position: relative;
-            margin-bottom: 2rem;
-        }
-        
-        .timeline-dot {
-            position: absolute;
-            left: 50%;
-            top: 1rem;
-            width: 12px;
-            height: 12px;
-            background: var(--bronze-gold);
-            border-radius: 50%;
-            transform: translateX(-50%);
-            z-index: 2;
-        }
-        
-        .parallax-layer {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-        }
-        
-        .floating-element {
-            animation: float 6s ease-in-out infinite;
-        }
-        
-        @keyframes float {
-            0%, 100% { transform: translateY(0px); }
-            50% { transform: translateY(-20px); }
-        }
-        
-        .fade-in {
-            opacity: 0;
-            transform: translateY(30px);
-        }
-        
-        .quiz-button {
-            background: linear-gradient(45deg, var(--cinnabar-red), var(--bronze-gold));
-            color: white;
-            border: none;
-            padding: 12px 24px;
-            border-radius: 25px;
-            font-weight: bold;
-            transition: all 0.3s ease;
-            cursor: pointer;
-        }
-        
-        .quiz-button:hover {
-            transform: scale(1.05);
-            box-shadow: 0 8px 25px rgba(205,92,92,0.4);
-        }
-        
-        @media (max-width: 768px) {
-            .hero-title {
-                font-size: 2.5rem;
-            }
-            
-            .timeline::before {
-                left: 20px;
-            }
-            
-            .timeline-dot {
-                left: 20px;
+        @media (min-width: 768px) {
+            .timeline-vertical::before {
+                left: 50%;
+                transform: translateX(-50%);
             }
         }
     </style>
 </head>
-<body>
-    <!-- 英雄区域背景 -->
-    <div class="hero-bg" id="heroBg">
-        <div class="hero-overlay"></div>
-        <div id="particles-container"></div>
-    </div>
+<body class="min-h-screen flex flex-col antialiased selection:bg-amber-500 selection:text-white">
 
-    <!-- 导航栏 -->
-    <nav class="fixed top-0 w-full z-50 bg-black bg-opacity-30 backdrop-blur-md">
-        <div class="container mx-auto px-6 py-4">
-            <div class="flex justify-between items-center">
-                <div class="hero-title text-2xl">天津古建</div>
-                <div class="hidden md:flex space-x-8">
-                    <a href="#home" class="nav-link">首页</a>
-                    <a href="#tianhougong" class="nav-link">天后宫</a>
-                    <a href="#gulou" class="nav-link">鼓楼</a>
-                    <a href="#dulesi" class="nav-link">独乐寺</a>
-                    <a href="#shijiadayuan" class="nav-link">石家大院</a>
-                    <a href="#yuhuangge" class="nav-link">玉皇阁</a>
-                    <a href="quiz.html" class="nav-link">知识问答</a>
+    <!-- 1. 全局顶部导航栏 -->
+    <nav class="fixed top-0 w-full z-50 bg-slate-950/80 backdrop-blur-md border-b border-amber-500/20 transition-all duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+            <!-- 品牌 Logo -->
+            <a href="#home" class="flex items-center space-x-3 group">
+                <span class="text-3xl filter drop-shadow">🏯</span>
+                <div>
+                    <span class="font-calligraphy text-2xl text-amber-300 tracking-wider block group-hover:text-amber-200 transition-colors">津门华章</span>
+                    <span class="text-[10px] text-amber-500/80 tracking-widest block uppercase font-sans">Tianjin Heritage Travel</span>
                 </div>
-                <div class="md:hidden">
-                    <button id="mobileMenuBtn" class="text-white">
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
-                        </svg>
-                    </button>
-                </div>
+            </a>
+
+            <!-- 桌面端导航链接 -->
+            <div class="hidden lg:flex items-center space-x-7 text-sm font-medium">
+                <a href="#home" class="text-amber-400 font-semibold transition-colors hover:text-amber-300">首页</a>
+                <a href="#history" class="text-slate-300 hover:text-amber-300 transition-colors">千年脉络</a>
+                <a href="#buildings" class="text-slate-300 hover:text-amber-300 transition-colors">古建胜境</a>
+                <a href="#itineraries" class="text-slate-300 hover:text-amber-300 transition-colors">研学路线</a>
+                <a href="#heritage" class="text-slate-300 hover:text-amber-300 transition-colors">津味非遗</a>
+                <a href="#travel-guide" class="text-slate-300 hover:text-amber-300 transition-colors">出行行囊</a>
+                <a href="quiz.html" class="text-slate-300 hover:text-amber-300 transition-colors flex items-center space-x-1">
+                    <span>知识挑战</span>
+                    <span class="bg-red-600/80 text-[10px] text-white px-1.5 py-0.5 rounded-full font-sans">15题</span>
+                </a>
+            </div>
+
+            <!-- 右侧功能区 -->
+            <div class="flex items-center space-x-3 sm:space-x-4">
+                <!-- 古韵雅音合成音效开关 -->
+                <button id="ambientMusicBtn" class="text-xs px-3 py-1.5 rounded-full border border-slate-700 bg-slate-900/60 text-slate-300 hover:border-amber-400/50 hover:text-amber-300 transition-all flex items-center space-x-1.5" title="点击开关轻柔国风环境雅音">
+                    <span>🎵</span>
+                    <span class="hidden sm:inline">古韵雅音</span>
+                </button>
+
+                <!-- 心愿单悬浮抽屉触发按钮 -->
+                <button onclick="toggleWishlistDrawer()" class="relative text-xs px-3.5 py-1.5 rounded-full bg-gradient-to-r from-amber-600 to-amber-500 text-white font-medium hover:from-amber-500 hover:to-amber-400 transition-all shadow-md shadow-amber-600/20 flex items-center space-x-1.5">
+                    <span>🎒</span>
+                    <span>行程单</span>
+                    <span id="wishlistCount" class="w-4 h-4 rounded-full bg-red-600 text-white font-bold text-[10px] flex items-center justify-center -mr-1" style="display:none;">0</span>
+                </button>
+
+                <!-- 移动端汉堡菜单按钮 -->
+                <button id="mobileMenuBtn" class="lg:hidden text-slate-300 hover:text-white p-1" aria-label="打开移动端菜单">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                    </svg>
+                </button>
             </div>
         </div>
     </nav>
 
-    <!-- 主要内容 -->
-    <main>
-        <!-- 英雄区域 -->
-        <section id="home" class="min-h-screen flex items-center justify-center relative">
-            <div class="text-center z-10 px-6">
-                <h1 class="hero-title mb-6 fade-in">天津古建 一眼千年</h1>
-                <p class="text-xl mb-8 max-w-2xl mx-auto fade-in" style="color: var(--paper-white);">
-                    精卫衔微木，将以填沧海。在这座滨海之城，千年的时光沉淀在一砖一瓦之间，
-                    让我们跟随精卫的脚步，探寻天津古建筑的文化瑰宝。
-                </p>
-                <button class="quiz-button fade-in" onclick="scrollToBuildings()">
-                    开始探索之旅
-                </button>
-            </div>
-            
-            <!-- 装饰元素 -->
-            <div class="absolute top-20 left-10 floating-element opacity-30">
-                <svg width="60" height="60" viewBox="0 0 60 60" fill="none">
-                    <circle cx="30" cy="30" r="25" stroke="var(--bronze-gold)" stroke-width="2" fill="none"/>
-                    <path d="M30 5 L35 25 L30 30 L25 25 Z" fill="var(--bronze-gold)"/>
-                </svg>
-            </div>
-            
-            <div class="absolute bottom-20 right-10 floating-element opacity-30" style="animation-delay: -2s;">
-                <svg width="80" height="80" viewBox="0 0 80 80" fill="none">
-                    <rect x="10" y="10" width="60" height="60" stroke="var(--bronze-gold)" stroke-width="2" fill="none" rx="10"/>
-                    <path d="M40 20 L50 40 L40 60 L30 40 Z" fill="var(--bronze-gold)"/>
-                </svg>
-            </div>
-        </section>
-
-        <!-- 建筑展示区域 -->
-        <section id="buildings" class="py-20 relative">
-            <div class="container mx-auto px-6">
-                <h2 class="section-title text-4xl text-center mb-16 fade-in">千年古建 文化传承</h2>
-                
-                <!-- 时间轴 -->
-                <div class="timeline mb-20">
-                    <div class="timeline-item fade-in">
-                        <div class="timeline-dot"></div>
-                        <div class="bg-white bg-opacity-10 backdrop-blur-md rounded-lg p-6 mx-4 md:mx-0 md:w-1/2 md:ml-auto md:pl-12">
-                            <h3 class="text-2xl font-bold mb-2" style="color: var(--bronze-gold);">元泰定三年 (1326年)</h3>
-                            <p>天后宫始建，成为天津最古老的妈祖庙之一</p>
-                        </div>
+    <!-- 移动端侧边抽屉菜单 -->
+    <div id="mobileNavDrawer" class="hidden fixed inset-0 z-50 bg-black/70 backdrop-blur-md flex justify-end">
+        <div class="w-4/5 max-w-sm bg-slate-900 h-full p-6 border-l border-amber-500/20 flex flex-col justify-between">
+            <div>
+                <div class="flex items-center justify-between pb-6 border-b border-slate-800">
+                    <div class="flex items-center space-x-2">
+                        <span class="text-2xl">🏯</span>
+                        <span class="font-calligraphy text-xl text-amber-300">津门华章</span>
                     </div>
-                    
-                    <div class="timeline-item fade-in">
-                        <div class="timeline-dot"></div>
-                        <div class="bg-white bg-opacity-10 backdrop-blur-md rounded-lg p-6 mx-4 md:mx-0 md:w-1/2 md:mr-auto md:pr-12">
-                            <h3 class="text-2xl font-bold mb-2" style="color: var(--bronze-gold);">明永乐元年 (1403年)</h3>
-                            <p>天后宫重建，鼓楼建成，成为天津城的标志性建筑</p>
-                        </div>
-                    </div>
-                    
-                    <div class="timeline-item fade-in">
-                        <div class="timeline-dot"></div>
-                        <div class="bg-white bg-opacity-10 backdrop-blur-md rounded-lg p-6 mx-4 md:mx-0 md:w-1/2 md:ml-auto md:pl-12">
-                            <h3 class="text-2xl font-bold mb-2" style="color: var(--bronze-gold);">辽统和二年 (984年)</h3>
-                            <p>独乐寺重建，千年古刹见证历史变迁</p>
-                        </div>
-                    </div>
-                    
-                    <div class="timeline-item fade-in">
-                        <div class="timeline-dot"></div>
-                        <div class="bg-white bg-opacity-10 backdrop-blur-md rounded-lg p-6 mx-4 md:mx-0 md:w-1/2 md:mr-auto md:pr-12">
-                            <h3 class="text-2xl font-bold mb-2" style="color: var(--bronze-gold);">清代</h3>
-                            <p>石家大院建成，展现北方民居建筑艺术</p>
-                        </div>
-                    </div>
+                    <button id="closeMobileNav" class="text-slate-400 hover:text-white text-2xl font-bold p-1">×</button>
                 </div>
-
-                <!-- 建筑卡片网格 -->
-                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mb-20">
-                    <!-- 天后宫 -->
-                    <div id="tianhougong" class="building-card p-6 fade-in">
-                        <div class="h-48 mb-4 rounded-lg overflow-hidden">
-                            <img src="resources/tianhougong.png" alt="天后宫" class="w-full h-full object-cover transition-transform duration-300 hover:scale-110">
-                        </div>
-                        <h3 class="text-2xl font-bold mb-3" style="color: var(--ink-blue);">天后宫</h3>
-                        <p class="text-sm mb-4" style="color: var(--ink-gray);">
-                            始建于元泰定三年，是中国现存年代最久的天妃宫之一。建筑群规模庞大，
-                            包含戏楼、山门、正殿、藏经阁等，展现了宋元寺庙建筑的特色。
-                        </p>
-                        <div class="flex justify-between items-center">
-                            <span class="text-xs" style="color: var(--dusk-purple);">始建于 1326年</span>
-                            <a href="tianhougong.html" class="px-4 py-2 rounded-lg text-sm font-semibold transition-colors" style="background-color: var(--bronze-gold); color: white;">
-                                了解更多
-                            </a>
-                        </div>
-                    </div>
-
-                    <!-- 鼓楼 -->
-                    <div id="gulou" class="building-card p-6 fade-in">
-                        <div class="h-48 mb-4 rounded-lg overflow-hidden">
-                            <img src="resources/gulou.png" alt="鼓楼" class="w-full h-full object-cover transition-transform duration-300 hover:scale-110">
-                        </div>
-                        <h3 class="text-2xl font-bold mb-3" style="color: var(--ink-blue);">鼓楼</h3>
-                        <p class="text-sm mb-4" style="color: var(--ink-gray);">
-                            天津鼓楼是城市的标志性建筑，建于明代，承载着天津的历史记忆。
-                            鼓楼不仅是报时的工具，更是天津文化的重要象征。
-                        </p>
-                        <div class="flex justify-between items-center">
-                            <span class="text-xs" style="color: var(--dusk-purple);">建于 1403年</span>
-                            <button class="px-4 py-2 rounded-lg text-sm font-semibold transition-colors" style="background-color: var(--bronze-gold); color: white;" onclick="showComingSoon()">
-                                了解更多
-                            </button>
-                        </div>
-                    </div>
-
-                    <!-- 独乐寺 -->
-                    <div id="dulesi" class="building-card p-6 fade-in">
-                        <div class="h-48 mb-4 rounded-lg overflow-hidden">
-                            <img src="resources/dulesi.png" alt="独乐寺" class="w-full h-full object-cover transition-transform duration-300 hover:scale-110">
-                        </div>
-                        <h3 class="text-2xl font-bold mb-3" style="color: var(--ink-blue);">独乐寺</h3>
-                        <p class="text-sm mb-4" style="color: var(--ink-gray);">
-                            千年古刹，始建于唐，重建于辽。以观音阁、山门、壁画"三绝"闻名，
-                            是中国现存最古老的木结构楼阁式建筑。
-                        </p>
-                        <div class="flex justify-between items-center">
-                            <span class="text-xs" style="color: var(--dusk-purple);">重建于 984年</span>
-                            <a href="dulesi.html" class="px-4 py-2 rounded-lg text-sm font-semibold transition-colors" style="background-color: var(--bronze-gold); color: white;">
-                                了解更多
-                            </a>
-                        </div>
-                    </div>
-
-                    <!-- 石家大院 -->
-                    <div id="shijiadayuan" class="building-card p-6 fade-in">
-                        <div class="h-48 mb-4 rounded-lg overflow-hidden">
-                            <img src="resources/shijiadayuan.png" alt="石家大院" class="w-full h-full object-cover transition-transform duration-300 hover:scale-110">
-                        </div>
-                        <h3 class="text-2xl font-bold mb-3" style="color: var(--ink-blue);">石家大院</h3>
-                        <p class="text-sm mb-4" style="color: var(--ink-gray);">
-                            清代津门八大家之一的宅院，被誉为"华北第一宅"。
-                            精美的砖雕、木刻和戏楼展现了传统建筑艺术的精妙。
-                        </p>
-                        <div class="flex justify-between items-center">
-                            <span class="text-xs" style="color: var(--dusk-purple);">清代建筑</span>
-                            <a href="shijiadayuan.html" class="px-4 py-2 rounded-lg text-sm font-semibold transition-colors" style="background-color: var(--bronze-gold); color: white;">
-                                了解更多
-                            </a>
-                        </div>
-                    </div>
-
-                    <!-- 玉皇阁 -->
-                    <div id="yuhuangge" class="building-card p-6 fade-in">
-                        <div class="h-48 mb-4 rounded-lg overflow-hidden">
-                            <img src="resources/yuhuangge.png" alt="玉皇阁" class="w-full h-full object-cover transition-transform duration-300 hover:scale-110">
-                        </div>
-                        <h3 class="text-2xl font-bold mb-3" style="color: var(--ink-blue);">玉皇阁</h3>
-                        <p class="text-sm mb-4" style="color: var(--ink-gray);">
-                            天津重要的道教建筑，承载着深厚的宗教文化内涵。
-                            建筑庄严肃穆，体现了道教建筑的特色和美学价值。
-                        </p>
-                        <div class="flex justify-between items-center">
-                            <span class="text-xs" style="color: var(--dusk-purple);">古代建筑</span>
-                            <button class="px-4 py-2 rounded-lg text-sm font-semibold transition-colors" style="background-color: var(--bronze-gold); color: white;" onclick="showComingSoon()">
-                                了解更多
-                            </button>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- 知识问答区域 -->
-                <div class="text-center fade-in">
-                    <h3 class="text-3xl font-bold mb-6" style="color: var(--bronze-gold);">测试你的古建知识</h3>
-                    <p class="text-lg mb-8 max-w-2xl mx-auto" style="color: var(--paper-white);">
-                        通过有趣的问答游戏，深入了解天津古建筑的历史文化，
-                        成为真正的古建文化达人！
-                    </p>
-                    <a href="quiz.html" class="quiz-button inline-block text-lg px-8 py-4">
-                        开始知识问答
+                <div class="mt-6 flex flex-col space-y-4 text-base font-medium">
+                    <a href="#home" class="text-amber-400 hover:text-amber-300 py-2 border-b border-slate-800/60">首页总览</a>
+                    <a href="#history" class="text-slate-200 hover:text-amber-300 py-2 border-b border-slate-800/60">千年脉络</a>
+                    <a href="#buildings" class="text-slate-200 hover:text-amber-300 py-2 border-b border-slate-800/60">古建胜境</a>
+                    <a href="#itineraries" class="text-slate-200 hover:text-amber-300 py-2 border-b border-slate-800/60">研学路线</a>
+                    <a href="#heritage" class="text-slate-200 hover:text-amber-300 py-2 border-b border-slate-800/60">津味非遗</a>
+                    <a href="#travel-guide" class="text-slate-200 hover:text-amber-300 py-2 border-b border-slate-800/60">出行行囊</a>
+                    <a href="quiz.html" class="text-red-400 font-bold py-2 flex items-center justify-between">
+                        <span>古建研学挑战</span>
+                        <span class="text-xs bg-red-600/30 px-2 py-0.5 rounded-full border border-red-500/30">15题</span>
                     </a>
                 </div>
             </div>
+            <div class="pt-6 border-t border-slate-800 text-xs text-slate-400 text-center">
+                © 2026 津门华章 · 天津古建文旅平台
+            </div>
+        </div>
+    </div>
+
+    <!-- 2. 英雄大幕区域 (Hero Section with Dynamic Carousel) -->
+    <header id="home" class="relative min-h-screen flex items-center justify-center pt-20 overflow-hidden">
+        <!-- 动态轮播背景层 -->
+        <div id="heroBgSlide" class="absolute inset-0 bg-cover bg-center transition-all duration-1000 transform scale-105 z-0" style="background-image: linear-gradient(rgba(17, 30, 46, 0.65), rgba(17, 30, 46, 0.85)), url('resources/hero_tianjin_eye.jpg');"></div>
+
+        <!-- 水墨微粒与暗角装饰 -->
+        <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-transparent to-slate-950/60 z-10 pointer-events-none"></div>
+
+        <!-- 英雄文字与互动主体 -->
+        <div class="relative z-20 max-w-5xl mx-auto px-6 py-24 text-center">
+            <span id="heroTag" class="inline-block py-1.5 px-5 rounded-full bg-amber-500/20 border border-amber-400/40 text-amber-300 text-xs sm:text-sm font-semibold mb-6 tracking-widest backdrop-blur-sm">
+                津沽溯源 · 海河风华
+            </span>
+
+            <h1 id="heroTitle" class="font-calligraphy text-5xl sm:text-7xl lg:text-8xl text-amber-300 mb-6 tracking-wide hero-title-shadow leading-tight">
+                津门华章 · 一眼千年
+            </h1>
+
+            <p id="heroSubtitle" class="text-slate-200 text-base sm:text-xl lg:text-2xl max-w-3xl mx-auto leading-relaxed mb-10 font-light drop-shadow">
+                九河下梢金翅鸟，循千载文脉，寻卫城古韵。从辽代木构到明清大院，感受津门大地的一砖一瓦与岁月回响。
+            </p>
+
+            <!-- 快捷行动入口 -->
+            <div class="flex flex-wrap justify-center gap-4 mb-16">
+                <a href="#buildings" class="px-8 py-4 rounded-full bg-gradient-to-r from-amber-600 to-amber-500 hover:from-amber-500 hover:to-amber-400 text-white font-bold text-base shadow-lg shadow-amber-600/30 hover:scale-105 transition-all">
+                    探索五大名胜 →
+                </a>
+                <a href="#itineraries" class="px-8 py-4 rounded-full bg-slate-900/80 hover:bg-slate-800 text-amber-300 border border-amber-500/40 font-semibold text-base backdrop-blur-md transition-all">
+                    查看研学路线
+                </a>
+                <a href="quiz.html" class="px-8 py-4 rounded-full bg-red-800/80 hover:bg-red-700 text-white font-semibold text-base border border-red-500/40 shadow-lg shadow-red-900/30 transition-all">
+                    挑战古建问答 📜
+                </a>
+            </div>
+
+            <!-- 轮播指示器与切换控件 -->
+            <div class="flex items-center justify-center space-x-6">
+                <button onclick="prevSlide()" class="w-10 h-10 rounded-full border border-white/20 bg-black/40 text-white hover:border-amber-400 hover:text-amber-300 flex items-center justify-center text-sm transition-all" aria-label="上一张">
+                    ‹
+                </button>
+                <div id="heroDots" class="flex items-center space-x-2">
+                    <!-- JS动态生成小圆点 -->
+                </div>
+                <button onclick="nextSlide()" class="w-10 h-10 rounded-full border border-white/20 bg-black/40 text-white hover:border-amber-400 hover:text-amber-300 flex items-center justify-center text-sm transition-all" aria-label="下一张">
+                    ›
+                </button>
+            </div>
+        </div>
+
+        <!-- 底部数据栏 -->
+        <div class="absolute bottom-0 inset-x-0 bg-slate-950/80 border-t border-amber-500/20 backdrop-blur-md z-20 py-4 hidden sm:block">
+            <div class="max-w-6xl mx-auto px-6 grid grid-cols-4 gap-4 text-center">
+                <div>
+                    <div class="text-2xl lg:text-3xl font-bold text-amber-400 font-serif">620+ 年</div>
+                    <div class="text-xs text-slate-400 mt-0.5">建卫筑城历史</div>
+                </div>
+                <div>
+                    <div class="text-2xl lg:text-3xl font-bold text-amber-400 font-serif">1042 年</div>
+                    <div class="text-xs text-slate-400 mt-0.5">独乐寺辽代古建遗构</div>
+                </div>
+                <div>
+                    <div class="text-2xl lg:text-3xl font-bold text-amber-400 font-serif">15 处</div>
+                    <div class="text-xs text-slate-400 mt-0.5">国家重点文保古迹</div>
+                </div>
+                <div>
+                    <div class="text-2xl lg:text-3xl font-bold text-amber-400 font-serif">3 大</div>
+                    <div class="text-xs text-slate-400 mt-0.5">精选沉浸研学专线</div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- 主体内容 -->
+    <main class="flex-grow space-y-28 py-20">
+
+        <!-- 3. 千年脉络·时光沿革 (Timeline Section) -->
+        <section id="history" class="relative max-w-6xl mx-auto px-6">
+            <div class="text-center mb-16">
+                <span class="text-xs font-semibold uppercase tracking-widest text-amber-400 block mb-2">Chronicle of Heritage</span>
+                <h2 class="font-calligraphy text-4xl sm:text-5xl text-amber-300 mb-3">一眼千年 · 天津古建演进图谱</h2>
+                <div class="w-24 h-1 bg-amber-500/60 mx-auto rounded-full mb-4"></div>
+                <p class="text-slate-400 text-sm sm:text-base max-w-2xl mx-auto">
+                    从辽金木构的抗震奇观，到元明清三朝运河海运的繁庶盛景，五处古迹勾勒出天津城市的千年文脉年轮。
+                </p>
+            </div>
+
+            <!-- 时间轴主体 -->
+            <div class="timeline-vertical relative max-w-4xl mx-auto space-y-12 pl-12 md:pl-0">
+                <!-- 1. 辽统和二年 -->
+                <div class="relative md:flex items-center justify-between group">
+                    <div class="hidden md:block w-5/12 text-right pr-10">
+                        <span class="text-xs font-bold text-amber-500/90 bg-amber-500/10 px-2.5 py-1 rounded-full border border-amber-500/30">辽统和二年 (984年)</span>
+                        <h3 class="text-xl font-bold text-white mt-2 font-serif group-hover:text-amber-300 transition-colors">独乐寺重建 · 辽代木构三绝</h3>
+                        <p class="text-slate-300 text-sm mt-1 leading-relaxed">
+                            中国现存最古老的木结构楼阁式建筑，23米观音阁经28次强震屹立不倒，被梁思成先生盛赞为“无上国宝”。
+                        </p>
+                    </div>
+                    <div class="absolute -left-[32px] md:static md:left-auto w-10 h-10 rounded-full bg-slate-900 border-2 border-amber-400 flex items-center justify-center text-sm font-bold text-amber-300 z-10 shadow-lg shadow-amber-500/20">
+                        辽
+                    </div>
+                    <div class="md:w-5/12 pl-4 md:pl-10">
+                        <div class="md:hidden">
+                            <span class="text-xs font-bold text-amber-500/90 bg-amber-500/10 px-2.5 py-1 rounded-full border border-amber-500/30">辽统和二年 (984年)</span>
+                            <h3 class="text-lg font-bold text-white mt-2">独乐寺重建 · 辽代木构三绝</h3>
+                            <p class="text-slate-300 text-xs mt-1 leading-relaxed mb-3">观音阁经28次强震屹立不倒，被梁思成先生盛赞为“无上国宝”。</p>
+                        </div>
+                        <a href="dulesi.html" class="inline-flex items-center space-x-1.5 text-xs text-amber-400 hover:text-amber-200 transition-colors">
+                            <span>品鉴辽代庑殿与观音巨像</span>
+                            <span>→</span>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- 2. 元泰定三年 -->
+                <div class="relative md:flex items-center justify-between group">
+                    <div class="hidden md:block w-5/12 text-right pr-10">
+                        <span class="text-xs font-bold text-amber-500/90 bg-amber-500/10 px-2.5 py-1 rounded-full border border-amber-500/30">元泰定三年 (1326年)</span>
+                        <h3 class="text-xl font-bold text-white mt-2 font-serif group-hover:text-amber-300 transition-colors">天后宫始建 · 沽水漕运祖庙</h3>
+                        <p class="text-slate-300 text-sm mt-1 leading-relaxed">
+                            “先有天后宫，后有天津卫。”元代海运通漕，敕建天妃宫保佑舟楫往来，奠定直沽聚落繁盛之基。
+                        </p>
+                    </div>
+                    <div class="absolute -left-[32px] md:static md:left-auto w-10 h-10 rounded-full bg-slate-900 border-2 border-amber-400 flex items-center justify-center text-sm font-bold text-amber-300 z-10 shadow-lg shadow-amber-500/20">
+                        元
+                    </div>
+                    <div class="md:w-5/12 pl-4 md:pl-10">
+                        <div class="md:hidden">
+                            <span class="text-xs font-bold text-amber-500/90 bg-amber-500/10 px-2.5 py-1 rounded-full border border-amber-500/30">元泰定三年 (1326年)</span>
+                            <h3 class="text-lg font-bold text-white mt-2">天后宫始建 · 沽水漕运祖庙</h3>
+                            <p class="text-slate-300 text-xs mt-1 leading-relaxed mb-3">“先有天后宫，后有天津卫。”元代开漕保佑舟楫往来。</p>
+                        </div>
+                        <a href="tianhougong.html" class="inline-flex items-center space-x-1.5 text-xs text-amber-400 hover:text-amber-200 transition-colors">
+                            <span>探索古文化街海神祖庙</span>
+                            <span>→</span>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- 3. 明洪武年间 -->
+                <div class="relative md:flex items-center justify-between group">
+                    <div class="hidden md:block w-5/12 text-right pr-10">
+                        <span class="text-xs font-bold text-emerald-400 bg-emerald-500/10 px-2.5 py-1 rounded-full border border-emerald-500/30">明洪武初年 (1370年代)</span>
+                        <h3 class="text-xl font-bold text-white mt-2 font-serif group-hover:text-amber-300 transition-colors">玉皇阁敕建 · 仙阙临三岔河</h3>
+                        <p class="text-slate-300 text-sm mt-1 leading-relaxed">
+                            天津市区现存最早的明代道教木构建筑群遗构，清虚阁重檐歇山飞阁凌空，是漕运船夫祈佑的重要水标。
+                        </p>
+                    </div>
+                    <div class="absolute -left-[32px] md:static md:left-auto w-10 h-10 rounded-full bg-slate-900 border-2 border-emerald-400 flex items-center justify-center text-sm font-bold text-emerald-300 z-10 shadow-lg shadow-emerald-500/20">
+                        明
+                    </div>
+                    <div class="md:w-5/12 pl-4 md:pl-10">
+                        <div class="md:hidden">
+                            <span class="text-xs font-bold text-emerald-400 bg-emerald-500/10 px-2.5 py-1 rounded-full border border-emerald-500/30">明洪武初年</span>
+                            <h3 class="text-lg font-bold text-white mt-2">玉皇阁敕建 · 仙阙临三岔河</h3>
+                            <p class="text-slate-300 text-xs mt-1 leading-relaxed mb-3">市区现存最早的明代道教木构高阁，清虚飞阁临水矗立。</p>
+                        </div>
+                        <a href="yuhuangge.html" class="inline-flex items-center space-x-1.5 text-xs text-amber-400 hover:text-amber-200 transition-colors">
+                            <span>参悟清虚阁道教营造艺术</span>
+                            <span>→</span>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- 4. 明永乐二年 -->
+                <div class="relative md:flex items-center justify-between group">
+                    <div class="hidden md:block w-5/12 text-right pr-10">
+                        <span class="text-xs font-bold text-red-400 bg-red-500/10 px-2.5 py-1 rounded-full border border-red-500/30">明永乐二年 (1404年)</span>
+                        <h3 class="text-xl font-bold text-white mt-2 font-serif group-hover:text-amber-300 transition-colors">设卫筑城 · 天津鼓楼晨钟暮鼓</h3>
+                        <p class="text-slate-300 text-sm mt-1 leading-relaxed">
+                            明成祖朱棣正式赐名“天津卫”，建老城修鼓楼，悬挂3吨大铁钟，成为城市城防指挥与作息中心。
+                        </p>
+                    </div>
+                    <div class="absolute -left-[32px] md:static md:left-auto w-10 h-10 rounded-full bg-slate-900 border-2 border-red-400 flex items-center justify-center text-sm font-bold text-red-300 z-10 shadow-lg shadow-red-500/20">
+                        卫
+                    </div>
+                    <div class="md:w-5/12 pl-4 md:pl-10">
+                        <div class="md:hidden">
+                            <span class="text-xs font-bold text-red-400 bg-red-500/10 px-2.5 py-1 rounded-full border border-red-500/30">明永乐二年 (1404年)</span>
+                            <h3 class="text-lg font-bold text-white mt-2">设卫筑城 · 天津鼓楼晨钟暮鼓</h3>
+                            <p class="text-slate-300 text-xs mt-1 leading-relaxed mb-3">朱棣赐名天津卫，建老城修鼓楼，悬挂明代大铁钟。</p>
+                        </div>
+                        <a href="gulou.html" class="inline-flex items-center space-x-1.5 text-xs text-amber-400 hover:text-amber-200 transition-colors">
+                            <span>聆听鼓楼明代古钟回音</span>
+                            <span>→</span>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- 5. 清光绪元年 -->
+                <div class="relative md:flex items-center justify-between group">
+                    <div class="hidden md:block w-5/12 text-right pr-10">
+                        <span class="text-xs font-bold text-amber-400 bg-amber-500/10 px-2.5 py-1 rounded-full border border-amber-500/30">清光绪元年 (1875年)</span>
+                        <h3 class="text-xl font-bold text-white mt-2 font-serif group-hover:text-amber-300 transition-colors">石家大院 · 华北第一豪宅</h3>
+                        <p class="text-slate-300 text-sm mt-1 leading-relaxed">
+                            津门八大家尊美堂故居，占地万余平米，18座院落通达，民间最大室内戏楼与绝妙砖雕展现津商鼎盛气象。
+                        </p>
+                    </div>
+                    <div class="absolute -left-[32px] md:static md:left-auto w-10 h-10 rounded-full bg-slate-900 border-2 border-amber-400 flex items-center justify-center text-sm font-bold text-amber-300 z-10 shadow-lg shadow-amber-500/20">
+                        清
+                    </div>
+                    <div class="md:w-5/12 pl-4 md:pl-10">
+                        <div class="md:hidden">
+                            <span class="text-xs font-bold text-amber-400 bg-amber-500/10 px-2.5 py-1 rounded-full border border-amber-500/30">清光绪元年 (1875年)</span>
+                            <h3 class="text-lg font-bold text-white mt-2">石家大院 · 华北第一豪宅</h3>
+                            <p class="text-slate-300 text-xs mt-1 leading-relaxed mb-3">津门八大家尊美堂故居，民间最大室内戏楼与绝妙砖雕。</p>
+                        </div>
+                        <a href="shijiadayuan.html" class="inline-flex items-center space-x-1.5 text-xs text-amber-400 hover:text-amber-200 transition-colors">
+                            <span>探秘杨柳青尊美堂大院</span>
+                            <span>→</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
         </section>
+
+        <!-- 4. 五大古建胜境展厅 (Heritage Landmark Matrix & Filter) -->
+        <section id="buildings" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12">
+                <span class="text-xs font-semibold uppercase tracking-widest text-amber-400 block mb-2">Heritage Masterpieces</span>
+                <h2 class="font-calligraphy text-4xl sm:text-5xl text-amber-300 mb-3">千年名胜 · 营造大观</h2>
+                <div class="w-24 h-1 bg-amber-500/60 mx-auto rounded-full mb-4"></div>
+                <p class="text-slate-400 text-sm sm:text-base max-w-2xl mx-auto">
+                    每一座古建筑均已开辟专属沉浸式详解档案，拒绝“功能开发中”的等待，即刻深入探秘。
+                </p>
+            </div>
+
+            <!-- 分类筛选器 Tab -->
+            <div class="flex flex-wrap justify-center gap-2.5 mb-12">
+                <button data-filter="all" class="filter-btn px-5 py-2 rounded-full bg-amber-600 text-white text-xs sm:text-sm font-semibold transition-all">
+                    全部胜境
+                </button>
+                <button data-filter="liao" class="filter-btn px-5 py-2 rounded-full bg-white/10 text-slate-200 text-xs sm:text-sm font-semibold hover:bg-white/20 transition-all">
+                    辽代木构
+                </button>
+                <button data-filter="folk" class="filter-btn px-5 py-2 rounded-full bg-white/10 text-slate-200 text-xs sm:text-sm font-semibold hover:bg-white/20 transition-all">
+                    运河民俗
+                </button>
+                <button data-filter="city" class="filter-btn px-5 py-2 rounded-full bg-white/10 text-slate-200 text-xs sm:text-sm font-semibold hover:bg-white/20 transition-all">
+                    明清城防
+                </button>
+                <button data-filter="house" class="filter-btn px-5 py-2 rounded-full bg-white/10 text-slate-200 text-xs sm:text-sm font-semibold hover:bg-white/20 transition-all">
+                    北方民居
+                </button>
+                <button data-filter="dao" class="filter-btn px-5 py-2 rounded-full bg-white/10 text-slate-200 text-xs sm:text-sm font-semibold hover:bg-white/20 transition-all">
+                    道教高阁
+                </button>
+            </div>
+
+            <!-- 古迹卡片矩阵网格 (5大核心古迹) -->
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+
+                <!-- 1. 独乐寺 -->
+                <div class="building-grid-card oriental-card rounded-2xl overflow-hidden flex flex-col justify-between" data-category="liao">
+                    <div>
+                        <div class="h-60 overflow-hidden relative group">
+                            <img src="resources/dulesi_real.jpg" alt="独乐寺" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+                            <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-transparent to-transparent opacity-80"></div>
+                            <span class="absolute top-3 left-3 px-3 py-1 rounded-full bg-amber-500/90 text-slate-950 text-xs font-bold">
+                                首批国保第77号
+                            </span>
+                            <span class="absolute top-3 right-3 px-2.5 py-1 rounded-md bg-black/60 text-amber-300 text-xs backdrop-blur-sm">
+                                辽代 · 984年
+                            </span>
+                            <div class="absolute bottom-3 left-3 text-xs text-slate-300 flex items-center space-x-2">
+                                <span>📍 蓟州区武定街</span>
+                                <span>·</span>
+                                <span>🎫 门票 ¥40</span>
+                            </div>
+                        </div>
+                        <div class="p-6">
+                            <div class="flex items-center justify-between mb-2">
+                                <h3 class="text-2xl font-bold text-white font-serif">蓟县独乐寺</h3>
+                                <span class="text-xs px-2 py-0.5 rounded bg-amber-500/10 text-amber-300 border border-amber-500/30">无上国宝</span>
+                            </div>
+                            <p class="text-slate-300 text-xs sm:text-sm line-clamp-3 leading-relaxed mb-4">
+                                距今天津1040年历史的辽代木构楼阁，通高23米观音阁经28次强震屹立不倒。内塑16米十一面观音像，山门为中国现存最早庑殿顶。
+                            </p>
+                        </div>
+                    </div>
+                    <div class="px-6 pb-6 pt-2 border-t border-slate-800 flex items-center justify-between">
+                        <button class="btn-wishlist text-xs px-3 py-1.5 rounded-lg border border-white/20 bg-white/10 text-slate-300 hover:text-white transition-all flex items-center space-x-1" data-id="dulesi" data-title="蓟县独乐寺" data-time="2.5小时" data-loc="蓟州区" data-img="resources/dulesi_real.jpg">
+                            🤍 <span class="hidden sm:inline">加入心愿单</span>
+                        </button>
+                        <a href="dulesi.html" class="text-xs px-4 py-2 rounded-lg bg-amber-600 hover:bg-amber-500 text-white font-semibold transition-all shadow-md">
+                            深入探索档案 →
+                        </a>
+                    </div>
+                </div>
+
+                <!-- 2. 天后宫 -->
+                <div class="building-grid-card oriental-card rounded-2xl overflow-hidden flex flex-col justify-between" data-category="folk">
+                    <div>
+                        <div class="h-60 overflow-hidden relative group">
+                            <img src="resources/tianhougong_real.jpg" alt="天后宫" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+                            <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-transparent to-transparent opacity-80"></div>
+                            <span class="absolute top-3 left-3 px-3 py-1 rounded-full bg-red-600/90 text-white text-xs font-bold">
+                                国家5A级古文化街
+                            </span>
+                            <span class="absolute top-3 right-3 px-2.5 py-1 rounded-md bg-black/60 text-amber-300 text-xs backdrop-blur-sm">
+                                元代 · 1326年
+                            </span>
+                            <div class="absolute bottom-3 left-3 text-xs text-slate-300 flex items-center space-x-2">
+                                <span>📍 南开区古文化街</span>
+                                <span>·</span>
+                                <span>🎫 门票 ¥10</span>
+                            </div>
+                        </div>
+                        <div class="p-6">
+                            <div class="flex items-center justify-between mb-2">
+                                <h3 class="text-2xl font-bold text-white font-serif">天津天后宫</h3>
+                                <span class="text-xs px-2 py-0.5 rounded bg-red-500/10 text-red-300 border border-red-500/30">津门民俗源头</span>
+                            </div>
+                            <p class="text-slate-300 text-xs sm:text-sm line-clamp-3 leading-relaxed mb-4">
+                                中国现存年代最久的天妃庙宇之一，坐西朝东面向海河，现为天津民俗博物馆。每年农历三月二十三“皇会”巡游名扬海内外。
+                            </p>
+                        </div>
+                    </div>
+                    <div class="px-6 pb-6 pt-2 border-t border-slate-800 flex items-center justify-between">
+                        <button class="btn-wishlist text-xs px-3 py-1.5 rounded-lg border border-white/20 bg-white/10 text-slate-300 hover:text-white transition-all flex items-center space-x-1" data-id="tianhougong" data-title="天津天后宫" data-time="1.5小时" data-loc="南开区" data-img="resources/tianhougong_real.jpg">
+                            🤍 <span class="hidden sm:inline">加入心愿单</span>
+                        </button>
+                        <a href="tianhougong.html" class="text-xs px-4 py-2 rounded-lg bg-amber-600 hover:bg-amber-500 text-white font-semibold transition-all shadow-md">
+                            深入探索档案 →
+                        </a>
+                    </div>
+                </div>
+
+                <!-- 3. 天津鼓楼 -->
+                <div class="building-grid-card oriental-card rounded-2xl overflow-hidden flex flex-col justify-between" data-category="city">
+                    <div>
+                        <div class="h-60 overflow-hidden relative group">
+                            <img src="resources/gulou_real.jpg" alt="天津鼓楼" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+                            <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-transparent to-transparent opacity-80"></div>
+                            <span class="absolute top-3 left-3 px-3 py-1 rounded-full bg-blue-600/90 text-white text-xs font-bold">
+                                明成设卫城标
+                            </span>
+                            <span class="absolute top-3 right-3 px-2.5 py-1 rounded-md bg-black/60 text-amber-300 text-xs backdrop-blur-sm">
+                                明代 · 1404年
+                            </span>
+                            <div class="absolute bottom-3 left-3 text-xs text-slate-300 flex items-center space-x-2">
+                                <span>📍 南开区老城厢</span>
+                                <span>·</span>
+                                <span>🎫 免费预约</span>
+                            </div>
+                        </div>
+                        <div class="p-6">
+                            <div class="flex items-center justify-between mb-2">
+                                <h3 class="text-2xl font-bold text-white font-serif">天津鼓楼</h3>
+                                <span class="text-xs px-2 py-0.5 rounded bg-blue-500/10 text-blue-300 border border-blue-500/30">城防原点</span>
+                            </div>
+                            <p class="text-slate-300 text-xs sm:text-sm line-clamp-3 leading-relaxed mb-4">
+                                天津卫三宗宝之一，通高27米。青砖城台四向开门分别题额“镇东、安西、定南、拱北”，二层悬明代重逾3吨铁铸大钟。
+                            </p>
+                        </div>
+                    </div>
+                    <div class="px-6 pb-6 pt-2 border-t border-slate-800 flex items-center justify-between">
+                        <button class="btn-wishlist text-xs px-3 py-1.5 rounded-lg border border-white/20 bg-white/10 text-slate-300 hover:text-white transition-all flex items-center space-x-1" data-id="gulou" data-title="天津鼓楼" data-time="1.5小时" data-loc="南开区" data-img="resources/gulou_real.jpg">
+                            🤍 <span class="hidden sm:inline">加入心愿单</span>
+                        </button>
+                        <a href="gulou.html" class="text-xs px-4 py-2 rounded-lg bg-amber-600 hover:bg-amber-500 text-white font-semibold transition-all shadow-md">
+                            深入探索档案 →
+                        </a>
+                    </div>
+                </div>
+
+                <!-- 4. 石家大院 -->
+                <div class="building-grid-card oriental-card rounded-2xl overflow-hidden flex flex-col justify-between" data-category="house">
+                    <div>
+                        <div class="h-60 overflow-hidden relative group">
+                            <img src="resources/shijiadayuan_real.jpg" alt="石家大院" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+                            <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-transparent to-transparent opacity-80"></div>
+                            <span class="absolute top-3 left-3 px-3 py-1 rounded-full bg-amber-500/90 text-slate-950 text-xs font-bold">
+                                华北第一宅
+                            </span>
+                            <span class="absolute top-3 right-3 px-2.5 py-1 rounded-md bg-black/60 text-amber-300 text-xs backdrop-blur-sm">
+                                清代 · 1875年
+                            </span>
+                            <div class="absolute bottom-3 left-3 text-xs text-slate-300 flex items-center space-x-2">
+                                <span>📍 西青区杨柳青</span>
+                                <span>·</span>
+                                <span>🎫 门票 ¥27</span>
+                            </div>
+                        </div>
+                        <div class="p-6">
+                            <div class="flex items-center justify-between mb-2">
+                                <h3 class="text-2xl font-bold text-white font-serif">杨柳青石家大院</h3>
+                                <span class="text-xs px-2 py-0.5 rounded bg-amber-500/10 text-amber-300 border border-amber-500/30">北方民居冠冕</span>
+                            </div>
+                            <p class="text-slate-300 text-xs sm:text-sm line-clamp-3 leading-relaxed mb-4">
+                                津门八大家石元仕故宅“尊美堂”，占地万余平米，278间房屋。坐拥北方民间规模最大之封闭木构戏楼与绝伦砖雕、木雕艺术。
+                            </p>
+                        </div>
+                    </div>
+                    <div class="px-6 pb-6 pt-2 border-t border-slate-800 flex items-center justify-between">
+                        <button class="btn-wishlist text-xs px-3 py-1.5 rounded-lg border border-white/20 bg-white/10 text-slate-300 hover:text-white transition-all flex items-center space-x-1" data-id="shijiadayuan" data-title="杨柳青石家大院" data-time="2.5小时" data-loc="西青区" data-img="resources/shijiadayuan_real.jpg">
+                            🤍 <span class="hidden sm:inline">加入心愿单</span>
+                        </button>
+                        <a href="shijiadayuan.html" class="text-xs px-4 py-2 rounded-lg bg-amber-600 hover:bg-amber-500 text-white font-semibold transition-all shadow-md">
+                            深入探索档案 →
+                        </a>
+                    </div>
+                </div>
+
+                <!-- 5. 玉皇阁 -->
+                <div class="building-grid-card oriental-card rounded-2xl overflow-hidden flex flex-col justify-between" data-category="dao">
+                    <div>
+                        <div class="h-60 overflow-hidden relative group">
+                            <img src="resources/yuhuangge_real.jpg" alt="玉皇阁" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+                            <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-transparent to-transparent opacity-80"></div>
+                            <span class="absolute top-3 left-3 px-3 py-1 rounded-full bg-emerald-600/90 text-white text-xs font-bold">
+                                市区最古明构
+                            </span>
+                            <span class="absolute top-3 right-3 px-2.5 py-1 rounded-md bg-black/60 text-amber-300 text-xs backdrop-blur-sm">
+                                明洪武 · 1370s
+                            </span>
+                            <div class="absolute bottom-3 left-3 text-xs text-slate-300 flex items-center space-x-2">
+                                <span>📍 南开区三岔河口</span>
+                                <span>·</span>
+                                <span>🎫 免费开放</span>
+                            </div>
+                        </div>
+                        <div class="p-6">
+                            <div class="flex items-center justify-between mb-2">
+                                <h3 class="text-2xl font-bold text-white font-serif">敕建玉皇阁</h3>
+                                <span class="text-xs px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-300 border border-emerald-500/30">道阙凌虚</span>
+                            </div>
+                            <p class="text-slate-300 text-xs sm:text-sm line-clamp-3 leading-relaxed mb-4">
+                                紧邻海河与运河三岔河口要津，为天津市区现存最早的明代道教木构建筑群遗存。核心清虚阁重檐歇山顶高台矗立，八卦藻井精绝。
+                            </p>
+                        </div>
+                    </div>
+                    <div class="px-6 pb-6 pt-2 border-t border-slate-800 flex items-center justify-between">
+                        <button class="btn-wishlist text-xs px-3 py-1.5 rounded-lg border border-white/20 bg-white/10 text-slate-300 hover:text-white transition-all flex items-center space-x-1" data-id="yuhuangge" data-title="敕建玉皇阁" data-time="1小时" data-loc="南开区" data-img="resources/yuhuangge_real.jpg">
+                            🤍 <span class="hidden sm:inline">加入心愿单</span>
+                        </button>
+                        <a href="yuhuangge.html" class="text-xs px-4 py-2 rounded-lg bg-amber-600 hover:bg-amber-500 text-white font-semibold transition-all shadow-md">
+                            深入探索档案 →
+                        </a>
+                    </div>
+                </div>
+
+                <!-- 6. 知识挑战快速卡片 -->
+                <div class="building-grid-card oriental-card rounded-2xl overflow-hidden flex flex-col justify-between border-dashed border-amber-500/50 bg-gradient-to-br from-amber-950/30 to-slate-900/90" data-category="all liao folk city house dao">
+                    <div class="p-8 text-center flex flex-col items-center justify-center h-full">
+                        <div class="text-5xl mb-4 animate-bounce">📜</div>
+                        <h3 class="text-2xl font-bold text-amber-300 font-calligraphy mb-2">古建知识达人挑战</h3>
+                        <p class="text-slate-300 text-xs sm:text-sm leading-relaxed mb-6">
+                            已熟记五大名胜？测测你的古建鉴赏与历史储备！通过15道精选题，赢取专属「津门古建金牌学者」电子研学证书。
+                        </p>
+                        <div class="flex items-center space-x-4 text-xs text-amber-400 font-mono mb-4">
+                            <span>★ 满分150分</span>
+                            <span>★ 即时答题解析</span>
+                        </div>
+                    </div>
+                    <div class="px-6 pb-6 pt-2 text-center">
+                        <a href="quiz.html" class="inline-block w-full py-3 rounded-xl bg-gradient-to-r from-red-600 to-amber-600 text-white font-bold text-sm shadow-lg hover:scale-105 transition-transform">
+                            立即开启答题 →
+                        </a>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- 5. 精选研学旅游路线 (Curated Travel Itineraries) -->
+        <section id="itineraries" class="max-w-6xl mx-auto px-6">
+            <div class="text-center mb-12">
+                <span class="text-xs font-semibold uppercase tracking-widest text-amber-400 block mb-2">Curated Travel Itineraries</span>
+                <h2 class="font-calligraphy text-4xl sm:text-5xl text-amber-300 mb-3">研学专线 · 沉浸寻古</h2>
+                <div class="w-24 h-1 bg-amber-500/60 mx-auto rounded-full mb-4"></div>
+                <p class="text-slate-400 text-sm sm:text-base max-w-2xl mx-auto">
+                    由文史研学专家设计的经典一日与两日游览线路，科学串联交通、亮点、美食与行囊贴士。
+                </p>
+            </div>
+
+            <!-- 路线切换 Tab 栏 -->
+            <div class="flex flex-wrap justify-center border-b border-slate-800 gap-2 mb-8">
+                <button class="itinerary-tab-btn py-3 px-6 text-sm font-semibold border-b-2 border-amber-500 text-amber-400 bg-white/10 rounded-t-lg transition-all" data-target="panel-itinerary-1">
+                    专线一：【辽韵探幽】蓟北千年辽构一日游
+                </button>
+                <button class="itinerary-tab-btn py-3 px-6 text-sm font-semibold border-b-2 border-transparent text-slate-400 hover:text-slate-200 rounded-t-lg transition-all" data-target="panel-itinerary-2">
+                    专线二：【老城寻味】运河民俗与城垣一日游
+                </button>
+                <button class="itinerary-tab-btn py-3 px-6 text-sm font-semibold border-b-2 border-transparent text-slate-400 hover:text-slate-200 rounded-t-lg transition-all" data-target="panel-itinerary-3">
+                    专线三：【津商雅风】杨柳青大院非遗二日游
+                </button>
+            </div>
+
+            <!-- 路线详情面板 -->
+            <div class="bg-slate-900/70 border border-amber-500/25 rounded-3xl p-6 sm:p-10 backdrop-blur-md">
+                <!-- 路线一 -->
+                <div id="panel-itinerary-1" class="itinerary-panel space-y-6">
+                    <div class="flex flex-wrap items-center justify-between gap-4 pb-4 border-b border-slate-800">
+                        <div>
+                            <span class="text-xs px-2.5 py-1 rounded bg-amber-500/20 text-amber-300 border border-amber-500/30">历史建筑学者推荐</span>
+                            <h3 class="text-2xl font-bold text-white font-serif mt-2">【辽韵探幽】蓟北千年辽构与长城揽胜一日游</h3>
+                        </div>
+                        <div class="text-right text-xs text-slate-400">
+                            <div>建议游玩：<span class="text-amber-400 font-bold">全天 (约7小时)</span></div>
+                            <div>交通方式：<span class="text-slate-200">市郊列车S9线 / 自驾约1.5h</span></div>
+                        </div>
+                    </div>
+                    <div class="grid md:grid-cols-4 gap-4 text-xs">
+                        <div class="p-4 bg-slate-800/60 rounded-xl border border-slate-700">
+                            <span class="text-amber-400 font-bold">09:00 - 11:30</span>
+                            <h4 class="font-bold text-white text-sm my-1">独乐寺深度研学</h4>
+                            <p class="text-slate-400 leading-relaxed">重温梁思成考察足迹，观赏山门庑殿顶鸱吻、23米观音阁斗栱抗震层与十一面观音泥塑。</p>
+                        </div>
+                        <div class="p-4 bg-slate-800/60 rounded-xl border border-slate-700">
+                            <span class="text-amber-400 font-bold">11:30 - 13:00</span>
+                            <h4 class="font-bold text-white text-sm my-1">渔阳古街品味午餐</h4>
+                            <p class="text-slate-400 leading-relaxed">漫步千年渔阳古街，品尝蓟州特产碗坨、羊汤、一品烧饼及塞上酸梨糕。</p>
+                        </div>
+                        <div class="p-4 bg-slate-800/60 rounded-xl border border-slate-700">
+                            <span class="text-amber-400 font-bold">13:30 - 15:00</span>
+                            <h4 class="font-bold text-white text-sm my-1">蓟州白塔与鲁班庙</h4>
+                            <p class="text-slate-400 leading-relaxed">距独乐寺南300米，探访辽代白塔亭阁式与密檐式复合塔刹，赏鲁班庙古代木匠技艺雕刻。</p>
+                        </div>
+                        <div class="p-4 bg-slate-800/60 rounded-xl border border-slate-700">
+                            <span class="text-amber-400 font-bold">15:30 - 17:30</span>
+                            <h4 class="font-bold text-white text-sm my-1">盘山日落归舟</h4>
+                            <p class="text-slate-400 leading-relaxed">“早知有盘山，何必下江南。”登盘山观三盘胜境与夕阳染翠，尽兴而归。</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 路线二 -->
+                <div id="panel-itinerary-2" class="itinerary-panel hidden space-y-6">
+                    <div class="flex flex-wrap items-center justify-between gap-4 pb-4 border-b border-slate-800">
+                        <div>
+                            <span class="text-xs px-2.5 py-1 rounded bg-red-500/20 text-red-300 border border-red-500/30">初游天津经典必选</span>
+                            <h3 class="text-2xl font-bold text-white font-serif mt-2">【老城寻味】运河民俗与城防原点一日游</h3>
+                        </div>
+                        <div class="text-right text-xs text-slate-400">
+                            <div>建议游玩：<span class="text-amber-400 font-bold">全天 (约8小时)</span></div>
+                            <div>交通方式：<span class="text-slate-200">地铁2号线 / 步行 + 海河游船</span></div>
+                        </div>
+                    </div>
+                    <div class="grid md:grid-cols-4 gap-4 text-xs">
+                        <div class="p-4 bg-slate-800/60 rounded-xl border border-slate-700">
+                            <span class="text-amber-400 font-bold">09:00 - 11:00</span>
+                            <h4 class="font-bold text-white text-sm my-1">天后宫与古文化街</h4>
+                            <p class="text-slate-400 leading-relaxed">拜谒元代海神祖庙，逛古文化街民俗店铺，品尝地道煎饼馃子、熟梨糕。</p>
+                        </div>
+                        <div class="p-4 bg-slate-800/60 rounded-xl border border-slate-700">
+                            <span class="text-amber-400 font-bold">11:30 - 13:00</span>
+                            <h4 class="font-bold text-white text-sm my-1">玉皇阁与三岔河口</h4>
+                            <p class="text-slate-400 leading-relaxed">出古文化街北口即达玉皇阁，仰望清虚飞阁，凭眺子牙河与南运河交汇处。</p>
+                        </div>
+                        <div class="p-4 bg-slate-800/60 rounded-xl border border-slate-700">
+                            <span class="text-amber-400 font-bold">13:30 - 16:30</span>
+                            <h4 class="font-bold text-white text-sm my-1">天津鼓楼与广东会馆</h4>
+                            <p class="text-slate-400 leading-relaxed">登鼓楼老城博物馆，看3吨明代铁钟，进广东会馆赏纯木戏楼，听谦祥益相声。</p>
+                        </div>
+                        <div class="p-4 bg-slate-800/60 rounded-xl border border-slate-700">
+                            <span class="text-amber-400 font-bold">18:00 - 20:30</span>
+                            <h4 class="font-bold text-white text-sm my-1">海河夜游与天津之眼</h4>
+                            <p class="text-slate-400 leading-relaxed">于古文化街码头搭乘游船，赏解放桥、津湾广场流光溢彩，打卡天津之眼摩天轮。</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 路线三 -->
+                <div id="panel-itinerary-3" class="itinerary-panel hidden space-y-6">
+                    <div class="flex flex-wrap items-center justify-between gap-4 pb-4 border-b border-slate-800">
+                        <div>
+                            <span class="text-xs px-2.5 py-1 rounded bg-amber-500/20 text-amber-300 border border-amber-500/30">民俗亲子研学优选</span>
+                            <h3 class="text-2xl font-bold text-white font-serif mt-2">【津商雅风】杨柳青大院非遗二日游</h3>
+                        </div>
+                        <div class="text-right text-xs text-slate-400">
+                            <div>建议游玩：<span class="text-amber-400 font-bold">两日深度游</span></div>
+                            <div>交通方式：<span class="text-slate-200">公交153路 / 自驾约35分钟</span></div>
+                        </div>
+                    </div>
+                    <div class="grid md:grid-cols-4 gap-4 text-xs">
+                        <div class="p-4 bg-slate-800/60 rounded-xl border border-slate-700">
+                            <span class="text-amber-400 font-bold">D1 上午</span>
+                            <h4 class="font-bold text-white text-sm my-1">石家大院尊美堂</h4>
+                            <p class="text-slate-400 leading-relaxed">穿行18座相连四合院，细细鉴赏门楣墀头砖雕与民间规模最大戏楼。</p>
+                        </div>
+                        <div class="p-4 bg-slate-800/60 rounded-xl border border-slate-700">
+                            <span class="text-amber-400 font-bold">D1 下午</span>
+                            <h4 class="font-bold text-white text-sm my-1">杨柳青年画体验</h4>
+                            <p class="text-slate-400 leading-relaxed">走进年画作坊，在国家级传承人指导下亲手体验木版刷印与敷彩工艺。</p>
+                        </div>
+                        <div class="p-4 bg-slate-800/60 rounded-xl border border-slate-700">
+                            <span class="text-amber-400 font-bold">D2 上午</span>
+                            <h4 class="font-bold text-white text-sm my-1">御河风情街与普明寺</h4>
+                            <p class="text-slate-400 leading-relaxed">漫步南运河沿岸青石板街，品尝杨柳青酥糖、津味素包，寻访明代古寺。</p>
+                        </div>
+                        <div class="p-4 bg-slate-800/60 rounded-xl border border-slate-700">
+                            <span class="text-amber-400 font-bold">D2 下午</span>
+                            <h4 class="font-bold text-white text-sm my-1">白滩寺湿地生态采风</h4>
+                            <p class="text-slate-400 leading-relaxed">体验运河水乡农家风光，带回亲手拓印的“连年有余”年画吉祥留念。</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 6. 津门非遗与风物长廊 (Intangible Cultural Heritage Gallery) -->
+        <section id="heritage" class="max-w-6xl mx-auto px-6">
+            <div class="text-center mb-12">
+                <span class="text-xs font-semibold uppercase tracking-widest text-amber-400 block mb-2">Living Heritage</span>
+                <h2 class="font-calligraphy text-4xl sm:text-5xl text-amber-300 mb-3">活态传承 · 津门非遗与风味</h2>
+                <div class="w-24 h-1 bg-amber-500/60 mx-auto rounded-full mb-4"></div>
+                <p class="text-slate-400 text-sm sm:text-base max-w-2xl mx-auto">
+                    古建筑是凝固的史诗，非遗与市井风味则是流淌其间的烟火灵魂。
+                </p>
+            </div>
+
+            <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                <!-- 1. 杨柳青年画 -->
+                <div class="oriental-card p-5 rounded-2xl flex flex-col justify-between">
+                    <div>
+                        <div class="h-44 rounded-xl overflow-hidden mb-4 border border-white/10">
+                            <img src="resources/yangliuqing_nianhua.png" alt="杨柳青年画" class="w-full h-full object-cover hover:scale-105 transition-transform duration-500">
+                        </div>
+                        <span class="text-[10px] font-bold px-2 py-0.5 rounded bg-red-600/30 text-red-300 border border-red-500/30">首批国家级非遗</span>
+                        <h4 class="font-bold text-white text-base mt-2 mb-1">杨柳青木版年画</h4>
+                        <p class="text-xs text-slate-300 leading-relaxed">
+                            半印半画，色彩明丽，娃娃题材胖白喜庆，寄托“连年有余”、“富贵平安”的美好愿景。
+                        </p>
+                    </div>
+                </div>
+
+                <!-- 2. 泥人张彩塑 -->
+                <div class="oriental-card p-5 rounded-2xl flex flex-col justify-between">
+                    <div>
+                        <div class="h-44 rounded-xl overflow-hidden mb-4 border border-white/10 bg-slate-800 flex items-center justify-center text-5xl">
+                            🎎
+                        </div>
+                        <span class="text-[10px] font-bold px-2 py-0.5 rounded bg-amber-600/30 text-amber-300 border border-amber-500/30">国家级非遗名录</span>
+                        <h4 class="font-bold text-white text-base mt-2 mb-1">泥人张彩塑</h4>
+                        <p class="text-xs text-slate-300 leading-relaxed">
+                            始于清代道光年间，形神毕肖，以生动写实的手法将市井百态、戏曲人物塑于尺幅指掌之间。
+                        </p>
+                    </div>
+                </div>
+
+                <!-- 3. 风筝魏 -->
+                <div class="oriental-card p-5 rounded-2xl flex flex-col justify-between">
+                    <div>
+                        <div class="h-44 rounded-xl overflow-hidden mb-4 border border-white/10 bg-slate-800 flex items-center justify-center text-5xl">
+                            🪁
+                        </div>
+                        <span class="text-[10px] font-bold px-2 py-0.5 rounded bg-emerald-600/30 text-emerald-300 border border-emerald-500/30">巴拿马金奖技艺</span>
+                        <h4 class="font-bold text-white text-base mt-2 mb-1">津门风筝魏</h4>
+                        <p class="text-xs text-slate-300 leading-relaxed">
+                            骨架采用打眼扣榫结构，可折叠装盒便于携带，彩绘逼真，兼具北方硬朗与南方灵巧。
+                        </p>
+                    </div>
+                </div>
+
+                <!-- 4. 津门曲艺与四大名点 -->
+                <div class="oriental-card p-5 rounded-2xl flex flex-col justify-between">
+                    <div>
+                        <div class="h-44 rounded-xl overflow-hidden mb-4 border border-white/10 bg-slate-800 flex items-center justify-center text-5xl">
+                            🥟
+                        </div>
+                        <span class="text-[10px] font-bold px-2 py-0.5 rounded bg-blue-600/30 text-blue-300 border border-blue-500/30">曲艺之乡 · 美食</span>
+                        <h4 class="font-bold text-white text-base mt-2 mb-1">相声茶馆与煎饼馃子</h4>
+                        <p class="text-xs text-slate-300 leading-relaxed">
+                            听一回哏儿都相声，品一笼狗不理包子，尝一勺热腾腾的石磨绿豆煎饼馃子，感受津味人间。
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 7. 实用出行行囊 (Traveler's Smart Toolkit) -->
+        <section id="travel-guide" class="max-w-6xl mx-auto px-6">
+            <div class="bg-gradient-to-r from-slate-900 via-slate-900 to-amber-950/40 border border-amber-500/30 rounded-3xl p-8 sm:p-12 backdrop-blur-md">
+                <div class="text-center md:text-left md:flex items-center justify-between mb-8 pb-6 border-b border-amber-500/20">
+                    <div>
+                        <span class="text-xs font-semibold text-amber-400 uppercase tracking-widest">Traveler's Toolkit</span>
+                        <h3 class="font-calligraphy text-3xl sm:text-4xl text-amber-300 mt-1">智慧出行行囊 · 津门游览贴士</h3>
+                    </div>
+                    <div class="mt-4 md:mt-0 text-xs text-slate-400">
+                        四季宜游指数：<span class="text-emerald-400 font-bold">优（春赏海棠秋高气爽）</span>
+                    </div>
+                </div>
+
+                <div class="grid md:grid-cols-3 gap-8 text-sm">
+                    <!-- 交通网络 -->
+                    <div class="space-y-3">
+                        <div class="flex items-center space-x-2 text-amber-400 font-bold">
+                            <span>🚄</span>
+                            <span>城际与轨道交通</span>
+                        </div>
+                        <p class="text-slate-300 text-xs leading-relaxed">
+                            <strong>京津城际：</strong>北京南站至天津站仅需 <strong>30分钟</strong>，车次密集随到随走。
+                        </p>
+                        <p class="text-slate-300 text-xs leading-relaxed">
+                            <strong>市内地铁：</strong>地铁2号线直通鼓楼站与古文化街（东南角站），直达机场与天津西站。
+                        </p>
+                    </div>
+
+                    <!-- 门票与预约 -->
+                    <div class="space-y-3">
+                        <div class="flex items-center space-x-2 text-amber-400 font-bold">
+                            <span>🎫</span>
+                            <span>开放时间与票务</span>
+                        </div>
+                        <p class="text-slate-300 text-xs leading-relaxed">
+                            <strong>周一例行闭馆：</strong>鼓楼博物馆、玉皇阁周一通常闭馆修整，请合理避开周一出行。
+                        </p>
+                        <p class="text-slate-300 text-xs leading-relaxed">
+                            <strong>实名登记：</strong>独乐寺、石家大院支持现场购票，学生证与60岁以上老人享受半价或免票优待。
+                        </p>
+                    </div>
+
+                    <!-- 文物修护守则 -->
+                    <div class="space-y-3">
+                        <div class="flex items-center space-x-2 text-amber-400 font-bold">
+                            <span>🛡️</span>
+                            <span>古建筑参观文明守则</span>
+                        </div>
+                        <p class="text-slate-300 text-xs leading-relaxed">
+                            <strong>严禁烟火：</strong>千年木结构建筑防火要求极高，全景区严禁携带火种吸烟。
+                        </p>
+                        <p class="text-slate-300 text-xs leading-relaxed">
+                            <strong>禁用闪光灯：</strong>观音阁与石家大院戏楼壁画彩绘极为珍贵，拍摄时请务必关闭相机闪光灯。
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
     </main>
 
-    <!-- 页脚 -->
-    <footer class="py-12 text-center" style="background-color: rgba(0,0,0,0.3);">
-        <div class="container mx-auto px-6">
-            <p class="text-sm" style="color: var(--paper-white);">
-                © 2024 天津古建 一眼千年 | 传承千年文化，守护历史记忆
-            </p>
+    <!-- 8. 行程心愿单侧边抽屉 (Wishlist Slide-out Drawer) -->
+    <div id="wishlistBackdrop" class="hidden fixed inset-0 bg-black/60 backdrop-blur-sm z-50 transition-opacity" onclick="toggleWishlistDrawer()"></div>
+
+    <aside id="wishlistDrawer" class="fixed top-0 right-0 h-full w-full max-w-md bg-slate-900 border-l border-amber-500/30 z-50 transform translate-x-full transition-transform duration-300 shadow-2xl flex flex-col justify-between">
+        <!-- 抽屉头部 -->
+        <div class="p-6 border-b border-slate-800 flex items-center justify-between">
+            <div class="flex items-center space-x-2">
+                <span class="text-2xl">🎒</span>
+                <div>
+                    <h3 class="font-bold text-white text-lg">我的津门研学心愿单</h3>
+                    <p id="wishlistTotalTime" class="text-xs text-amber-400">建议耗时计算中...</p>
+                </div>
+            </div>
+            <button onclick="toggleWishlistDrawer()" class="text-slate-400 hover:text-white text-2xl font-bold p-1">×</button>
+        </div>
+
+        <!-- 收藏列表内容 -->
+        <div id="wishlistItemsContainer" class="p-6 overflow-y-auto flex-grow space-y-3">
+            <!-- JS 动态渲染 -->
+        </div>
+
+        <!-- 抽屉底部操作 -->
+        <div class="p-6 border-t border-slate-800 bg-slate-950/80 space-y-3">
+            <button onclick="copyWishlistPlan()" class="w-full py-3 rounded-xl bg-amber-600 hover:bg-amber-500 text-white font-bold text-sm shadow-md transition-all flex items-center justify-center space-x-2">
+                <span>📋</span>
+                <span>复制我的研学游览清单</span>
+            </button>
+            <p class="text-[11px] text-slate-500 text-center">心愿单数据保存在您的本地浏览器中</p>
+        </div>
+    </aside>
+
+    <!-- 返回顶部浮钮 -->
+    <button id="backToTopBtn" class="fixed bottom-8 right-8 z-40 w-12 h-12 rounded-full bg-slate-900/90 border border-amber-500/40 text-amber-300 flex items-center justify-center shadow-2xl backdrop-blur-md opacity-0 pointer-events-none transition-all duration-300 hover:bg-amber-600 hover:text-white" aria-label="返回顶部">
+        ↑
+    </button>
+
+    <!-- 9. 统一沉稳页脚 -->
+    <footer class="bg-slate-950 border-t border-amber-500/20 py-12 text-slate-400 text-xs">
+        <div class="max-w-6xl mx-auto px-6 grid md:grid-cols-4 gap-8 mb-8">
+            <div class="md:col-span-2">
+                <div class="flex items-center space-x-2 mb-3">
+                    <span class="text-2xl">🏯</span>
+                    <span class="font-calligraphy text-2xl text-amber-300">津门华章</span>
+                </div>
+                <p class="text-slate-400 leading-relaxed text-xs max-w-sm mb-4">
+                    “一眼千年 · 守护津沽文脉。”致力于以当代数字交互审美与严谨文史考证，全景呈现天津古建筑营造智慧与运河民俗文化之美。
+                </p>
+                <div class="text-[11px] text-slate-500 font-mono">
+                    GitHub: <a href="https://github.com/Johnwatson1234/tjgj" class="text-amber-400 hover:underline">Johnwatson1234/tjgj (tianjin-heritage-travel)</a>
+                </div>
+            </div>
+
+            <div>
+                <h4 class="font-bold text-white mb-3 text-sm">五大胜境专栏</h4>
+                <ul class="space-y-1.5">
+                    <li><a href="dulesi.html" class="hover:text-amber-300 transition-colors">独乐寺 (辽代木构三绝)</a></li>
+                    <li><a href="tianhougong.html" class="hover:text-amber-300 transition-colors">天后宫 (元代海神祖庙)</a></li>
+                    <li><a href="gulou.html" class="hover:text-amber-300 transition-colors">天津鼓楼 (明代城防原点)</a></li>
+                    <li><a href="shijiadayuan.html" class="hover:text-amber-300 transition-colors">石家大院 (华北第一大宅)</a></li>
+                    <li><a href="yuhuangge.html" class="hover:text-amber-300 transition-colors">玉皇阁 (三岔河口道阙)</a></li>
+                </ul>
+            </div>
+
+            <div>
+                <h4 class="font-bold text-white mb-3 text-sm">文旅互动专区</h4>
+                <ul class="space-y-1.5">
+                    <li><a href="quiz.html" class="hover:text-amber-300 transition-colors">古建常识知识测试</a></li>
+                    <li><a href="#itineraries" class="hover:text-amber-300 transition-colors">三大精选研学专线</a></li>
+                    <li><a href="#heritage" class="hover:text-amber-300 transition-colors">津门非遗与津味美食</a></li>
+                    <li><a href="#travel-guide" class="hover:text-amber-300 transition-colors">智慧出行与参观指南</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="max-w-6xl mx-auto px-6 pt-6 border-t border-slate-900 text-center text-[11px] text-slate-500">
+            <p>© 2026 津门华章 · 天津古建与历史文旅宣传门户平台 | 传承中华优秀传统营造文化</p>
         </div>
     </footer>
 
+    <!-- 交互核心脚本 -->
     <script src="main.js"></script>
 </body>
 </html>

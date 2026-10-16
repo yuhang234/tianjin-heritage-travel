@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>玉皇阁 - 敕建仙阙·三岔河口古迹 | 津门华章</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700&family=Ma+Shan+Zheng&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --ink-navy: #111E2E;
+            --ink-deep: #1A2A3A;
+            --cinnabar: #B83B26;
+            --bronze-gold: #C5A059;
+            --paper-cream: #FBF9F5;
+        }
+        body {
+            font-family: 'Noto Serif SC', 'Songti SC', SimSun, serif;
+            background-color: var(--ink-navy);
+            color: var(--paper-cream);
+        }
+        .font-calligraphy {
+            font-family: 'Ma Shan Zheng', 'Kaiti', cursive;
+        }
+        .hero-banner {
+            background-image: linear-gradient(to bottom, rgba(17, 30, 46, 0.55) 0%, rgba(17, 30, 46, 0.95) 100%), url('resources/yuhuangge_real.jpg');
+            background-size: cover;
+            background-position: center 30%;
+        }
+        .tab-btn.active {
+            background: linear-gradient(135deg, var(--cinnabar), #992815);
+            color: white;
+            border-color: transparent;
+        }
+        .timeline-line::before {
+            content: '';
+            position: absolute;
+            left: 20px;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: linear-gradient(to bottom, var(--bronze-gold), transparent);
+        }
+        @media (min-width: 768px) {
+            .timeline-line::before {
+                left: 50%;
+                transform: translateX(-50%);
+            }
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col antialiased selection:bg-amber-500 selection:text-white">
+
+    <!-- 顶部统一导航栏 -->
+    <nav class="fixed top-0 w-full z-50 bg-slate-950/80 backdrop-blur-md border-b border-amber-500/20">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+            <a href="index.html" class="flex items-center space-x-3 group">
+                <span class="text-3xl">🏯</span>
+                <div>
+                    <span class="font-calligraphy text-2xl text-amber-300 tracking-wider block group-hover:text-amber-200 transition-colors">津门华章</span>
+                    <span class="text-[10px] text-amber-500/80 tracking-widest block uppercase">Tianjin Heritage Travel</span>
+                </div>
+            </a>
+            <div class="hidden md:flex items-center space-x-8 text-sm font-medium">
+                <a href="index.html" class="text-slate-300 hover:text-amber-300 transition-colors">首页</a>
+                <a href="dulesi.html" class="text-slate-300 hover:text-amber-300 transition-colors">独乐寺</a>
+                <a href="tianhougong.html" class="text-slate-300 hover:text-amber-300 transition-colors">天后宫</a>
+                <a href="gulou.html" class="text-slate-300 hover:text-amber-300 transition-colors">天津鼓楼</a>
+                <a href="shijiadayuan.html" class="text-slate-300 hover:text-amber-300 transition-colors">石家大院</a>
+                <a href="yuhuangge.html" class="text-amber-400 font-semibold border-b-2 border-amber-400 pb-1">玉皇阁</a>
+                <a href="quiz.html" class="text-slate-300 hover:text-amber-300 transition-colors">知识问答</a>
+            </div>
+            <div class="flex items-center space-x-4">
+                <a href="index.html#buildings" class="text-xs px-4 py-2 rounded-full border border-amber-500/40 text-amber-300 hover:bg-amber-500/20 transition-all">
+                    ← 返回名胜矩阵
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 英雄巨幕 Banner -->
+    <header class="hero-banner pt-36 pb-20 relative">
+        <div class="max-w-6xl mx-auto px-6 text-center">
+            <span class="inline-block py-1 px-4 rounded-full bg-emerald-900/60 border border-emerald-500/40 text-emerald-200 text-xs font-semibold mb-4 tracking-widest">
+                道教遗存 · 市区最古木构高阁
+            </span>
+            <h1 class="font-calligraphy text-4xl sm:text-6xl text-amber-300 mb-6 drop-shadow-lg">
+                玉皇阁 · 凌虚古阙
+            </h1>
+            <p class="text-slate-300 text-base sm:text-xl max-w-3xl mx-auto leading-relaxed mb-8">
+                坐落于海河、南运河、子牙河三岔河口之畔，始建于明洪武初年。作为天津市区现存年代最久远的道教木构建筑群核心遗存，承载着数百年漕运与祈福历史。
+            </p>
+
+            <!-- 核心数据卡 -->
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-4xl mx-auto mt-10">
+                <div class="bg-slate-900/70 backdrop-blur-md p-5 rounded-xl border border-amber-500/20">
+                    <div class="text-3xl font-bold text-amber-400 font-serif">明洪武年间</div>
+                    <div class="text-xs text-slate-400 mt-1">敕建古刹始源</div>
+                </div>
+                <div class="bg-slate-900/70 backdrop-blur-md p-5 rounded-xl border border-amber-500/20">
+                    <div class="text-3xl font-bold text-amber-400 font-serif">清虚阁</div>
+                    <div class="text-xs text-slate-400 mt-1">核心现存重檐歇山阁</div>
+                </div>
+                <div class="bg-slate-900/70 backdrop-blur-md p-5 rounded-xl border border-amber-500/20">
+                    <div class="text-3xl font-bold text-amber-400 font-serif">三岔河口</div>
+                    <div class="text-xs text-slate-400 mt-1">九河下梢漕运枢纽</div>
+                </div>
+                <div class="bg-slate-900/70 backdrop-blur-md p-5 rounded-xl border border-amber-500/20">
+                    <div class="text-3xl font-bold text-amber-400 font-serif">省级文保</div>
+                    <div class="text-xs text-slate-400 mt-1">天津市重点文物保护单位</div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="flex-grow max-w-6xl mx-auto px-6 py-16 space-y-20">
+
+        <!-- 建筑与文化精粹选项卡 -->
+        <section>
+            <div class="text-center mb-12">
+                <h2 class="font-calligraphy text-3xl sm:text-4xl text-amber-400 mb-3">古阁遗韵与道家营造</h2>
+                <div class="w-24 h-1 bg-amber-500/60 mx-auto rounded-full"></div>
+                <p class="text-slate-400 text-sm mt-3">深度探秘玉皇阁清虚高阁、道教彩绘与漕运源流</p>
+            </div>
+
+            <!-- 选项卡按钮 -->
+            <div class="flex flex-wrap justify-center gap-3 mb-10">
+                <button onclick="switchTab('qingxu')" id="tab-btn-qingxu" class="tab-btn active px-5 py-2.5 rounded-full border border-slate-700 text-sm font-medium transition-all">
+                    清虚阁营造规制
+                </button>
+                <button onclick="switchTab('caoyun')" id="tab-btn-caoyun" class="tab-btn px-5 py-2.5 rounded-full border border-slate-700 bg-slate-800/80 text-slate-300 text-sm font-medium transition-all hover:border-amber-500/40">
+                    三岔河口与漕运祈福
+                </button>
+                <button onclick="switchTab('carving')" id="tab-btn-carving" class="tab-btn px-5 py-2.5 rounded-full border border-slate-700 bg-slate-800/80 text-slate-300 text-sm font-medium transition-all hover:border-amber-500/40">
+                    藻井彩绘与道家石雕
+                </button>
+                <button onclick="switchTab('protection')" id="tab-btn-protection" class="tab-btn px-5 py-2.5 rounded-full border border-slate-700 bg-slate-800/80 text-slate-300 text-sm font-medium transition-all hover:border-amber-500/40">
+                    文物保护与时代新生
+                </button>
+            </div>
+
+            <!-- 选项卡内容 -->
+            <div id="tab-content" class="bg-slate-900/60 border border-amber-500/20 rounded-2xl p-6 sm:p-10 backdrop-blur-md">
+                <!-- 清虚阁营造 -->
+                <div id="panel-qingxu" class="grid lg:grid-cols-2 gap-8 items-center">
+                    <div>
+                        <span class="text-xs font-semibold text-amber-400 uppercase tracking-widest">Qingxu Pavilion Architecture</span>
+                        <h3 class="text-2xl font-bold text-white mt-1 mb-4 font-serif">重檐九脊歇山式木构明楼</h3>
+                        <p class="text-slate-300 leading-relaxed text-sm mb-4">
+                            玉皇阁建筑群现存的核心主体为<strong>清虚阁</strong>。全阁建于砖砌高台之上，上下两层，通高约14.5米。
+                        </p>
+                        <p class="text-slate-300 leading-relaxed text-sm">
+                            上层屋顶为重檐歇山九脊顶，绿琉璃瓦剪边，四面檐下施斗栱，二层周匝设回廊栏杆。古代文人常登临此阁，东眺海河浩荡帆影，南看津门万家灯火，被誉为“重门洞开，爽气西来；飞楼杰阁，下瞰平波”。
+                        </p>
+                    </div>
+                    <div class="rounded-xl overflow-hidden shadow-2xl border border-white/10 group">
+                        <img src="resources/yuhuangge_real.jpg" alt="玉皇阁实景" class="w-full h-80 object-cover group-hover:scale-105 transition-transform duration-500">
+                    </div>
+                </div>
+
+                <!-- 三岔河口与漕运 -->
+                <div id="panel-caoyun" class="hidden grid lg:grid-cols-2 gap-8 items-center">
+                    <div>
+                        <span class="text-xs font-semibold text-amber-400 uppercase tracking-widest">Canal & Folk Culture</span>
+                        <h3 class="text-2xl font-bold text-white mt-1 mb-4 font-serif">津门水神与玉皇崇拜</h3>
+                        <p class="text-slate-300 leading-relaxed text-sm mb-4">
+                            玉皇阁紧邻三岔河口，古时是京杭大运河北端与海河交汇的核心港埠。南来北往的粮船、盐商船队均在此聚集泊岸。
+                        </p>
+                        <p class="text-slate-300 leading-relaxed text-sm">
+                            船工与商贾起航离津前，必先进玉皇阁叩拜天帝、水神，祈求风调雨顺、行船平安。每逢正月初九“天公诞”，香客云集，形成津沽盛极一时的传统庙会盛景。
+                        </p>
+                    </div>
+                    <div class="rounded-xl overflow-hidden shadow-2xl border border-white/10 bg-slate-800 p-8 flex flex-col justify-center items-center text-center">
+                        <div class="text-6xl mb-4">⛵</div>
+                        <h4 class="text-xl font-bold text-amber-300 mb-2">运河咽喉水上福地</h4>
+                        <p class="text-xs text-slate-400 max-w-sm">“水陆咽喉，商贾辐辏。”玉皇阁不仅是道教修真之所，更是记录天津从漕运聚落向近代工商业都市演进的见证。</p>
+                    </div>
+                </div>
+
+                <!-- 藻井彩绘 -->
+                <div id="panel-carving" class="hidden grid lg:grid-cols-2 gap-8 items-center">
+                    <div>
+                        <span class="text-xs font-semibold text-amber-400 uppercase tracking-widest">Daoist Art</span>
+                        <h3 class="text-2xl font-bold text-white mt-1 mb-4 font-serif">精美斗栱与太极八卦藻井</h3>
+                        <p class="text-slate-300 leading-relaxed text-sm mb-4">
+                            清虚阁一层与二层梁柱之间，绘有典型的明清旋子彩画与苏式道教神仙壁画。阁内顶部施八卦藻井，雕琢云鹤仙纹，构思奇巧。
+                        </p>
+                        <p class="text-slate-300 leading-relaxed text-sm">
+                            门窗隔扇上的木雕与基座石雕云雷纹相得益彰，体现了中国传统道家“天人合一”、“道法自然”的宇宙观与建筑装饰艺术的高峰。
+                        </p>
+                    </div>
+                    <div class="rounded-xl overflow-hidden shadow-2xl border border-white/10 bg-slate-800 p-8 flex flex-col justify-center items-center text-center">
+                        <div class="text-6xl mb-4">☯️</div>
+                        <h4 class="text-xl font-bold text-amber-300 mb-2">道教营造法式</h4>
+                        <p class="text-xs text-slate-400 max-w-sm">结合北方厚重砖石基座与南方轻巧通透木廊，具有鲜明的明代官式建筑与民间营造结合的典型风貌。</p>
+                    </div>
+                </div>
+
+                <!-- 保护新生 -->
+                <div id="panel-protection" class="hidden grid lg:grid-cols-2 gap-8 items-center">
+                    <div>
+                        <span class="text-xs font-semibold text-amber-400 uppercase tracking-widest">Heritage Revival</span>
+                        <h3 class="text-2xl font-bold text-white mt-1 mb-4 font-serif">古文化街北端文化明珠</h3>
+                        <p class="text-slate-300 leading-relaxed text-sm mb-4">
+                            新中国成立后，天津市政府多次拔专款对清虚阁实施“落架大修”，严格遵循“修旧如旧”的文物保护原则，排除了木构糟朽隐患。
+                        </p>
+                        <p class="text-slate-300 leading-relaxed text-sm">
+                            如今，玉皇阁与天后宫、古文化街连缀成线，构成天津传统民俗文化游览区的南北双璧，向海内外游客生动呈现古卫城的道风仙骨。
+                        </p>
+                    </div>
+                    <div class="rounded-xl overflow-hidden shadow-2xl border border-white/10 bg-slate-800 p-8 flex flex-col justify-center items-center text-center">
+                        <div class="text-6xl mb-4">🏛️</div>
+                        <h4 class="text-xl font-bold text-amber-300 mb-2">古建筑修缮典范</h4>
+                        <p class="text-xs text-slate-400 max-w-sm">保存了明洪武年间的砖砌城台式建筑基础与清代重檐，是研究中国古代高台建筑的实物标本。</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 历史脉络 -->
+        <section class="relative">
+            <div class="text-center mb-12">
+                <h2 class="font-calligraphy text-3xl sm:text-4xl text-amber-400 mb-3">六百年香火沿革</h2>
+                <div class="w-24 h-1 bg-amber-500/60 mx-auto rounded-full"></div>
+            </div>
+
+            <div class="timeline-line relative max-w-3xl mx-auto space-y-10 pl-10 md:pl-0">
+                <div class="relative md:flex items-center justify-between">
+                    <div class="hidden md:block w-5/12 text-right pr-8">
+                        <div class="text-amber-400 font-bold text-lg font-serif">明洪武年间 (1368-1398)</div>
+                        <p class="text-slate-300 text-sm mt-1">敕命始建玉皇阁，供奉昊天金阙至尊玉皇大帝，为天津有确切纪年最早的道观之一。</p>
+                    </div>
+                    <div class="absolute -left-[30px] md:static md:left-auto w-8 h-8 rounded-full bg-emerald-500 border-4 border-slate-900 flex items-center justify-center text-xs font-bold text-slate-950 z-10">1</div>
+                    <div class="md:w-5/12 pl-4 md:pl-8">
+                        <div class="md:hidden text-amber-400 font-bold text-base">明洪武年间</div>
+                        <p class="md:hidden text-slate-300 text-xs mt-1 mb-2">敕建玉皇阁，供奉玉皇大帝。</p>
+                        <span class="text-xs text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded border border-emerald-500/20">明初敕建</span>
+                    </div>
+                </div>
+
+                <div class="relative md:flex items-center justify-between">
+                    <div class="hidden md:block w-5/12 text-right pr-8">
+                        <span class="text-xs text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded border border-emerald-500/20">清代重修·极盛时期</span>
+                    </div>
+                    <div class="absolute -left-[30px] md:static md:left-auto w-8 h-8 rounded-full bg-emerald-500 border-4 border-slate-900 flex items-center justify-center text-xs font-bold text-slate-950 z-10">2</div>
+                    <div class="md:w-5/12 pl-4 md:pl-8">
+                        <div class="text-amber-400 font-bold text-lg font-serif">清顺治至乾隆年间</div>
+                        <p class="text-slate-300 text-sm mt-1">地方官吏与盐商巨贾多次增资扩建，增设山门、旗杆、过厅与配殿，殿宇巍峨，香火冠绝津门。</p>
+                    </div>
+                </div>
+
+                <div class="relative md:flex items-center justify-between">
+                    <div class="hidden md:block w-5/12 text-right pr-8">
+                        <div class="text-amber-400 font-bold text-lg font-serif">1954年</div>
+                        <p class="text-slate-300 text-sm mt-1">天津市人民政府实施抢救性大修，加固清虚阁梁架木柱，被列为市级重点文物保护单位。</p>
+                    </div>
+                    <div class="absolute -left-[30px] md:static md:left-auto w-8 h-8 rounded-full bg-emerald-500 border-4 border-slate-900 flex items-center justify-center text-xs font-bold text-slate-950 z-10">3</div>
+                    <div class="md:w-5/12 pl-4 md:pl-8">
+                        <span class="text-xs text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded border border-emerald-500/20">文保大修</span>
+                    </div>
+                </div>
+
+                <div class="relative md:flex items-center justify-between">
+                    <div class="hidden md:block w-5/12 text-right pr-8">
+                        <span class="text-xs text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded border border-emerald-500/20">文旅融合</span>
+                    </div>
+                    <div class="absolute -left-[30px] md:static md:left-auto w-8 h-8 rounded-full bg-emerald-500 border-4 border-slate-900 flex items-center justify-center text-xs font-bold text-slate-950 z-10">4</div>
+                    <div class="md:w-5/12 pl-4 md:pl-8">
+                        <div class="text-amber-400 font-bold text-lg font-serif">新时代新貌</div>
+                        <p class="text-slate-300 text-sm mt-1">纳入古文化街国家5A级旅游景区整体规划，成为三岔河口与运河文旅研学的重要节点。</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 实用出行指南 -->
+        <section class="bg-slate-900/80 border border-amber-500/30 rounded-2xl p-8 backdrop-blur-md">
+            <h3 class="font-calligraphy text-2xl text-amber-300 mb-6 flex items-center space-x-2">
+                <span>📍</span>
+                <span>游览攻略与实用指南</span>
+            </h3>
+
+            <div class="grid md:grid-cols-3 gap-6 text-sm">
+                <div class="space-y-2">
+                    <div class="font-bold text-amber-400">门票与开放时间</div>
+                    <p class="text-slate-300">门票：免费参观</p>
+                    <p class="text-slate-300">开放时间：09:00 - 16:30（周一例行修整闭馆）</p>
+                </div>
+                <div class="space-y-2">
+                    <div class="font-bold text-amber-400">地理位置与交通</div>
+                    <p class="text-slate-300">地址：天津市南开区东门外大街三岔河口南侧（古文化街北端）</p>
+                    <p class="text-slate-300">地铁：地铁2号线【东南角站】转乘公交或步行约15分钟</p>
+                </div>
+                <div class="space-y-2">
+                    <div class="font-bold text-amber-400">研学游览建议</div>
+                    <p class="text-slate-300">建议与天后宫、古文化街北口连缀游览，用时约40分钟</p>
+                    <p class="text-slate-300">拍照建议：下午3-5点夕阳余晖斜照重檐歇山顶，色彩尤为明艳</p>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- 页脚 -->
+    <footer class="bg-slate-950 border-t border-amber-500/20 py-8 text-center text-xs text-slate-500">
+        <p class="mb-2">津门华章 · 天津古建与历史文旅宣传门户平台</p>
+        <p>© 2026 天津古建研学项目 | 保护古建筑遗存，弘扬中华营造技艺</p>
+    </footer>
+
+    <script>
+        function switchTab(type) {
+            const tabs = ['qingxu', 'caoyun', 'carving', 'protection'];
+            tabs.forEach(t => {
+                const btn = document.getElementById('tab-btn-' + t);
+                const panel = document.getElementById('panel-' + t);
+                if (t === type) {
+                    btn.classList.add('active');
+                    btn.classList.remove('bg-slate-800/80', 'text-slate-300');
+                    panel.classList.remove('hidden');
+                } else {
+                    btn.classList.remove('active');
+                    btn.classList.add('bg-slate-800/80', 'text-slate-300');
+                    panel.classList.add('hidden');
+                }
+            });
+        }
+    </script>
+</body>
+</html>
